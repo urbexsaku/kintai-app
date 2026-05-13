@@ -7,11 +7,9 @@
 @endsection
 
 @section('content')
-
-@include('components.header')
 <div class="auth-form__content">
   <h1 class="auth-form__heading">ログイン</h1>
-  <form class="auth-form" action="{{ route('login') }}" method="post" novalidate>
+  <form class="auth-form" action="{{ request()->is('admin.login') ? route('admin.login') : route('login') }}" method="post">
     @csrf
     <div class="auth-form__group">
       <div class="auth-form__group-title">
@@ -48,7 +46,9 @@
     <div class="auth-form__button">
       <button type="submit" class="auth-form__button-submit">ログインする</button>
     </div>
+    @if(request()->is('login'))
     <a class="auth-form__link" href="/register">会員登録はこちら</a>
+    @endif
   </form>
 </div>
 @endsection

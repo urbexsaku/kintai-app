@@ -22,22 +22,12 @@ class FortifyServiceProvider extends ServiceProvider
     {
         $this->app->bind(FortifyLoginRequest::class, LoginRequest::class);
 
-        $this->app->singleton(RegisterResponse::class, function () {
-            return new class implements RegisterResponse
-            {
-                public function toResponse($request)
-                {
-                    return redirect('staff.attendance.stamp');
-                }
-            };
-        });
-
         $this->app->singleton(LoginResponse::class, function () {
             return new class implements LoginResponse
             {
                 public function toResponse($request)
                 {
-                    return redirect('staff.attendance.stamp');
+                    return redirect()->route('staff.attendance.stamp');
                 }
             };
         });
@@ -49,18 +39,20 @@ class FortifyServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Fortify::createUsersUsing(CreateNewUser::class);
-        Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
-        Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
-        Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
 
-        RateLimiter::for('login', function (Request $request) {
-            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())) . '|' . $request->ip());
-
-            return Limit::perMinute(5)->by($throttleKey);
+        Fortify::registerView(function(){
+            return view('auth.register');
         });
 
-        RateLimiter::for('two-factor', function (Request $request) {
-            return Limit::perMinute(5)->by($request->session()->get('login.id'));
+        Fortify::loginView(function(){
+            return view('auth.login');
+        });
+
+        RateLimiter::for('login', function(Request $request)
+        {
+            $email = (string) $request->email;
+
+            return Limit::perMinute(10)->by($email . $request->ip());
         });
     }
 }

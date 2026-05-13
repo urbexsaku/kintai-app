@@ -7,6 +7,7 @@ use App\Http\Controllers\StaffAttendanceController;
 use App\Http\Controllers\StaffRequestController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,12 +29,20 @@ Route::get('/email/verify', function () {
     return view('auth.verify-email');
 })->middleware('auth')->name('verification.notice');
 
-// メール認証済ユーザーにプロフィール設定画面を表示
+// メール認証済ユーザーに打刻画面を表示
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill(); // 認証完了
 
-    return redirect('/mypage/profile');
+    return redirect()->route('staff.attendance.stamp');
 })->middleware(['auth', 'signed'])->name('verification.verify');
+
+// 認証メール再送処理
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+
+    return back()->with('message', '認証メールを再送信しました');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/attendance', [StaffAttendanceController::class, 'index'])->name('staff.attendance.stamp');

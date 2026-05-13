@@ -7,11 +7,9 @@
 @endsection
 
 @section('content')
-
-@include('components.header')
 <div class="auth-form__content">
   <h1 class="auth-form__heading">会員登録</h1>
-  <form class="auth-form" action="{{ route('register') }}" method="post" novalidate>
+  <form class="auth-form" action="{{ route('register') }}" method="post">
     @csrf
     <div class="auth-form__group">
       <div class="auth-form__group-title">

@@ -11,9 +11,18 @@
   @yield('css')
 </head>
 
-<body>
-  <main>
-    @yield('content')
-  </main>
+<header class="header">
+  <div>
+    <a href="/">
+      <img class="header__logo" src="{{ asset('images/header-logo.png') }}" alt="ロゴ">
+    </a>
+  </div>
+</header>
+
+<main>
+  @yield('content')
+</main>
+
 </body>
+
 </html>

@@ -68,7 +68,7 @@ input::placeholder {
 .auth-form__button-submit {
   width: 100%;
   height: 40px;
-  background-color: #FF5555;
+  background-color: black;
   border-radius: 3px;
   color: white;
   border: none;
