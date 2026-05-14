@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
-use Illuminate\Auth;
+use Illuminate\Support\Facades\Auth;
 
 class AdminAuthController extends Controller
 {
     public function create()
     {
-        return view('admin.auth.login');
+        return view('auth.login');
     }
 
     public function store(LoginRequest $request)

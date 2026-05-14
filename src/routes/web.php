@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminAttendanceController;
 use App\Http\Controllers\AdminRequestController;
 use App\Http\Controllers\AdminStaffController;
+use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\StaffAttendanceController;
 use App\Http\Controllers\StaffRequestController;
 use Illuminate\Support\Facades\Route;
@@ -20,8 +21,8 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/admin/login', [AdminAttendanceController::class, 'create'])->name('admin.login');
-Route::post('/admin/login', [AdminAttendanceController::class, 'store']);
+Route::get('/admin/login', [AdminAuthController::class, 'create'])->name('admin.login');
+Route::post('/admin/login', [AdminAuthController::class, 'store']);
 
 // メール認証機能
 // メール未認証ユーザーに認証案内画面を表示
@@ -51,7 +52,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
-    Route::get('/admin/attendance/list', [AdminAttendanceController::class, 'index'])->name('admin.attendance.index');
+    Route::get('/admin/attendance/list', [AdminAttendanceController::class, 'index'])->name('attendance.index');
     Route::get('admin/attendance/{user_id}', [AdminAttendanceController::class, 'show']);
     Route::get('/admin/attendance/staff/{user_id}', [AdminAttendanceController::class, 'history']);
 });
