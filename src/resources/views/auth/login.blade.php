@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title','ログイン')
+@section('title', request()->routeIs('admin.login') ? '管理者ログイン' : 'ログイン')
 
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
@@ -9,7 +9,8 @@
 @section('content')
 <div class="auth-form__content">
   <h1 class="auth-form__heading">ログイン</h1>
-  <form class="auth-form" action="{{ request()->is('admin.login') ? route('admin.login') : route('login') }}" method="post">
+  <!-- ルートでpost先の分岐 -->
+  <form class="auth-form" action="{{ request()->routeIs('admin.login') ? route('admin.login') : route('login') }}" method="post">
     @csrf
     <div class="auth-form__group">
       <div class="auth-form__group-title">
@@ -46,7 +47,8 @@
     <div class="auth-form__button">
       <button type="submit" class="auth-form__button-submit">ログインする</button>
     </div>
-    @if(request()->is('login'))
+    <!-- 一般ログイン画面のみリンク表示 -->
+    @if(request()->routeIs('login'))
     <a class="auth-form__link" href="/register">会員登録はこちら</a>
     @endif
   </form>
