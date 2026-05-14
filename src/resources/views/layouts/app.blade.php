@@ -11,18 +11,29 @@
   @yield('css')
 </head>
 
-<header class="header">
-  <div>
-    <a href="/">
-      <img class="header__logo" src="{{ asset('images/header-logo.png') }}" alt="ロゴ">
-    </a>
-  </div>
-</header>
+<body>
+  <header class="header">
+    <div>
+      <a href="/">
+        <img class="header__logo" src="{{ asset('images/header-logo.png') }}" alt="ロゴ">
+      </a>
+    </div>
+    <nav class="header__nav">
+      <ul>
+        @auth
+          @if(Auth::user()->admin_status)
+            @include('components.header-admin')
+          @else
+            @include('components.header-staff')
+          @endif
+        @endauth
+      </ul>
+    </nav>
+  </header>
 
-<main>
-  @yield('content')
-</main>
+  <main>
+    @yield('content')
+  </main>
 
 </body>
-
 </html>
