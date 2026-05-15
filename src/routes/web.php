@@ -44,13 +44,18 @@ Route::post('/email/verification-notification', function (Request $request) {
     return back()->with('message', '認証メールを再送信しました');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
-
+// 一般ユーザーページ
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/attendance', [StaffAttendanceController::class, 'index'])->name('staff.attendance.stamp');
+    Route::post('/attendance/clock-in', [StaffAttendanceController::class, 'clockIn']);
+    Route::post('/attendance/clock-out', [StaffAttendanceController::class, 'clockOut']);
+    Route::post('/attendance/break-start', [StaffAttendanceController::class, 'breakStart']);
+    Route::post('/attendance/break-end', [StaffAttendanceController::class, 'breakEnd']);
     Route::get('/attendance/list', [StaffAttendanceController::class, 'show']);
     Route::get('/attendance/detail/{user_id}', [StaffAttendanceController::class, 'show']);
 });
 
+// 管理者ユーザーページ
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/attendance/list', [AdminAttendanceController::class, 'index'])->name('attendance.index');
     Route::get('admin/attendance/{user_id}', [AdminAttendanceController::class, 'show']);
