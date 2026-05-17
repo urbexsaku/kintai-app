@@ -58,15 +58,7 @@
       <p class="attendance__message">お疲れ様でした。</p>
       @endif
     </div>
-
-    @if(session('message'))
-    <div class="error_message">
-      <p>{{ session('message') }}</p>
-    </div>
-    @endif
-
   </div>
-
 </div>
 <script src="{{ asset('js/stamp.js') }}"></script>
 @endsection

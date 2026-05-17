@@ -52,7 +52,7 @@ class StaffAttendanceController extends Controller
         $attendance = AttendanceRecord::where('user_id', Auth::id())->where('work_date', today())->first();
 
         if ($attendance) {
-            return redirect()->route('staff.attendance.stamp')->with('message', '本日は既に出勤済みです');
+            return redirect()->route('staff.attendance.stamp');
         }
 
         AttendanceRecord::create([
