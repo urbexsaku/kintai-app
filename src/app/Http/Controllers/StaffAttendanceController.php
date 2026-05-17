@@ -13,7 +13,7 @@ class StaffAttendanceController extends Controller
     {
         // 今日の出勤データを取得
         $attendance = AttendanceRecord::where('user_id', Auth::id())
-            ->whereDate('clock_in', today())
+            ->where('work_date', today())
             ->first();
         
         $break = null;
@@ -30,7 +30,7 @@ class StaffAttendanceController extends Controller
         $isFinished = false;
 
         if ($attendance) {
-            if ($attendance->clock_out) { // 最新の勤怠データがclock_out
+            if ($attendance->clock_out) { // clock_outが登録されている場合
                 $isFinished = true; // 退勤済
             } elseif ($break && !$break->end_at){ // 最新の休憩データがend_atではない場合
                 $isBreaking = true; // 休憩中
@@ -45,5 +45,21 @@ class StaffAttendanceController extends Controller
             'isBreaking',
             'isFinished'
         ));
+    }
+
+    public function clockIn() {
+        $attendance = AttendanceRecord::where('user_id', Auth::id())->where('work_date', today())->first();
+
+        if ($attendance) {
+            return redirect()->route('staff.attendance.stamp')->with('message', '本日は既に出勤済みです');
+        }
+
+        AttendanceRecord::create([
+            'user_id' => Auth::id(),
+            'work_date' => today(),
+            'clock_in' => now(),
+        ]);
+
+        return redirect()->route('staff.attendance.stamp');
     }
 }

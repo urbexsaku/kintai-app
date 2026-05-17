@@ -14,8 +14,12 @@ function updateClock() {
   const minutes = String(now.getMinutes()).padStart(2, '0');
 
   clock.innerHTML = `
-    <p>${year}年${month}月${day}日(${weekday})</p>
-    <p>${hours}:${minutes}</p> 
+    <p class="attendance__date">
+      ${year}年${month}月${day}日(${weekday})
+    </p>
+    <p class="attendance__time">
+      ${hours}:${minutes}
+    </p> 
   `;
 }
 
