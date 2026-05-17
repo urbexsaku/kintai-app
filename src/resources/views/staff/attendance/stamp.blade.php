@@ -55,7 +55,7 @@
 
       {{-- 退勤後 --}}
       @elseif($isFinished)
-      <p class="attendance__message">お疲れさまでした。</p>
+      <p class="attendance__message">お疲れ様でした。</p>
       @endif
     </div>
 

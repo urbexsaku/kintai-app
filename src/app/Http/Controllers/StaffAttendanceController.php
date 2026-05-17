@@ -47,6 +47,7 @@ class StaffAttendanceController extends Controller
         ));
     }
 
+    // 出勤登録
     public function clockIn() {
         $attendance = AttendanceRecord::where('user_id', Auth::id())->where('work_date', today())->first();
 
@@ -58,6 +59,42 @@ class StaffAttendanceController extends Controller
             'user_id' => Auth::id(),
             'work_date' => today(),
             'clock_in' => now(),
+        ]);
+
+        return redirect()->route('staff.attendance.stamp');
+    }
+
+    // 休憩入登録
+    public function breakStart() {
+        $attendance = AttendanceRecord::where('user_id', Auth::id())->where('work_date', today())->first();
+
+        BreakRecord::create([
+            'attendance_record_id' => $attendance->id,
+            'start_at' => now(),
+        ]);
+
+        return redirect()->route('staff.attendance.stamp');
+    }
+
+    // 休憩戻登録
+    public function breakEnd() {
+        $attendance = AttendanceRecord::where('user_id', Auth::id())->where('work_date', today())->first();
+
+        $break = BreakRecord::where('attendance_record_id', $attendance->id)->latest()->first();
+
+        $break->update([
+            'end_at' => now(),
+        ]);
+
+        return redirect()->route('staff.attendance.stamp');
+    }
+
+    // 退勤登録
+    public function clockOut() {
+        $attendance = AttendanceRecord::where('user_id', Auth::id())->where('work_date', today())->first();
+
+        $attendance->update([
+            'clock_out' => now(),
         ]);
 
         return redirect()->route('staff.attendance.stamp');
