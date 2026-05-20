@@ -8,7 +8,10 @@
 
 @section('content')
 <div class="auth-form__content">
-  <h1 class="auth-form__heading">ログイン</h1>
+  <h1 class="auth-form__heading">
+    {{ request()->routeIs('admin.login') ? '管理者ログイン' : 'ログイン' }}
+  </h1>
+
   <!-- ルートでpost先の分岐 -->
   <form class="auth-form" action="{{ request()->routeIs('admin.login') ? route('admin.login') : route('login') }}" method="post">
     @csrf
@@ -45,8 +48,11 @@
     </div>
 
     <div class="auth-form__button">
-      <button type="submit" class="auth-form__button-submit">ログインする</button>
+      <button type="submit" class="auth-form__button-submit">
+        {{ request()->routeIs('admin.login') ? '管理者ログインする' : 'ログインする' }}
+      </button>
     </div>
+    
     <!-- 一般ログイン画面のみリンク表示 -->
     @if(request()->routeIs('login'))
     <a class="auth-form__link" href="/register">会員登録はこちら</a>

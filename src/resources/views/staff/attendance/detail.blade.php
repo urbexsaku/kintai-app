@@ -7,7 +7,9 @@
 @endsection
 
 @section('content')
-
-
-
+<div class="detail__content">
+  <div class="detail__inner">
+    <h1 class="detail__title">勤怠詳細</h1>
+  </div>
+</div>
 @endsection
