@@ -19,6 +19,10 @@ class AdminAuthController extends Controller
             'password' => $request->password,
             'admin_status' => 1,
         ])) {
+
+            // ログアウト遷移用のセッションID再生成
+            $request->session()->regenerate();
+            
             return redirect()->route('admin.attendance.index');
         }
 

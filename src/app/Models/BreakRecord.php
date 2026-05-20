@@ -15,7 +15,13 @@ class BreakRecord extends Model
         'end_at',
     ];
 
-    public function attendanceRecords()
+    // データのCarbon化
+    protected $casts = [
+        'start_at' => 'datetime',
+        'end_at' => 'datetime',
+    ];
+
+    public function attendanceRecord()
     {
         return $this->belongsTo(AttendanceRecord::class);
     }

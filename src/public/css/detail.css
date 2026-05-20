@@ -1,0 +1,17 @@
+.detail__content {
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 50px 0;
+  background-color: #F0EFF2;
+}
+
+.detail__inner {
+  width: 900px;
+  margin: 0 auto 40px;
+}
+
+.detail__title {
+  padding-left: 20px;
+  border-left: 8px solid #000;
+  font-size: 24px;
+}

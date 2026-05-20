@@ -51,13 +51,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/attendance/clock-out', [StaffAttendanceController::class, 'clockOut']);
     Route::post('/attendance/break-start', [StaffAttendanceController::class, 'breakStart']);
     Route::post('/attendance/break-end', [StaffAttendanceController::class, 'breakEnd']);
-    Route::get('/attendance/list', [StaffAttendanceController::class, 'show']);
+    Route::get('/attendance/list', [StaffAttendanceController::class, 'history']);
     Route::get('/attendance/detail/{user_id}', [StaffAttendanceController::class, 'show']);
 });
 
 // 管理者ユーザーページ
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
-    Route::get('/admin/attendance/list', [AdminAttendanceController::class, 'index'])->name('attendance.index');
-    Route::get('admin/attendance/{user_id}', [AdminAttendanceController::class, 'show']);
-    Route::get('/admin/attendance/staff/{user_id}', [AdminAttendanceController::class, 'history']);
+    Route::get('/attendance/list', [AdminAttendanceController::class, 'index'])->name('attendance.index');
+    Route::get('/attendance/{user_id}', [AdminAttendanceController::class, 'show']);
+    Route::get('/attendance/staff/{user_id}', [AdminAttendanceController::class, 'history']);
 });

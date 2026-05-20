@@ -14,9 +14,7 @@
 <body>
   <header class="header">
     <div>
-      <a href="/">
-        <img class="header__logo" src="{{ asset('images/header-logo.png') }}" alt="ロゴ">
-      </a>
+      <img class="header__logo" src="{{ asset('images/header-logo.png') }}" alt="ロゴ">
     </div>
     <nav class="header__nav">
       <ul>
