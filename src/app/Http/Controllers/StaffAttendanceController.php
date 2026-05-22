@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\AttendanceRecord;
 use App\Models\BreakRecord;
+use App\Models\CorrectionRequest;
+use App\Models\CorrectionBreakRequest;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 
@@ -140,6 +142,43 @@ class StaffAttendanceController extends Controller
     {
         $attendance = AttendanceRecord::findOrFail($attendance_id);
 
-        return view('staff.attendance/detail', compact('attendance'));
+        $isPending = $attendance->correctionRequests()->where('status', 'pending')->exists();
+
+        return view('staff.attendance/detail', compact('attendance', 'isPending'));
+    }
+
+    public function store(Request $request, $attendance_id)
+    {
+        $correctionRequest = CorrectionRequest::create([
+            'attendance_record_id' => $attendance_id,
+            'requested_clock_in' => $request->clock_in,
+            'requested_clock_out' => $request->clock_out,
+            'comment' => $request->comment,
+        ]);
+
+        foreach ($request->start_at as $index => $start) {
+            $end = $request->end_at[$index];
+
+            // 両方空ならスキップ
+            if (!$start && !$end) {
+                continue;
+            }
+
+            // 片方だけはエラー
+            if (!$start || !$end) {
+                return back ()->withErrors([
+                    'breaks' => '休憩開始・終了を入力してください'
+                ])
+                ->withInput();
+            }
+
+            CorrectionBreakRequest::create([
+                'correction_request_id' => $correctionRequest->id,
+                'requested_start_at' => $start,
+                'requested_end_at' => $end,
+            ]);
+        }
+
+        return redirect('/attendance/detail/' . $attendance_id);
     }
 }

@@ -50,10 +50,10 @@
             ({{ ['日', '月', '火', '水', '木', '金', '土'][$date->dayOfWeek] }})
           </td>
           <td class="monthly__data">
-            {{ $attendance?->clock_in?->format('H:i') : '' }}
+            {{ $attendance?->clock_in?->format('H:i') }}
           </td>
           <td class="monthly__data">
-            {{ $attendance?->clock_out?->format('H:i') : '' }}
+            {{ $attendance?->clock_out?->format('H:i') }}
           </td>
           <td class="monthly__data">
             {{ $attendance?->total_break }}

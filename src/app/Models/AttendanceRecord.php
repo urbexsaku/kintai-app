@@ -33,6 +33,11 @@ class AttendanceRecord extends Model
         return $this->hasMany(BreakRecord::class);
     }
 
+    public function correctionRequests()
+    {
+        return $this->hasMany(CorrectionRequest::class);
+    }
+
     public function getTotalBreakAttribute()
     {
         $totalBreak = $this->calculateTotalBreakSeconds();
