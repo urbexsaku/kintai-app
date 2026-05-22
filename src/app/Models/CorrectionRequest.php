@@ -8,4 +8,21 @@ use Illuminate\Database\Eloquent\Model;
 class CorrectionRequest extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'attendance_record_id',
+        'requested_clock_in',
+        'requested_clock_out',
+        'comment',
+    ];
+
+    public function attendanceRecord()
+    {
+        return $this->belongsTo(AttendanceRecord::class);
+    }
+    
+    public function correctionBreakRecords()
+    {
+        return $this->hasMany(CorrectionBreakRecords::class);
+    }
 }

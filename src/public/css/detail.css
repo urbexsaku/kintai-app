@@ -40,7 +40,7 @@
 .detail__label {
     color: #737373;
     text-align: left;
-    width: 250px;
+    width: 350px;
     padding: 20px 50px;
 }
 
@@ -67,6 +67,23 @@
   margin: 10px 0px;
   width: 280px;
   height: 50px;
+}
+
+.detail__pending {
+    margin-top: 30px;
+    display: flex;
+    justify-content: flex-end;
+    color: #FF000080;
+    font-weight: bold;
+}
+
+.detail__form input:disabled,
+.detail__form textarea:disabled {
+    background-color: transparent;
+    color: #000;
+    opacity: 1;
+    border: none;
+    font-weight: bold;
 }
 
 .detail__button {
