@@ -1,17 +1,87 @@
 .detail__content {
-  min-height: 100vh;
-  margin: 0 auto;
-  padding: 50px 0;
-  background-color: #F0EFF2;
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: 50px 0;
+    background-color: #F0EFF2;
 }
 
 .detail__inner {
-  width: 900px;
-  margin: 0 auto 40px;
+    width: 900px;
+    min-height: calc(100vh - 100px); /* padding 50px X 2をマイナス */
+    margin: 0 auto 40px;
+    display: flex;
+    flex-direction: column; /* フォームを画面の上下中央配置 */
 }
 
 .detail__title {
-  padding-left: 20px;
-  border-left: 8px solid #000;
-  font-size: 24px;
+    padding-left: 20px;
+    border-left: 8px solid #000;
+    font-size: 24px;
 }
+
+.detail__form {
+    width: 100%;
+    margin: auto 0; /* フォームを画面の上下中央配置 */
+}
+
+.detail__table {
+    width: 100%;
+    table-layout: fixed;
+    background-color: white;
+    border-radius: 10px;
+}
+
+.detail__label,
+.detail__text {
+    border-bottom: 2px solid #E1E1E1;
+    font-weight: bold;
+}
+
+.detail__label {
+    color: #737373;
+    text-align: left;
+    width: 250px;
+    padding: 20px 50px;
+}
+
+.detail__inline {
+    display: grid;
+    grid-template-columns: 100px 80px 100px;
+    align-items: center;
+}
+
+.detail__inline input {
+    width: 100px;
+    height: 40px;
+    padding: 5px;
+    font-weight: bold;
+    font-size: 15px;
+    text-align: center;
+}
+
+.detail__separator {
+    text-align: center;
+}
+
+.detail__textarea {
+  margin: 10px 0px;
+  width: 280px;
+  height: 50px;
+}
+
+.detail__button {
+    margin-top: 30px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.detail__button-submit {
+    width: 90px;
+    height: 40px;
+    background-color: black;
+    color: white;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+

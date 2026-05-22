@@ -52,7 +52,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/attendance/break-start', [StaffAttendanceController::class, 'breakStart']);
     Route::post('/attendance/break-end', [StaffAttendanceController::class, 'breakEnd']);
     Route::get('/attendance/list', [StaffAttendanceController::class, 'history']);
-    Route::get('/attendance/detail/{user_id}', [StaffAttendanceController::class, 'show']);
+    Route::get('/attendance/detail/{attendance_id}', [StaffAttendanceController::class, 'show']);
 });
 
 // 管理者ユーザーページ
