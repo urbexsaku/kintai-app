@@ -50,10 +50,10 @@
             ({{ ['日', '月', '火', '水', '木', '金', '土'][$date->dayOfWeek] }})
           </td>
           <td class="monthly__data">
-            {{ $attendance?->clock_in ? \Carbon\Carbon::parse($attendance->clock_in)->format('H:i') : '' }}
+            {{ $attendance?->clock_in?->format('H:i') : '' }}
           </td>
           <td class="monthly__data">
-            {{ $attendance?->clock_out ? \Carbon\Carbon::parse($attendance->clock_out)->format('H:i') : '' }}
+            {{ $attendance?->clock_out?->format('H:i') : '' }}
           </td>
           <td class="monthly__data">
             {{ $attendance?->total_break }}
@@ -63,7 +63,7 @@
           </td>
           <td class="monthly__data">
             @if($attendance)
-            <a class="monthly__detail" href="/attendance/detail/">詳細</a>
+            <a class="monthly__detail" href="/attendance/detail/{{ $attendance->id }}">詳細</a>
             @endif
           </td>
         </tr>

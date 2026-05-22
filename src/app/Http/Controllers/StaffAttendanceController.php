@@ -135,4 +135,11 @@ class StaffAttendanceController extends Controller
             'attendanceMap',
         ));
     }
+
+    public function show($attendance_id)
+    {
+        $attendance = AttendanceRecord::findOrFail($attendance_id);
+
+        return view('staff.attendance/detail', compact('attendance'));
+    }
 }
