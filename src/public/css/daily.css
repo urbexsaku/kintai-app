@@ -1,0 +1,100 @@
+.daily__content {
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: 50px 0;
+    background-color: #F0EFF2;
+}
+
+.daily__inner {
+    width: 900px;
+    margin: 0 auto 40px;
+}
+
+.daily__title {
+    padding-left: 20px;
+    border-left: 8px solid #000;
+    font-size: 24px;
+}
+
+.daily__header {
+    margin: 0 auto 40px;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+    border-radius: 10px;
+}
+
+.daily__link {
+    text-decoration: none;
+    color: #737373;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}
+
+.daily__arrow {
+    width: 35px;
+    opacity: 0.3;
+    padding: 8px;
+}
+
+.daily__current {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.daily__calendar {
+    width: 30px;
+    margin-right: 10px;
+}
+
+.daily__text {
+    font-weight: bold;
+    font-size: 20px;
+    margin: 0;
+}
+
+.daily__arrow--next {
+    transform: rotate(180deg);
+}
+
+.daily__wrapper {
+    margin: 0 auto 40px;
+    background-color: white;
+    border-radius: 10px;
+}
+
+.daily__table {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.daily__head:first-child,
+.daily__data:first-child {
+    width: 200px;
+}
+
+.daily__head,
+.daily__data {
+    padding: 16px;
+    text-align: center;
+    color: #737373;
+    font-weight: bold;
+}
+
+.daily__head {
+    border-bottom: 3px solid #E1E1E1;
+}
+
+.daily__data {
+    border-bottom: 1px solid #E1E1E1;
+}
+
+.daily__detail {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}
