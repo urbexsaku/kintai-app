@@ -8,6 +8,7 @@ use App\Models\AttendanceRecord;
 use App\Models\BreakRecord;
 use App\Models\CorrectionRequest;
 use App\Models\CorrectionBreakRequest;
+use App\Http\Requests\StoreCorrectionRequest;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 
@@ -147,7 +148,7 @@ class StaffAttendanceController extends Controller
         return view('staff.attendance/detail', compact('attendance', 'isPending'));
     }
 
-    public function store(Request $request, $attendance_id)
+    public function store(StoreCorrectionRequest $request, $attendance_id)
     {
         $correctionRequest = CorrectionRequest::create([
             'attendance_record_id' => $attendance_id,
