@@ -32,9 +32,9 @@
           <th class="detail__label">出勤・退勤</th>
           <td class="detail__text">
             <div class="detail__inline">
-              <input type="text" name="clock_in" value="{{ $attendance->clock_in->format('H:i') }}" {{ $isPending ? 'disabled' : '' }}>
+              <input type="text" name="clock_in" value="{{ $attendance->clock_in?->format('H:i') }}" {{ $isPending ? 'disabled' : '' }}>
               <span class="detail__separator">～</span>
-              <input type="text" name="clock_out" value="{{ $attendance->clock_out->format('H:i') }}" {{ $isPending ? 'disabled' : '' }}>
+              <input type="text" name="clock_out" value="{{ $attendance->clock_out?->format('H:i') }}" {{ $isPending ? 'disabled' : '' }}>
             </div>
 
             <div class="detail__error">
