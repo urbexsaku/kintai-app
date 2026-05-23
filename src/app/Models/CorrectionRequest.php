@@ -16,6 +16,14 @@ class CorrectionRequest extends Model
         'comment',
     ];
 
+    public function getStatusLabelAttribute()
+    {
+        return match ($this->status) {
+            'pending' => '承認待ち',
+            'approved' => '承認済み',
+        };
+    }
+
     public function attendanceRecord()
     {
         return $this->belongsTo(AttendanceRecord::class);

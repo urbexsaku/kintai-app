@@ -7,7 +7,8 @@
 
 .detail__inner {
     width: 900px;
-    min-height: calc(100vh - 100px); /* padding 50px X 2をマイナス */
+    min-height: calc(100vh - 100px);
+    /* padding 50px X 2をマイナス */
     margin: 0 auto 40px;
     display: flex;
     flex-direction: column; /* フォームを画面の上下中央配置 */
@@ -35,6 +36,8 @@
 .detail__text {
     border-bottom: 2px solid #E1E1E1;
     font-weight: bold;
+    text-align: center;
+    vertical-align: middle;
 }
 
 .detail__label {
@@ -42,18 +45,24 @@
     text-align: left;
     width: 350px;
     padding: 20px 50px;
+    text-align: left;
+}
+
+.detail__text--name {
+    text-align: left;
+    padding-left: 25px;
 }
 
 .detail__inline {
     display: grid;
     grid-template-columns: 100px 80px 100px;
     align-items: center;
+    height: 80px;
 }
 
 .detail__inline input {
     width: 100px;
     height: 40px;
-    padding: 5px;
     font-weight: bold;
     font-size: 15px;
     text-align: center;
@@ -64,9 +73,9 @@
 }
 
 .detail__textarea {
-  margin: 10px 0px;
-  width: 280px;
-  height: 50px;
+    margin: 10px 0px;
+    width: 280px;
+    height: 50px;
 }
 
 .detail__pending {
@@ -102,3 +111,13 @@
     cursor: pointer;
 }
 
+.detail__error {
+    color: red;
+    text-align: left;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.detail__error p {
+    margin-top: 0;
+}

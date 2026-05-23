@@ -16,7 +16,7 @@
       <table class="detail__table">
         <tr class="detail__row">
           <th class="detail__label">名前</th>
-          <td class="detail__text">{{ $attendance->user->name }}</td>
+          <td class="detail__text detail__text--name">{{ $attendance->user->name }}</td>
         </tr>
         <tr  class="detail__row">
           <th class="detail__label">日付</th>
@@ -36,6 +36,12 @@
               <span class="detail__separator">～</span>
               <input type="text" name="clock_out" value="{{ $attendance->clock_out->format('H:i') }}" {{ $isPending ? 'disabled' : '' }}>
             </div>
+
+            <div class="detail__error">
+              @error('clock_in')
+                <p>{{ $message }}</p>
+              @enderror
+            </div>                 
           </td>
         </tr>
         @foreach ($attendance->breakRecords as $breakRecord)
@@ -47,6 +53,17 @@
               <span class="detail__separator">～</span>
               <input type="text" name="end_at[]" value="{{ $breakRecord->end_at->format('H:i') }}" {{ $isPending ? 'disabled' : '' }}>
             </div>
+            
+            <div class="detail__error">
+              @error('start_at.'.$loop->index)
+                <p>{{ $message }}</P>
+              @enderror
+
+              @error('end_at.'.$loop->index)
+                <p>{{ $message }}</P>
+              @enderror
+            </div>       
+
           </td>
         </tr>
         @endforeach
@@ -58,11 +75,31 @@
               <span class="detail__separator">～</span>
               <input type="text" name="end_at[]" {{ $isPending ? 'disabled' : '' }}>
             </div>
+
+            <div class="detail__error">
+              @error('start_at.'.$attendance->breakRecords->count())
+                <p>{{ $message }}</p>
+              @enderror
+
+              @error('end_at.'.$attendance->breakRecords->count() )
+                <p>{{ $message }}</p>
+              @enderror
+            </div>
+
           </td>
         </tr>
         <tr class="detail__row">
           <th class="detail__label">備考</th>
-          <td><textarea class="detail__textarea" name="comment" {{ $isPending ? 'disabled' : '' }}></textarea></td>
+          <td>
+            <textarea class="detail__textarea" name="comment" {{ $isPending ? 'disabled' : '' }}></textarea>
+
+          <div class="detail__error">
+            @error('comment')
+              <p>{{ $message }}</p>
+            @enderror
+          </div>
+                    
+          </td>
         </tr>
       </table>
       @if ($isPending)
