@@ -1,4 +1,4 @@
-<li><a class="header__link" href="/mypage">勤怠一覧</a></li>
+<li><a class="header__link" href="/admin/attendance/list">勤怠一覧</a></li>
 <li><a class="header__link" href="/mypage">スタッフ一覧</a></li>
 <li><a class="header__link" href="/mypage">申請一覧</a></li>
 <li>

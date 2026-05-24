@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreCorrectionRequest extends FormRequest
+class AttendanceRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -62,7 +62,7 @@ class StoreCorrectionRequest extends FormRequest
                 }
 
                 // 休憩開始が出勤時間より前 & 退勤時間より後
-                if ($start < $clockIn || $start > $clockOut) {
+                if ($start && ($start < $clockIn || $start > $clockOut)) {
                     $validator->errors()->add(
                         "start_at.$index",
                         '休憩時間が不適切な値です',
@@ -70,7 +70,7 @@ class StoreCorrectionRequest extends FormRequest
                 }
 
                 // 休憩終了が退勤時間より後              
-                if ($end > $clockOut) {
+                if ($end && $end > $clockOut) {
                     $validator->errors()->add(
                         "end_at.$index",
                         '休憩時間もしくは退勤時間が不適切な値です',

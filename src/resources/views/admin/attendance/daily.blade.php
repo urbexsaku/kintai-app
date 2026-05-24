@@ -56,7 +56,7 @@
           </td>
           <td class="daily__data">
             @if($user->attendance)
-            <a class="daily__detail" href="/attendance/detail/{{ $user->attendance->id }}">詳細</a>
+            <a class="daily__detail" href="/admin/attendance/{{ $user->attendance->id }}">詳細</a>
             @endif
           </td>
         </tr>

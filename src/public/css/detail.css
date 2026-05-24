@@ -78,20 +78,20 @@
     height: 50px;
 }
 
-.detail__pending {
-    margin-top: 30px;
-    display: flex;
-    justify-content: flex-end;
-    color: #FF000080;
-    font-weight: bold;
-}
-
 .detail__form input:disabled,
 .detail__form textarea:disabled {
     background-color: transparent;
     color: #000;
     opacity: 1;
     border: none;
+    font-weight: bold;
+}
+
+.detail__pending,
+.detail__notice {
+    margin-top: 30px;
+    text-align: right;
+    color: #FF000080;
     font-weight: bold;
 }
 
