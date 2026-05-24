@@ -60,6 +60,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 // 管理者ユーザーページ
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/attendance/list', [AdminAttendanceController::class, 'index'])->name('attendance.index');
-    Route::get('/attendance/{user_id}', [AdminAttendanceController::class, 'show']);
     Route::get('/attendance/staff/{user_id}', [AdminAttendanceController::class, 'history']);
+    Route::get('/attendance/{attendance_id}', [AdminAttendanceController::class, 'show']);
+    Route::post('/attendance/{attendance_id}', [AdminAttendanceController::class, 'update']);
+   
 });

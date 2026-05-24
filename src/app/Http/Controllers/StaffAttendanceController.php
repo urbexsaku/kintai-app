@@ -8,7 +8,7 @@ use App\Models\AttendanceRecord;
 use App\Models\BreakRecord;
 use App\Models\CorrectionRequest;
 use App\Models\CorrectionBreakRequest;
-use App\Http\Requests\StoreCorrectionRequest;
+use App\Http\Requests\AttendanceRequest;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 
@@ -145,10 +145,10 @@ class StaffAttendanceController extends Controller
 
         $isPending = $attendance->correctionRequests()->where('status', 'pending')->exists();
 
-        return view('staff.attendance/detail', compact('attendance', 'isPending'));
+        return view('staff.attendance.detail', compact('attendance', 'isPending'));
     }
 
-    public function store(StoreCorrectionRequest $request, $attendance_id)
+    public function store(AttendanceRequest $request, $attendance_id)
     {
         $correctionRequest = CorrectionRequest::create([
             'attendance_record_id' => $attendance_id,
@@ -157,8 +157,9 @@ class StaffAttendanceController extends Controller
             'comment' => $request->comment,
         ]);
 
-        foreach ($request->start_at as $index => $start) {
-            $end = $request->end_at[$index];
+        // start_atが無ければ空配列を返し、有れば各データに対して実行
+        foreach ($request->input('start_at', []) as $index => $start) {
+            $end = $request->end_at[$index] ?? null;
 
             // 両方空ならスキップ
             if (!$start && !$end) {

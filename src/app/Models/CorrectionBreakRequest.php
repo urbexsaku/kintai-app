@@ -10,7 +10,7 @@ class CorrectionBreakRequest extends Model
     use HasFactory;
 
     protected $fillable = [
-        'correction_record_id',
+        'correction_request_id',
         'requested_start_at',
         'requested_end_at',
     ];
