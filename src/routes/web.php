@@ -63,5 +63,5 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::get('/attendance/staff/{user_id}', [AdminAttendanceController::class, 'history']);
     Route::get('/attendance/{attendance_id}', [AdminAttendanceController::class, 'show']);
     Route::post('/attendance/{attendance_id}', [AdminAttendanceController::class, 'update']);
-   
+    Route::get('/staff/list', [AdminStaffController::class, 'index']);
 });
