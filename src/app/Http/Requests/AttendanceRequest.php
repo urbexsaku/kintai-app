@@ -33,6 +33,8 @@ class AttendanceRequest extends FormRequest
     public function messages()
     {
         return [
+            'clock_in.required' => '出勤時間を入力してください',
+            'clock_out.required' => '退勤時間を入力してください',
             'comment.required' => '備考を記入してください',
         ];
     }

@@ -36,6 +36,7 @@ class AdminAttendanceController extends Controller
         });
     
         return view('admin.attendance.daily', compact(
+            'date',
             'currentDate',
             'previousDate',
             'nextDate',
