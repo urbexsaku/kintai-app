@@ -181,6 +181,6 @@ class StaffAttendanceController extends Controller
             ]);
         }
 
-        return redirect('/attendance/detail/' . $attendance_id);
+        return redirect('/attendance/list');
     }
 }

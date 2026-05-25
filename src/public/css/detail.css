@@ -72,9 +72,13 @@
     text-align: center;
 }
 
+.detail__comment {
+    width: 280px;
+}
+
 .detail__textarea {
     margin: 10px 0px;
-    width: 280px;
+    width: 100%;
     height: 50px;
 }
 
