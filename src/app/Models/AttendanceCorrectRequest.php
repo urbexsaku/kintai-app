@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CorrectionRequest extends Model
+class AttendanceCorrectRequest extends Model
 {
     use HasFactory;
 
@@ -28,9 +28,9 @@ class CorrectionRequest extends Model
     {
         return $this->belongsTo(AttendanceRecord::class);
     }
-    
-    public function correctionBreakRecords()
+
+    public function breakCorrectRequest()
     {
-        return $this->hasMany(CorrectionBreakRecords::class);
+        return $this->hasMany(BreakCorrectRequest::class);
     }
 }

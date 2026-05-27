@@ -5,18 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CorrectionBreakRequest extends Model
+class BreakCorrectRequest extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'correction_request_id',
+        'attendance_correct_request_id',
         'requested_start_at',
         'requested_end_at',
     ];
 
-    public function correctionRequest()
+    public function attendanceCorrectRequest()
     {
-        return $this->belongsTo(CorrectionRequet::class);
+        return $this->belongsTo(AttendanceCorrectRequest::class);
     }
 }

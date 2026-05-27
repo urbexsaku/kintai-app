@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\AttendanceRecord;
 use App\Models\BreakRecord;
-use App\Models\CorrectionRequest;
-use App\Models\CorrectionBreakRequest;
+use App\Models\AttendanceCorrectRequest;
+use App\Models\BreakCorrectRequest;
 use App\Http\Requests\AttendanceRequest;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
@@ -20,14 +20,14 @@ class StaffAttendanceController extends Controller
         $attendance = AttendanceRecord::where('user_id', Auth::id())
             ->where('work_date', today())
             ->first();
-        
+
         $break = null;
 
         // 今日の出勤データが存在する場合、その勤怠に紐づく最新の休憩データを取得
         if ($attendance) {
             $break = $attendance?->breakRecords()->latest('start_at')->first();
         }
-        
+
         $isWorking = false;
         $isBreaking = false;
         $isFinished = false;
@@ -41,7 +41,7 @@ class StaffAttendanceController extends Controller
                 $isWorking = true; // 勤務中
             }
         }
-    
+
         return view('staff.attendance.stamp', compact(
             'attendance',
             'isWorking',
@@ -51,7 +51,8 @@ class StaffAttendanceController extends Controller
     }
 
     // 出勤登録
-    public function clockIn() {
+    public function clockIn()
+    {
         $attendance = AttendanceRecord::where('user_id', Auth::id())->where('work_date', today())->first();
 
         if ($attendance) {
@@ -68,7 +69,8 @@ class StaffAttendanceController extends Controller
     }
 
     // 休憩入登録
-    public function breakStart() {
+    public function breakStart()
+    {
         $attendance = AttendanceRecord::where('user_id', Auth::id())->where('work_date', today())->first();
 
         BreakRecord::create([
@@ -80,7 +82,8 @@ class StaffAttendanceController extends Controller
     }
 
     // 休憩戻登録
-    public function breakEnd() {
+    public function breakEnd()
+    {
         $attendance = AttendanceRecord::where('user_id', Auth::id())->where('work_date', today())->first();
 
         $break = $attendance->breakRecords()->latest('start_at')->first();
@@ -93,7 +96,8 @@ class StaffAttendanceController extends Controller
     }
 
     // 退勤登録
-    public function clockOut() {
+    public function clockOut()
+    {
         $attendance = AttendanceRecord::where('user_id', Auth::id())->where('work_date', today())->first();
 
         $attendance->update([
@@ -103,7 +107,8 @@ class StaffAttendanceController extends Controller
         return redirect()->route('staff.attendance.stamp');
     }
 
-    public function history(Request $request) {
+    public function history(Request $request)
+    {
 
         // クエリパラメータでmonthの指定がなければ当月
         $currentMonth = $request->month ?? now()->format('Y-m');
@@ -129,7 +134,7 @@ class StaffAttendanceController extends Controller
         $attendanceMap = $attendances->KeyBy(function ($attendance) {
             return $attendance->work_date->format('Y-m-d');
         });
-        
+
         return view('staff.attendance.monthly', compact(
             'currentMonth',
             'previousMonth',
@@ -143,14 +148,14 @@ class StaffAttendanceController extends Controller
     {
         $attendance = AttendanceRecord::findOrFail($attendance_id);
 
-        $isPending = $attendance->correctionRequests()->where('status', 'pending')->exists();
+        $isPending = $attendance->attendanceCorrectRequests()->where('status', 'pending')->exists();
 
         return view('staff.attendance.detail', compact('attendance', 'isPending'));
     }
 
     public function store(AttendanceRequest $request, $attendance_id)
     {
-        $correctionRequest = CorrectionRequest::create([
+        $attendanceCorrectRequest = AttendanceCorrectRequest::create([
             'attendance_record_id' => $attendance_id,
             'requested_clock_in' => $request->clock_in,
             'requested_clock_out' => $request->clock_out,
@@ -168,14 +173,14 @@ class StaffAttendanceController extends Controller
 
             // 片方だけはエラー
             if (!$start || !$end) {
-                return back ()->withErrors([
+                return back()->withErrors([
                     'breaks' => '休憩開始・終了を入力してください'
                 ])
-                ->withInput();
+                    ->withInput();
             }
 
-            CorrectionBreakRequest::create([
-                'correction_request_id' => $correctionRequest->id,
+            BreakCorrectRequest::create([
+                'attendance_correct_request_id' => $attendanceCorrectRequest->id,
                 'requested_start_at' => $start,
                 'requested_end_at' => $end,
             ]);
