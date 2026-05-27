@@ -60,7 +60,7 @@ class AdminAttendanceController extends Controller
         $attendance->update([
             'clock_in' => $request->clock_in,
             'clock_out' => $request->clock_out,
-            // 'comment' => $request->comment,
+            'comment' => $request->comment,
         ]);
 
         foreach ($request->input('start_at', []) as $index => $start) {

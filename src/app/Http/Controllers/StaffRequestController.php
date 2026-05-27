@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\CorrectionRequest;
+use App\Models\AttendanceCorrectRequest;
 
 class StaffRequestController extends Controller
 {
@@ -11,7 +11,7 @@ class StaffRequestController extends Controller
     {
         $page = $request->query('page', 'pending');
 
-        $query = CorrectionRequest::whereHas('attendanceRecord', function ($q) {
+        $query = AttendanceCorrectRequest::whereHas('attendanceRecord', function ($q) {
             $q->where('user_id', auth()->id());
         });
 
@@ -19,8 +19,8 @@ class StaffRequestController extends Controller
             $query->where('status', $page);
         }
 
-        $correctionRequests = $query->with('attendanceRecord.user')->get();
+        $attendanceCorrectRequests = $query->with('attendanceRecord.user')->get();
 
-        return view('staff.requests', compact('correctionRequests', 'page'));
+        return view('staff.requests', compact('attendanceCorrectRequests', 'page'));
     }
 }

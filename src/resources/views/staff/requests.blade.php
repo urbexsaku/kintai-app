@@ -34,26 +34,26 @@
           <th class="request__head">詳細</th>
         </tr>
 
-        @foreach ($correctionRequests as $correctionRequest)
+        @foreach ($attendanceCorrectRequests as $attendanceCorrectRequest)
         <tr class="request__row">
           <td class="request__data">
-            {{ $correctionRequest->status_label }}
+            {{ $attendanceCorrectRequest->status_label }}
           </td>
           <td class="request__data">
-            {{ $correctionRequest->attendanceRecord?->user?->name }}
+            {{ $attendanceCorrectRequest->attendanceRecord?->user?->name }}
           </td>
           <td class="request__data">
-            {{ $correctionRequest->attendanceRecord->work_date->format('Y/m/d') }}
+            {{ $attendanceCorrectRequest->attendanceRecord->work_date->format('Y/m/d') }}
           </td>
           <td class="request__data">
-            {{ $correctionRequest->comment }}
+            {{ $attendanceCorrectRequest->comment }}
           </td>
           <td class="request__data">
-            {{ $correctionRequest->created_at->format('Y/m/d') }}
+            {{ $attendanceCorrectRequest->created_at->format('Y/m/d') }}
           </td>
           <td class="request__data">
-            @if($correctionRequest->attendanceRecord)
-            <a class="request__detail" href="/attendance/detail/{{ $correctionRequest->attendanceRecord->id }}">詳細</a>
+            @if($attendanceCorrectRequest->attendanceRecord)
+            <a class="request__detail" href="/attendance/detail/{{ $attendanceCorrectRequest->attendanceRecord->id }}">詳細</a>
             @endif
           </td>
         </tr>

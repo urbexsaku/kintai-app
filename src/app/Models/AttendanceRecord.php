@@ -33,9 +33,9 @@ class AttendanceRecord extends Model
         return $this->hasMany(BreakRecord::class);
     }
 
-    public function correctionRequests()
+    public function attendanceCorrectRequests()
     {
-        return $this->hasMany(CorrectionRequest::class);
+        return $this->hasMany(AttendanceCorrectRequest::class);
     }
 
     public function getTotalBreakAttribute()
@@ -55,9 +55,9 @@ class AttendanceRecord extends Model
         if (!$this->clock_out) {
             return null;
         }
-        
+
         $totalBreak = $this->calculateTotalBreakSeconds();
-    
+
         $workSeconds = $this->clock_out->diffInSeconds($this->clock_in) - $totalBreak;
 
         $hours = floor($workSeconds / 3600);
@@ -74,7 +74,7 @@ class AttendanceRecord extends Model
         foreach ($this->breakRecords as $break) {
             if ($break->end_at) {
                 $totalBreak += $break->end_at->diffInSeconds($break->start_at);
-            }                
+            }
         }
 
         return $totalBreak;
