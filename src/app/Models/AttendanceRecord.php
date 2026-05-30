@@ -14,6 +14,7 @@ class AttendanceRecord extends Model
         'work_date',
         'clock_in',
         'clock_out',
+        'comment',
     ];
 
     // データの日付/Carbon化

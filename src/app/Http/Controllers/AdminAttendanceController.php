@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use App\Models\User;
 use App\Models\AttendanceRecord;
 use App\Models\BreakRecord;
@@ -56,10 +57,16 @@ class AdminAttendanceController extends Controller
     {
         $attendance = AttendanceRecord::with('breakRecords')
             ->findOrFail($attendance_id);
+        
+        $workDate = $attendance->work_date;
 
         $attendance->update([
-            'clock_in' => $request->clock_in,
-            'clock_out' => $request->clock_out,
+            'clock_in' => $workDate->copy()->setTimeFromTimeString(
+                $request->clock_in
+            ),
+            'clock_out' => $workDate->copy()->setTimeFromTimeString(
+                $request->clock_out
+            ),
             'comment' => $request->comment,
         ]);
 
@@ -101,5 +108,44 @@ class AdminAttendanceController extends Controller
 
         return redirect('/admin/attendance/' . $attendance_id)
             ->with('message', '勤怠データを更新しました');;
+    }
+
+    public function history(Request $request, $user_id)
+    {
+        $user = User::findOrFail($user_id);
+
+        // クエリパラメータでmonthの指定がなければ当月
+        $currentMonth = $request->input('month', now()->format('Y-m'));
+
+        // 取得した年月情報を日付データへ変換し、月初日・月最終日を取得
+        $startOfMonth = Carbon::parse($currentMonth)->startOfMonth();
+        $endOfMonth = Carbon::parse($currentMonth)->endOfMonth();
+
+        // 前月・翌月を取得
+        $previousMonth = $startOfMonth->copy()->subMonth()->format('Y-m');
+        $nextMonth = $startOfMonth->copy()->addMonth()->format('Y-m');
+
+        // 当月の日付を取得
+        $dates = CarbonPeriod::create($startOfMonth, $endOfMonth);
+
+        // 該当月の出勤データを取得
+        $attendances = AttendanceRecord::with('breakRecords')
+            ->where('user_id', $user_id)
+            ->whereBetween('work_date', [$startOfMonth, $endOfMonth])
+            ->get();
+
+        // 出勤データを日付キーで指定
+        $attendanceMap = $attendances->KeyBy(function ($attendance) {
+            return $attendance->work_date->format('Y-m-d');
+        });
+
+        return view('admin.attendance.monthly', compact(
+            'user',
+            'currentMonth',
+            'previousMonth',
+            'nextMonth',
+            'dates',
+            'attendanceMap',
+        ));
     }
 }

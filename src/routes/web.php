@@ -64,4 +64,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::get('/attendance/{attendance_id}', [AdminAttendanceController::class, 'show']);
     Route::post('/attendance/{attendance_id}', [AdminAttendanceController::class, 'update']);
     Route::get('/staff/list', [AdminStaffController::class, 'index']);
+    Route::get('/stamp_correction_request/list', [AdminRequestController::class, 'index']);
+    Route::get('/stamp_correction_request/approve/{attendance_correct_request_id}', [AdminRequestController::class, 'show']);
+    Route::post('/stamp_correction_request/approve/{attendance_correct_request_id}', [AdminRequestController::class, 'update']);
 });

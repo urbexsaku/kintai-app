@@ -54,6 +54,8 @@
           <td class="request__data">
             @if($attendanceCorrectRequest->attendanceRecord)
             <a class="request__detail" href="/attendance/detail/{{ $attendanceCorrectRequest->attendanceRecord->id }}">詳細</a>
+            @else
+            <p class="request__detail">詳細</p>
             @endif
           </td>
         </tr>

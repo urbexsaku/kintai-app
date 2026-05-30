@@ -15,6 +15,11 @@ class BreakCorrectRequest extends Model
         'requested_end_at',
     ];
 
+    protected $casts = [
+        'requested_start_at' => 'datetime',
+        'requested_end_at' => 'datetime',
+    ];
+
     public function attendanceCorrectRequest()
     {
         return $this->belongsTo(AttendanceCorrectRequest::class);

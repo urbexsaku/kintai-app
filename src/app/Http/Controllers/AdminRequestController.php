@@ -3,8 +3,74 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\AttendanceCorrectRequest;
+use App\Models\BreakRecord;
 
 class AdminRequestController extends Controller
 {
-    //
+    public function index(Request $request)
+    {
+        $page = $request->query('page', 'pending');
+
+        $query = AttendanceCorrectRequest::with([
+            'attendanceRecord.user',
+        ]);
+
+        if ($page) {
+            $query->where('status', $page);
+        }
+
+        $attendanceCorrectRequests = $query->get();
+
+        return view('admin.requests.index', compact('attendanceCorrectRequests', 'page'));
+    }
+
+    public function show($attendance_correct_request_id) {
+        $attendanceCorrectRequest = AttendanceCorrectRequest::with('breakCorrectRequests', 'attendanceRecord.user')->findOrFail($attendance_correct_request_id);
+
+        return view('admin.requests.approve', compact('attendanceCorrectRequest'));
+    }
+
+    public function update($attendance_correct_request_id) {
+
+        $attendanceCorrectRequest = AttendanceCorrectRequest::with([
+            'attendanceRecord',
+            'breakCorrectRequests'
+        ])->findOrFail($attendance_correct_request_id);
+
+        $workDate = $attendanceCorrectRequest->attendanceRecord->work_date;
+
+        $attendanceCorrectRequest->attendanceRecord->update([
+            'clock_in' => $workDate->copy()->setTimeFromTimeString(
+                $attendanceCorrectRequest->requested_clock_in->format('H:i:s')
+            ),
+            'clock_out' => $workDate->copy()->setTimeFromTimeString(
+                $attendanceCorrectRequest->requested_clock_out->format('H:i:s'),
+            ),
+            'comment' => $attendanceCorrectRequest->comment,
+        ]);
+
+        foreach ($attendanceCorrectRequest->breakCorrectRequests as $index => $breakCorrectRequest) {
+            $breakRecord = $attendanceCorrectRequest->attendanceRecord->breakRecords[$index] ?? null;
+
+            if ($breakRecord) {
+                $breakRecord->update([
+                    'start_at' => $breakCorrectRequest->requested_start_at,
+                    'end_at' => $breakCorrectRequest->requested_end_at,
+                ]);
+            } else {
+                BreakRecord::create([
+                    'attendance_record_id' => $attendanceCorrectRequest->attendanceRecord->id,
+                    'start_at' => $breakCorrectRequest->requested_start_at,
+                    'end_at' => $breakCorrectRequest->requested_end_at,
+                ]);
+            }
+        }
+
+        $attendanceCorrectRequest->update([
+            'status' => 'approved',
+        ]);
+
+        return back()->with('message', '承認しました');
+    }
 }

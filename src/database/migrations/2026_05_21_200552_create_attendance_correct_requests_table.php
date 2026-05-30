@@ -19,7 +19,6 @@ class CreateAttendanceCorrectRequestsTable extends Migration
             $table->time('requested_clock_in');
             $table->time('requested_clock_out');
             $table->string('comment');
-            $table->foreignId('approved_by')->nullable()->constrained('users')->nullOnDelete();
             $table->string('status')->default('pending');
             $table->timestamps();
         });
