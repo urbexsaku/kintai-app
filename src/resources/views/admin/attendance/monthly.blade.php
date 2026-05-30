@@ -73,6 +73,13 @@
         @endforeach
       </table>
     </div>
+    <form action="/admin/attendance/staff/{{ $user->id }}/export" method="get">
+      @csrf
+      <input type="hidden" name="month" value="{{ $currentMonth }}">
+      <div class=" monthly__button">
+        <button class="monthly__button-submit">CSV出力</button>
+      </div>
+    </form>
   </div>
 </div>
 @endsection

@@ -148,4 +148,48 @@ class AdminAttendanceController extends Controller
             'attendanceMap',
         ));
     }
+
+    public function export(Request $request, $user_id)
+    {
+        $currentMonth = $request->input('month', now()->format('Y-m'));
+        $startOfMonth = Carbon::parse($currentMonth)->startOfMonth();
+        $endOfMonth = Carbon::parse($currentMonth)->endOfMonth();
+    
+        $attendances = AttendanceRecord::with('breakRecords')
+            ->where('user_id', $user_id)
+            ->whereBetween('work_date', [$startOfMonth, $endOfMonth])
+            ->get();
+        
+        $filename = 'attendance_' . $currentMonth . '.csv';
+
+        $stream = fopen('php://temp', 'r+');
+        fwrite($stream, "\xEF\xBB\xBF");
+
+        fputcsv($stream, [
+            '名前',
+            '日付',
+            '出勤',
+            '退勤',
+            '休憩',
+            '合計',
+        ]);
+
+        foreach ($attendances as $attendance) {
+            fputcsv($stream, [
+                $attendance->user->name,
+                $attendance->work_date->format('Y/m/d'),
+                $attendance->clock_in?->format('H:i'),
+                $attendance->clock_out?->format('H:i'),
+                $attendance->total_break,
+                $attendance->work_time,
+            ]);
+        }
+
+        rewind($stream);
+
+        return response (stream_get_contents($stream),200,[
+            'Content-Type' => 'text/csv; charset=UTF-8',
+            'Content-Disposition' => 'attachment; filename="'.$filename.'"',
+        ]);
+    }
 }
