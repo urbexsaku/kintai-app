@@ -18,11 +18,11 @@
       </a>
       <div class="monthly__current">
         <img class="monthly__calendar" src="{{ asset('images/calendar.png') }}" alt="カレンダー">
-        <p class="monthly__text">{{ \Carbon\Carbon::parse($currentMonth)->format('Y/m') }}</p>   
+        <p class="monthly__text">{{ \Carbon\Carbon::parse($currentMonth)->format('Y/m') }}</p>
       </div>
       <a class="monthly__link" href="/attendance/list?month={{ $nextMonth }}">
         翌月
-        <img class="monthly__arrow monthly__arrow--next" src="{{ asset('images/arrow.png') }}" alt="矢印">      
+        <img class="monthly__arrow monthly__arrow--next" src="{{ asset('images/arrow.png') }}" alt="矢印">
       </a>
     </div>
 
@@ -37,11 +37,11 @@
           <th class="monthly__head">詳細</th>
         </tr>
 
-      @foreach ($dates as $date) 
+        @foreach ($dates as $date)
 
         <!-- 勤怠がない日はnull取得 -->
         @php
-          $attendance = $attendanceMap[$date->format('Y-m-d')] ?? null;
+        $attendance = $attendanceMap[$date->format('Y-m-d')] ?? null;
         @endphp
 
         <tr class="monthly__row">
@@ -62,8 +62,11 @@
             {{ $attendance?->work_time }}
           </td>
           <td class="monthly__data">
-            @if($attendance)
+            @if($date->isFuture())
+            @elseif($attendance)
             <a class="monthly__detail" href="/attendance/detail/{{ $attendance->id }}">詳細</a>
+            @else
+            <p class="monthly__detail">詳細</p>
             @endif
           </td>
         </tr>

@@ -39,10 +39,10 @@
 
             <div class="detail__error">
               @error('clock_in')
-                <p>{{ $message }}</p>
+              <p>{{ $message }}</p>
               @enderror
               @error('clock_out')
-                <p>{{ $message }}</p>
+              <p>{{ $message }}</p>
               @enderror
             </div>
           </td>
@@ -94,7 +94,9 @@
         <tr class="detail__row">
           <th class="detail__label">備考</th>
           <td>
-            <textarea class="detail__textarea" name="comment"></textarea>
+            <div class="detail__comment">
+              <textarea class="detail__textarea" name="comment">{{ $attendance->comment }}</textarea>
+            </div>
 
             <div class="detail__error">
               @error('comment')

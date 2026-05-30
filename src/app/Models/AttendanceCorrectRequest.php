@@ -14,6 +14,12 @@ class AttendanceCorrectRequest extends Model
         'requested_clock_in',
         'requested_clock_out',
         'comment',
+        'status',
+    ];
+
+    protected $casts = [
+        'requested_clock_in' => 'datetime',
+        'requested_clock_out' => 'datetime',
     ];
 
     public function getStatusLabelAttribute()
@@ -29,7 +35,7 @@ class AttendanceCorrectRequest extends Model
         return $this->belongsTo(AttendanceRecord::class);
     }
 
-    public function breakCorrectRequest()
+    public function breakCorrectRequests()
     {
         return $this->hasMany(BreakCorrectRequest::class);
     }

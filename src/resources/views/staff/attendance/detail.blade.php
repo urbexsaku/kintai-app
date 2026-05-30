@@ -95,8 +95,8 @@
           <th class="detail__label">備考</th>
           <td class="detail__text">
             <div class="detail__comment">
-              <textarea class="detail__textarea" name="comment" {{ $isPending ? 'disabled' : '' }}></textarea>
-            </div>            
+              <textarea class="detail__textarea" name="comment" {{ $isPending ? 'disabled' : '' }}>{{ $attendance->comment }}</textarea>
+            </div>
 
             <div class="detail__error">
               @error('comment')
