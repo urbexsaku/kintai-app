@@ -17,11 +17,14 @@ class StaffAttendanceController extends Controller
     public function index()
     {
         // 今日の出勤データを取得
-        $attendance = AttendanceRecord::where('user_id', Auth::id())
-            ->where('work_date', today())
-            ->first();
+        $attendance = AttendanceRecord::with(['breakRecords' => function ($q) {
+            $q->latest('start_at');
+        }])
+        ->where('user_id', Auth::id())
+        ->where('work_date', today())
+        ->first();
 
-        $break = null;
+        $break = $attendance?->breakRecords->first();
 
         // 今日の出勤データが存在する場合、その勤怠に紐づく最新の休憩データを取得
         if ($attendance) {
@@ -71,7 +74,7 @@ class StaffAttendanceController extends Controller
     // 休憩入登録
     public function breakStart()
     {
-        $attendance = AttendanceRecord::where('user_id', Auth::id())->where('work_date', today())->first();
+        $attendance = $this->getTodayAttendance();
 
         BreakRecord::create([
             'attendance_record_id' => $attendance->id,
@@ -84,7 +87,7 @@ class StaffAttendanceController extends Controller
     // 休憩戻登録
     public function breakEnd()
     {
-        $attendance = AttendanceRecord::where('user_id', Auth::id())->where('work_date', today())->first();
+        $attendance = $this->getTodayAttendance();
 
         $break = $attendance->breakRecords()->latest('start_at')->first();
 
@@ -98,7 +101,7 @@ class StaffAttendanceController extends Controller
     // 退勤登録
     public function clockOut()
     {
-        $attendance = AttendanceRecord::where('user_id', Auth::id())->where('work_date', today())->first();
+        $attendance =$this->getTodayAttendance();
 
         $attendance->update([
             'clock_out' => now(),
@@ -193,55 +196,72 @@ class StaffAttendanceController extends Controller
     {
         $user = auth()->id();
 
-        $startDate = now()->subMonth(5)->startOfMonth();
+        // 起点：当月月初の5カ月前、終点：当月月末
+        $startDate = now()->startOfMonth()->subMonth(5);
         $endDate = now()->endOfMonth();
 
-        $attendanceRecords = AttendanceRecord::where('user_id', $user)
+        $attendanceRecords = AttendanceRecord::with('breakRecords')
+            ->where('user_id', $user)
             ->whereBetween('work_date', [$startDate, $endDate])
             ->get();
 
+        // 合計労働時間集計
         $totalWorkMinutes = $attendanceRecords->sum('work_minutes');
 
+        // 残業時間集計
         $totalOvertimeMinutes = $attendanceRecords->sum(function ($record) {
             return max(0, $record->work_minutes - 480);
         });
 
+        // 平均労働時間集計（勤怠レコードなければ0）
         $averageMinutes = $attendanceRecords->count() ? round($totalWorkMinutes / $attendanceRecords->count()) : 0;
 
+        // 表示形式を設定
         $totalWorkTime = $this->formatMinutes($totalWorkMinutes);
         $totalOvertimeTime = $this->formatMinutes($totalOvertimeMinutes);
         $averageWorkTime = $this->formatMinutes($averageMinutes);
 
-        $monthlyReports = collect();
+        $groupedRecords = $attendanceRecords->groupBy(function ($record) {
+            return $record->work_date->format('Y-m');
+        });
+
+        $monthlyReports = collect(range(5, 0))
+            ->map(function ($i) use ($groupedRecords) {
+
+                $month = now()->startOfMonth()->subMonths($i)->format('Y-m');
+
+                $records = $groupedRecords->get($month, collect());
+
+                return [
+                    'month' => $month,
+                    'work_time' => $this->formatMinutes(
+                        $records->sum('work_minutes')
+                    ),
+                    'overtime_time' => $this->formatMinutes(
+                        $records->sum(fn ($record) => 
+                            max(0, $record->work_minutes -480)
+                        )
+                    ),
+                ];
+            });
+
+        $currentMonthRecords = $groupedRecords->get(
+            now()->format('Y-m'),
+            collect()
+        );
         
-        for ($i = 5; $i >= 0; $i--) {
-            $month = now()->startOfMonth()->subMonths($i)->format('Y-m');
-            
-            $records = $attendanceRecords->filter(function ($record) use ($month) {
-                return $record->work_date->format('Y-m') === $month;
-            });
-
-            $monthlyWorkMinutes = $records->sum('work_minutes');
-            $monthlyOvertimeMinutes = $records->sum(function ($record) {
-                return max(0, $record->work_minutes -480);
-            });
-            
-            $monthlyReports->push([
-                'month' => $month,
-                'work_time' => $this->formatMinutes($monthlyWorkMinutes),
-                'overtime_time' => $this->formatMinutes($monthlyOvertimeMinutes),
-            ]);
-        }
-
-        $lateCount = $records->filter(function ($record) {
+        // 遅刻回数カウント
+        $lateCount = $currentMonthRecords->filter(function ($record) {
             return $record->clock_in && $record->clock_in->gt($record->work_date->copy()->setTime(9, 0));
         })->count();
 
-        $earlyLeaveCount = $records->filter(function ($record) {
+        // 早退回数カウント
+        $earlyLeaveCount = $currentMonthRecords->filter(function ($record) {
             return $record->clock_out && $record->clock_out->lt($record->work_date->copy()->setTime(18, 0));
         })->count();
 
-        $longWorkCount = $records->filter(function ($record) {
+        // 長時間労働日数カウント
+        $longWorkCount = $currentMonthRecords->filter(function ($record) {
             return $record->work_minutes > 600;
         })->count();
 
@@ -254,6 +274,13 @@ class StaffAttendanceController extends Controller
             'earlyLeaveCount',
             'longWorkCount',
         ));
+    }
+
+    private function getTodayAttendance()
+    {
+        return AttendanceRecord::where('user_id', Auth::id())
+            ->where('work_date', today())
+            ->firstOrFail();
     }
 
     private function formatMinutes(int $minutes): string
