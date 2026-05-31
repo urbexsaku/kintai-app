@@ -34,7 +34,7 @@ class AttendanceRecordSeeder extends Seeder
         for ($month = 1; $month <= 5; $month++) {
 
         // 月初日を取得
-        $date = now()->subMonths($month)->startOfMonth();
+        $date = now()->startOfMonth()->subMonths($month);
 
         $count = 0;
 
@@ -109,7 +109,7 @@ class AttendanceRecordSeeder extends Seeder
         for ($month = 1; $month <= 5; $month++) {
 
             // 月初から月末まで通常勤務データを作成
-            $date = now()->subMonths($month)->startOfMonth();
+            $date = now()->startOfMonth()->subMonths($month);
 
             while ($date->lte(now()->subMonths($month)->endOfMonth())) {
                 if ($date->isWeekday()){

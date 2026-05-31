@@ -52,6 +52,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/attendance/break-start', [StaffAttendanceController::class, 'breakStart']);
     Route::post('/attendance/break-end', [StaffAttendanceController::class, 'breakEnd']);
     Route::get('/attendance/list', [StaffAttendanceController::class, 'history']);
+    Route::get('/attendance/report', [StaffAttendanceController::class, 'report']);
     Route::get('/attendance/detail/{attendance_id}', [StaffAttendanceController::class, 'show']);
     Route::post('/attendance/detail/{attendance_id}', [StaffAttendanceController::class, 'store']);
     Route::get('/stamp_correction_request/list', [StaffRequestController::class, 'index']);
@@ -61,7 +62,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/attendance/list', [AdminAttendanceController::class, 'index'])->name('attendance.index');
     Route::get('/attendance/staff/{user_id}', [AdminAttendanceController::class, 'history']);
-    Route::get('attendance/staff/{user_id}/export', [AdminAttendanceController::class, 'export']);
+    Route::get('/attendance/staff/{user_id}/export', [AdminAttendanceController::class, 'export']);
     Route::get('/attendance/{attendance_id}', [AdminAttendanceController::class, 'show']);
     Route::post('/attendance/{attendance_id}', [AdminAttendanceController::class, 'update']);
     Route::get('/staff/list', [AdminStaffController::class, 'index']);

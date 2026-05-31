@@ -188,4 +188,79 @@ class StaffAttendanceController extends Controller
 
         return redirect('/attendance/list');
     }
+
+    public function report()
+    {
+        $user = auth()->id();
+
+        $startDate = now()->subMonth(5)->startOfMonth();
+        $endDate = now()->endOfMonth();
+
+        $attendanceRecords = AttendanceRecord::where('user_id', $user)
+            ->whereBetween('work_date', [$startDate, $endDate])
+            ->get();
+
+        $totalWorkMinutes = $attendanceRecords->sum('work_minutes');
+
+        $totalOvertimeMinutes = $attendanceRecords->sum(function ($record) {
+            return max(0, $record->work_minutes - 480);
+        });
+
+        $averageMinutes = $attendanceRecords->count() ? round($totalWorkMinutes / $attendanceRecords->count()) : 0;
+
+        $totalWorkTime = $this->formatMinutes($totalWorkMinutes);
+        $totalOvertimeTime = $this->formatMinutes($totalOvertimeMinutes);
+        $averageWorkTime = $this->formatMinutes($averageMinutes);
+
+        $monthlyReports = collect();
+        
+        for ($i = 5; $i >= 0; $i--) {
+            $month = now()->startOfMonth()->subMonths($i)->format('Y-m');
+            
+            $records = $attendanceRecords->filter(function ($record) use ($month) {
+                return $record->work_date->format('Y-m') === $month;
+            });
+
+            $monthlyWorkMinutes = $records->sum('work_minutes');
+            $monthlyOvertimeMinutes = $records->sum(function ($record) {
+                return max(0, $record->work_minutes -480);
+            });
+            
+            $monthlyReports->push([
+                'month' => $month,
+                'work_time' => $this->formatMinutes($monthlyWorkMinutes),
+                'overtime_time' => $this->formatMinutes($monthlyOvertimeMinutes),
+            ]);
+        }
+
+        $lateCount = $records->filter(function ($record) {
+            return $record->clock_in && $record->clock_in->gt($record->work_date->copy()->setTime(9, 0));
+        })->count();
+
+        $earlyLeaveCount = $records->filter(function ($record) {
+            return $record->clock_out && $record->clock_out->lt($record->work_date->copy()->setTime(18, 0));
+        })->count();
+
+        $longWorkCount = $records->filter(function ($record) {
+            return $record->work_minutes > 600;
+        })->count();
+
+        return view('staff.attendance.report', compact(
+            'totalWorkTime',
+            'totalOvertimeTime',
+            'averageWorkTime',
+            'monthlyReports',
+            'lateCount',
+            'earlyLeaveCount',
+            'longWorkCount',
+        ));
+    }
+
+    private function formatMinutes(int $minutes): string
+    {
+        $hours = floor($minutes / 60);
+        $minutes = $minutes % 60;
+
+        return "{$hours}h {$minutes}m";
+    }
 }
