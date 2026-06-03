@@ -47,6 +47,10 @@
     padding-left: 25px;
 }
 
+.approve__text--comment {
+    text-align: left;
+}
+
 .approve__inline {
     display: grid;
     grid-template-columns: 100px 80px 100px;

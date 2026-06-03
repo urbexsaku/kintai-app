@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\AttendanceCorrectRequest;
 use App\Models\BreakRecord;
+use Illuminate\Http\Request;
 
 class AdminRequestController extends Controller
 {
@@ -25,17 +25,19 @@ class AdminRequestController extends Controller
         return view('admin.requests.index', compact('attendanceCorrectRequests', 'page'));
     }
 
-    public function show($attendance_correct_request_id) {
+    public function show($attendance_correct_request_id)
+    {
         $attendanceCorrectRequest = AttendanceCorrectRequest::with('breakCorrectRequests', 'attendanceRecord.user')->findOrFail($attendance_correct_request_id);
 
         return view('admin.requests.approve', compact('attendanceCorrectRequest'));
     }
 
-    public function update($attendance_correct_request_id) {
+    public function update($attendance_correct_request_id)
+    {
 
         $attendanceCorrectRequest = AttendanceCorrectRequest::with([
             'attendanceRecord',
-            'breakCorrectRequests'
+            'breakCorrectRequests',
         ])->findOrFail($attendance_correct_request_id);
 
         $workDate = $attendanceCorrectRequest->attendanceRecord->work_date;

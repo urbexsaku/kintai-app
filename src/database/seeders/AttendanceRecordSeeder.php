@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
-use App\Models\User;
 use App\Models\AttendanceRecord;
 use App\Models\BreakRecord;
+use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Database\Seeder;
 
 class AttendanceRecordSeeder extends Seeder
 {
@@ -33,19 +33,19 @@ class AttendanceRecordSeeder extends Seeder
         // 過去5カ月のデータ作成
         for ($month = 1; $month <= 5; $month++) {
 
-        // 月初日を取得
-        $date = now()->startOfMonth()->subMonths($month);
+            // 月初日を取得
+            $date = now()->startOfMonth()->subMonths($month);
 
-        $count = 0;
+            $count = 0;
 
             // 平日15日分の勤怠データ（通常勤務）を作成
             while ($count < 15) {
-                if ($date->isWeekday()){
+                if ($date->isWeekday()) {
                     $attendance = AttendanceRecord::create([
-                    'user_id' => $user->id,
-                    'work_date' => $date->copy(),
-                    'clock_in' => $date->copy()->setTime(9, 0),
-                    'clock_out' => $date->copy()->setTime(18, 0),
+                        'user_id' => $user->id,
+                        'work_date' => $date->copy(),
+                        'clock_in' => $date->copy()->setTime(9, 0),
+                        'clock_out' => $date->copy()->setTime(18, 0),
                     ]);
 
                     BreakRecord::create([
@@ -56,8 +56,8 @@ class AttendanceRecordSeeder extends Seeder
 
                     $count++;
                 }
-                
-                $date->addDay();            
+
+                $date->addDay();
             }
         }
 
@@ -77,7 +77,7 @@ class AttendanceRecordSeeder extends Seeder
         // 各パターン指定カウント数のデータを作成
         foreach ($patterns as $pattern) {
             for ($i = 0; $i < $pattern['count']; $i++) {
-                $targetDate = Carbon::parse($baseMonth. '-' . $day);
+                $targetDate = Carbon::parse($baseMonth.'-'.$day);
 
                 $attendance = AttendanceRecord::create([
                     'user_id' => $user->id,
@@ -112,12 +112,12 @@ class AttendanceRecordSeeder extends Seeder
             $date = now()->startOfMonth()->subMonths($month);
 
             while ($date->lte(now()->subMonths($month)->endOfMonth())) {
-                if ($date->isWeekday()){
+                if ($date->isWeekday()) {
                     $attendance = AttendanceRecord::create([
-                    'user_id' => $user->id,
-                    'work_date' => $date->copy(),
-                    'clock_in' => $date->copy()->setTime(9, 0),
-                    'clock_out' => $date->copy()->setTime(18, 0),
+                        'user_id' => $user->id,
+                        'work_date' => $date->copy(),
+                        'clock_in' => $date->copy()->setTime(9, 0),
+                        'clock_out' => $date->copy()->setTime(18, 0),
                     ]);
 
                     BreakRecord::create([
@@ -126,8 +126,8 @@ class AttendanceRecordSeeder extends Seeder
                         'end_at' => $date->copy()->setTime(13, 0),
                     ]);
                 }
-                
-                $date->addDay();            
+
+                $date->addDay();
             }
         }
     }

@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\V1\AttendanceRecordController;
+use App\Models\AttendanceRecord;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +16,25 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::prefix('v1')->group(function () {
+    
+    Route::apiResource(
+        'attendance-records',
+        AttendanceRecordController::class
+    )->only([
+        'index',
+        'show',
+    ]);
+
+    Route::middleware('auth:sanctum')->group(function () {
+
+        Route::apiResource(
+            'attendance-records',
+            AttendanceRecordController::class
+        )->only([
+            'store',
+            'update',
+            'destroy',
+        ]);
+    });
 });

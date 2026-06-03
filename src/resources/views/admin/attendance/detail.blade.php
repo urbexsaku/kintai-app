@@ -93,7 +93,7 @@
         </tr>
         <tr class="detail__row">
           <th class="detail__label">備考</th>
-          <td>
+          <td class="detail__text">
             <div class="detail__comment">
               <textarea class="detail__textarea" name="comment">{{ $attendance->comment }}</textarea>
             </div>
@@ -107,12 +107,17 @@
           </td>
         </tr>
       </table>
+      @if ($isPending)
+      <p class="detail__pending">*承認待ちのため修正はできません。</p>
+      @else
       @if (session('message'))
       <p class="detail__notice">{{ session('message') }}</p>
       @endif
+
       <div class="detail__button">
         <button class="detail__button-submit">修正</button>
       </div>
+      @endif
     </form>
   </div>
 </div>
