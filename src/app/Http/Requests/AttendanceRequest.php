@@ -59,7 +59,7 @@ class AttendanceRequest extends FormRequest
                 $end = $this->end_at[$index] ?? null;
 
                 // 休憩開始も終了も空の場合は無視
-                if (!$start && !$end) {
+                if (! $start && ! $end) {
                     continue;
                 }
 
@@ -71,7 +71,7 @@ class AttendanceRequest extends FormRequest
                     );
                 }
 
-                // 休憩終了が退勤時間より後              
+                // 休憩終了が退勤時間より後
                 if ($end && $end > $clockOut) {
                     $validator->errors()->add(
                         "end_at.$index",

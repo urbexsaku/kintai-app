@@ -22,12 +22,12 @@ class AdminAuthController extends Controller
 
             // ログアウト遷移用のセッションID再生成
             $request->session()->regenerate();
-            
+
             return redirect()->route('admin.attendance.index');
         }
 
         return back()->withErrors([
-            'email' => 'ログイン情報が登録されていません'
+            'email' => 'ログイン情報が登録されていません',
         ]);
     }
 }

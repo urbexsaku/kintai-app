@@ -4,6 +4,8 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -34,8 +36,24 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        $this->reportable(function (Throwable $e) {
-            //
+        
+        // APIアクセス時の404エラーレスポンス
+        $this->renderable(function (NotFoundHttpException $e, $request) {
+ 
+            if ($request->is('api/*')) {
+                return response()->json([
+                    'error' => '勤怠情報が見つかりませんでした。'
+                ], 404);
+            }
+        });
+
+        // APIアクセス時の403エラーレスポンス
+        $this->renderable(function (AccessDeniedHttpException $e, $request) {
+            if ($request->is('api/*')) {
+                return response()->json([
+                    'error' => 'この操作を実行する権限がありません。'
+                ], 403);
+            }
         });
     }
 }

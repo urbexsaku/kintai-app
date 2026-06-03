@@ -3,19 +3,18 @@
 namespace App\Providers;
 
 use App\Actions\Fortify\CreateNewUser;
+use App\Http\Requests\LoginRequest;
+use App\Models\User;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\ValidationException;
-use Laravel\Fortify\Fortify;
-use Laravel\Fortify\Http\Requests\LoginRequest as FortifyLoginRequest;
-use App\Http\Requests\LoginRequest;
-use Laravel\Fortify\Contracts\RegisterResponse;
 use Laravel\Fortify\Contracts\LoginResponse;
 use Laravel\Fortify\Contracts\LogoutResponse;
-use App\Models\User;
+use Laravel\Fortify\Fortify;
+use Laravel\Fortify\Http\Requests\LoginRequest as FortifyLoginRequest;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -44,20 +43,19 @@ class FortifyServiceProvider extends ServiceProvider
     {
         Fortify::createUsersUsing(CreateNewUser::class);
 
-        Fortify::registerView(function(){
+        Fortify::registerView(function () {
             return view('auth.register');
         });
 
-        Fortify::loginView(function(){
+        Fortify::loginView(function () {
             return view('auth.login');
         });
 
-        Fortify::authenticateUsing(function (Request $request)
-        {
+        Fortify::authenticateUsing(function (Request $request) {
             $user = User::where('email', $request->email)->first();
-            
+
             // 管理者が一般ログインしようとした場合エラー表示
-            if($user && $user->admin_status) {
+            if ($user && $user->admin_status) {
                 throw ValidationException::withMessages([
                     'email' => 'ログイン情報が登録されていません',
                 ]);
@@ -66,17 +64,18 @@ class FortifyServiceProvider extends ServiceProvider
             if ($user && Hash::check($request->password, $user->password)) {
                 return $user;
             }
-                return null;
+
+            return null;
         });
 
-        RateLimiter::for('login', function(Request $request)
-        {
+        RateLimiter::for('login', function (Request $request) {
             $email = (string) $request->email;
 
-            return Limit::perMinute(10)->by($email . $request->ip());
+            return Limit::perMinute(10)->by($email.$request->ip());
         });
 
-        $this->app->instance(LogoutResponse::class, new class implements LogoutResponse {
+        $this->app->instance(LogoutResponse::class, new class implements LogoutResponse
+        {
             public function toResponse($request)
             {
                 if ($request->admin_status) {

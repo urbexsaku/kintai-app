@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\Models\AttendanceRecord;
-use App\Models\BreakRecord;
-use App\Models\AttendanceCorrectRequest;
-use App\Models\BreakCorrectRequest;
 use App\Http\Requests\AttendanceRequest;
+use App\Models\AttendanceCorrectRequest;
+use App\Models\AttendanceRecord;
+use App\Models\BreakCorrectRequest;
+use App\Models\BreakRecord;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class StaffAttendanceController extends Controller
 {
@@ -20,9 +20,9 @@ class StaffAttendanceController extends Controller
         $attendance = AttendanceRecord::with(['breakRecords' => function ($q) {
             $q->latest('start_at');
         }])
-        ->where('user_id', Auth::id())
-        ->where('work_date', today())
-        ->first();
+            ->where('user_id', Auth::id())
+            ->where('work_date', today())
+            ->first();
 
         $break = $attendance?->breakRecords->first();
 
@@ -38,7 +38,7 @@ class StaffAttendanceController extends Controller
         if ($attendance) {
             if ($attendance->clock_out) { // clock_outが登録されている場合
                 $isFinished = true; // 退勤済
-            } elseif ($break && !$break->end_at) { // 最新の休憩データがend_atではない場合
+            } elseif ($break && ! $break->end_at) { // 最新の休憩データがend_atではない場合
                 $isBreaking = true; // 休憩中
             } else {
                 $isWorking = true; // 勤務中
@@ -101,7 +101,7 @@ class StaffAttendanceController extends Controller
     // 退勤登録
     public function clockOut()
     {
-        $attendance =$this->getTodayAttendance();
+        $attendance = $this->getTodayAttendance();
 
         $attendance->update([
             'clock_out' => now(),
@@ -170,14 +170,14 @@ class StaffAttendanceController extends Controller
             $end = $request->end_at[$index] ?? null;
 
             // 両方空ならスキップ
-            if (!$start && !$end) {
+            if (! $start && ! $end) {
                 continue;
             }
 
             // 片方だけはエラー
-            if (!$start || !$end) {
+            if (! $start || ! $end) {
                 return back()->withErrors([
-                    'breaks' => '休憩開始・終了を入力してください'
+                    'breaks' => '休憩開始・終了を入力してください',
                 ])
                     ->withInput();
             }
@@ -238,8 +238,7 @@ class StaffAttendanceController extends Controller
                         $records->sum('work_minutes')
                     ),
                     'overtime_time' => $this->formatMinutes(
-                        $records->sum(fn ($record) => 
-                            max(0, $record->work_minutes -480)
+                        $records->sum(fn ($record) => max(0, $record->work_minutes - 480)
                         )
                     ),
                 ];
@@ -249,7 +248,7 @@ class StaffAttendanceController extends Controller
             now()->format('Y-m'),
             collect()
         );
-        
+
         // 遅刻回数カウント
         $lateCount = $currentMonthRecords->filter(function ($record) {
             return $record->clock_in && $record->clock_in->gt($record->work_date->copy()->setTime(9, 0));

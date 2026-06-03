@@ -1,14 +1,14 @@
 <?php
 
 use App\Http\Controllers\AdminAttendanceController;
+use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\AdminRequestController;
 use App\Http\Controllers\AdminStaffController;
-use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\StaffAttendanceController;
 use App\Http\Controllers\StaffRequestController;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,19 +55,23 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/attendance/report', [StaffAttendanceController::class, 'report']);
     Route::get('/attendance/detail/{attendance_id}', [StaffAttendanceController::class, 'show']);
     Route::post('/attendance/detail/{attendance_id}', [StaffAttendanceController::class, 'store']);
-    Route::get('/stamp_correction_request/list', [StaffRequestController::class, 'index']);
 });
 
 // 管理者ユーザーページ
-Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
-    Route::get('/attendance/list', [AdminAttendanceController::class, 'index'])->name('attendance.index');
-    Route::get('/attendance/staff/{user_id}', [AdminAttendanceController::class, 'history']);
-    Route::get('/attendance/staff/{user_id}/export', [AdminAttendanceController::class, 'export']);
-    Route::get('/attendance/{attendance_id}', [AdminAttendanceController::class, 'show']);
-    Route::post('/attendance/{attendance_id}', [AdminAttendanceController::class, 'update']);
-    Route::get('/staff/list', [AdminStaffController::class, 'index']);
-    Route::get('/stamp_correction_request/list', [AdminRequestController::class, 'index']);
+Route::name('admin.')->middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin/attendance/list', [AdminAttendanceController::class, 'index'])->name('attendance.index');
+    Route::get('/admin/attendance/staff/{user_id}', [AdminAttendanceController::class, 'history']);
+    Route::get('/admin/attendance/staff/{user_id}/export', [AdminAttendanceController::class, 'export']);
+    Route::get('/admin/attendance/{attendance_id}', [AdminAttendanceController::class, 'show']);
+    Route::post('/admin/attendance/{attendance_id}', [AdminAttendanceController::class, 'update']);
+    Route::get('/admin/staff/list', [AdminStaffController::class, 'index']);
     Route::get('/stamp_correction_request/approve/{attendance_correct_request_id}', [AdminRequestController::class, 'show']);
     Route::post('/stamp_correction_request/approve/{attendance_correct_request_id}', [AdminRequestController::class, 'update']);
-    Route::post('/attendance/export', [AdminAttendanceController::class, 'export']);
+    Route::post('/admin/attendance/export', [AdminAttendanceController::class, 'export']);
+});
+
+Route::middleware(['auth'])->get('/stamp_correction_request/list', function (Request $request) {
+    return auth()->user()->admin_status
+        ? app(AdminRequestController::class)->index($request)
+        : app(StaffRequestController::class)->index($request);
 });

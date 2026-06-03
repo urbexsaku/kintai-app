@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Carbon\Carbon;
-use Carbon\CarbonPeriod;
-use App\Models\User;
+use App\Http\Requests\AttendanceRequest;
 use App\Models\AttendanceRecord;
 use App\Models\BreakRecord;
-use App\Http\Requests\AttendanceRequest;
+use App\Models\User;
+use Carbon\Carbon;
+use Carbon\CarbonPeriod;
+use Illuminate\Http\Request;
 
 class AdminAttendanceController extends Controller
 {
@@ -25,7 +25,7 @@ class AdminAttendanceController extends Controller
                 'attendanceRecords' => function ($query) use ($currentDate) {
                     $query->with('breakRecords')
                         ->whereDate('work_date', $currentDate);
-                }
+                },
             ])
             ->get();
 
@@ -35,7 +35,7 @@ class AdminAttendanceController extends Controller
                 $user->attendanceRecords->first()
             );
         });
-    
+
         return view('admin.attendance.daily', compact(
             'date',
             'currentDate',
@@ -50,14 +50,16 @@ class AdminAttendanceController extends Controller
         $attendance = AttendanceRecord::with('breakRecords', 'user')
             ->findOrFail($attendance_id);
 
-        return view('admin.attendance.detail', compact('attendance'));
+        $isPending = $attendance->attendanceCorrectRequests()->where('status', 'pending')->exists();
+
+        return view('admin.attendance.detail', compact('attendance', 'isPending'));
     }
 
     public function update(AttendanceRequest $request, $attendance_id)
     {
         $attendance = AttendanceRecord::with('breakRecords')
             ->findOrFail($attendance_id);
-        
+
         $workDate = $attendance->work_date;
 
         $attendance->update([
@@ -74,16 +76,16 @@ class AdminAttendanceController extends Controller
             $end = $request->end_at[$index] ?? null;
 
             // 両方空ならスキップ
-            if (!$start && !$end) {
+            if (! $start && ! $end) {
                 continue;
             }
 
             // 片方だけはエラー
-            if (!$start || !$end) {
-                return back ()->withErrors([
-                    'breaks' => '休憩開始・終了を入力してください'
+            if (! $start || ! $end) {
+                return back()->withErrors([
+                    'breaks' => '休憩開始・終了を入力してください',
                 ])
-                ->withInput();
+                    ->withInput();
             }
 
             $breakRecord = $attendance->breakRecords[$index] ?? null;
@@ -91,8 +93,8 @@ class AdminAttendanceController extends Controller
             // 既存データの修正なら更新
             if ($breakRecord) {
                 $breakRecord->update([
-                'start_at' => $start,
-                'end_at' => $end,
+                    'start_at' => $start,
+                    'end_at' => $end,
                 ]);
             }
 
@@ -103,11 +105,11 @@ class AdminAttendanceController extends Controller
                     'start_at' => $start,
                     'end_at' => $end,
                 ]);
-            }            
+            }
         }
 
-        return redirect('/admin/attendance/' . $attendance_id)
-            ->with('message', '勤怠データを更新しました');;
+        return redirect('/admin/attendance/'.$attendance_id)
+            ->with('message', '勤怠データを更新しました');
     }
 
     public function history(Request $request, $user_id)
@@ -154,13 +156,13 @@ class AdminAttendanceController extends Controller
         $currentMonth = $request->input('month', now()->format('Y-m'));
         $startOfMonth = Carbon::parse($currentMonth)->startOfMonth();
         $endOfMonth = Carbon::parse($currentMonth)->endOfMonth();
-    
+
         $attendances = AttendanceRecord::with('breakRecords')
             ->where('user_id', $user_id)
             ->whereBetween('work_date', [$startOfMonth, $endOfMonth])
             ->get();
-        
-        $filename = 'attendance_' . $currentMonth . '.csv';
+
+        $filename = 'attendance_'.$currentMonth.'.csv';
 
         $stream = fopen('php://temp', 'r+');
         fwrite($stream, "\xEF\xBB\xBF");
@@ -187,7 +189,7 @@ class AdminAttendanceController extends Controller
 
         rewind($stream);
 
-        return response (stream_get_contents($stream),200,[
+        return response(stream_get_contents($stream), 200, [
             'Content-Type' => 'text/csv; charset=UTF-8',
             'Content-Disposition' => 'attachment; filename="'.$filename.'"',
         ]);

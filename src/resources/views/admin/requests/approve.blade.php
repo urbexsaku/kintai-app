@@ -60,7 +60,7 @@
       </tr>
       <tr class="approve__row">
         <th class="approve__label">備考</th>
-        <td>
+        <td class="approve__text approve__text--comment">
           <div class="approve__comment">
             {{ $attendanceCorrectRequest->comment }}
           </div>
@@ -76,7 +76,7 @@
       <button type="button" class="approve__button-submit approve__button-submit--approved">承認済み</button>
     </div>
     @else
-    <form action="/admin/stamp_correction_request/approve/{{ $attendanceCorrectRequest->id }}" method="post">
+    <form action="/stamp_correction_request/approve/{{ $attendanceCorrectRequest->id }}" method="post">
       @csrf
       <div class="approve__button">
         <button class="approve__button-submit">承認</button>

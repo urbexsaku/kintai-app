@@ -14,10 +14,10 @@
     <nav class="request__tab">
       <ul>
         <li class="request__tab-item {{ $page === 'pending' ? 'is-active' : '' }}">
-          <a href="/admin/stamp_correction_request/list?page=pending">承認待ち</a>
+          <a href="/stamp_correction_request/list?page=pending">承認待ち</a>
         </li>
         <li class="request__tab-item {{ $page === 'approved' ? 'is-active' : '' }}">
-          <a href="/admin/stamp_correction_request/list?page=approved">承認済み</a>
+          <a href="/stamp_correction_request/list?page=approved">承認済み</a>
         </li>
       </ul>
     </nav>
@@ -51,7 +51,7 @@
             {{ $attendanceCorrectRequest->created_at->format('Y/m/d') }}
           </td>
           <td class="request__data">
-            <a class="request__detail" href="/admin/stamp_correction_request/approve/{{ $attendanceCorrectRequest->id }}">詳細</a>
+            <a class="request__detail" href="/stamp_correction_request/approve/{{ $attendanceCorrectRequest->id }}">詳細</a>
           </td>
         </tr>
         @endforeach

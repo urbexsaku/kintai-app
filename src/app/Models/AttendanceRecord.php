@@ -53,7 +53,7 @@ class AttendanceRecord extends Model
     public function getWorkTimeAttribute()
     {
         // 出勤中であればnullを返す
-        if (!$this->clock_out) {
+        if (! $this->clock_out) {
             return null;
         }
 
@@ -69,7 +69,7 @@ class AttendanceRecord extends Model
 
     public function getWorkMinutesAttribute()
     {
-        if (!$this->clock_out) {
+        if (! $this->clock_out) {
             return null;
         }
 
