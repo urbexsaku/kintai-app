@@ -4,8 +4,8 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Auth\Access\AuthorizationException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -36,7 +36,10 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        $this->renderable(function (ModelNotFoundException $e, $request) {
+        
+        // APIアクセス時の404エラーレスポンス
+        $this->renderable(function (NotFoundHttpException $e, $request) {
+ 
             if ($request->is('api/*')) {
                 return response()->json([
                     'error' => '勤怠情報が見つかりませんでした。'
@@ -44,7 +47,8 @@ class Handler extends ExceptionHandler
             }
         });
 
-        $this->renderable(function (AuthorizationException $e, $request) {
+        // APIアクセス時の403エラーレスポンス
+        $this->renderable(function (AccessDeniedHttpException $e, $request) {
             if ($request->is('api/*')) {
                 return response()->json([
                     'error' => 'この操作を実行する権限がありません。'

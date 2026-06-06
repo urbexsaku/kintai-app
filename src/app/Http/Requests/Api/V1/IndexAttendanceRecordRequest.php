@@ -13,7 +13,7 @@ class IndexAttendanceRecordRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,10 @@ class IndexAttendanceRecordRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'month' => [
+                'nullable',
+                'date_format:Y-m',
+            ],
         ];
     }
 }

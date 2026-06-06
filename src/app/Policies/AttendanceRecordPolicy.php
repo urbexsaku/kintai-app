@@ -11,45 +11,25 @@ class AttendanceRecordPolicy
     use HandlesAuthorization;
 
     /**
-     * Determine whether the user can view any models.
+     * 管理者の場合は全ての操作を許可する
      *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Auth\Access\Response|bool
+     * @param User $user
+     * @param string $ability
+     * @return bool|null
      */
-    public function viewAny(User $user)
+    public function before(User $user, $ability)
     {
-        //
+        if ($user->admin_status) {
+            return true;
+        }
     }
 
     /**
-     * Determine whether the user can view the model.
+     * 勤怠情報を更新できるか判定する
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\AttendanceRecord  $attendanceRecord
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function view(User $user, AttendanceRecord $attendanceRecord)
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can create models.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function create(User $user)
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can update the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\AttendanceRecord  $attendanceRecord
-     * @return \Illuminate\Auth\Access\Response|bool
+     * @param User $user
+     * @param AttendanceRecord $attendanceRecord
+     * @return bool
      */
     public function update(User $user, AttendanceRecord $attendanceRecord)
     {
@@ -57,38 +37,14 @@ class AttendanceRecordPolicy
     }
 
     /**
-     * Determine whether the user can delete the model.
+     * 勤怠情報を削除できるか判定する
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\AttendanceRecord  $attendanceRecord
-     * @return \Illuminate\Auth\Access\Response|bool
+     * @param  User  $user
+     * @param  AttendanceRecord $attendanceRecord
+     * @return bool
      */
     public function delete(User $user, AttendanceRecord $attendanceRecord)
     {
         return $user->id === $attendanceRecord->user_id;
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\AttendanceRecord  $attendanceRecord
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function restore(User $user, AttendanceRecord $attendanceRecord)
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\AttendanceRecord  $attendanceRecord
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function forceDelete(User $user, AttendanceRecord $attendanceRecord)
-    {
-        //
     }
 }

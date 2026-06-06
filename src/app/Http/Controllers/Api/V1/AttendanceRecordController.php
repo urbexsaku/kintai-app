@@ -5,16 +5,17 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\IndexAttendanceRecordRequest;
 use App\Http\Requests\Api\V1\UpdateAttendanceRecordRequest;
+use App\Http\Requests\Api\V1\StoreAttendanceRecordRequest;
 use App\Http\Resources\AttendanceRecordResource;
 use App\Models\AttendanceRecord;
-use Illuminate\Http\Request;
 
 class AttendanceRecordController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * 勤怠一覧を取得する
      *
-     * @return \Illuminate\Http\Response
+     * @param IndexAttendanceRecordRequest $request
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index(IndexAttendanceRecordRequest $request)
     {
@@ -40,6 +41,15 @@ class AttendanceRecordController extends Controller
                     $request->date
                 )
             )
+            ->when(
+                $request->month,
+                function ($q) use ($request) {
+                    [$year, $month] = explode('-', $request->month);
+
+                    $q->whereYear('work_date', $year)
+                        ->whereMonth('work_date', $month);
+                }
+            )
             ->latest('work_date')
             ->paginate($perPage);
         
@@ -49,25 +59,40 @@ class AttendanceRecordController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * 勤怠を登録する
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param StoreAttendanceRecordRequest $request
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    public function store(StoreAttendanceRecordRequest $request)
     {
-        //
+        $attendanceRecord = $request->user()
+            ->attendanceRecords()
+            ->create(
+                $request->validated()
+            );
+
+        $attendanceRecord->load([
+            'user',
+            'breakRecords',
+        ]);
+
+        return (new AttendanceRecordResource(
+            $attendanceRecord
+        ))
+        ->response()
+        ->setStatusCode(201);
     }
 
     /**
-     * Display the specified resource.
+     * 勤怠詳細を取得する
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param AttendanceRecord $attendanceRecord
+     * @return AttendanceRecordResource
      */
     public function show(AttendanceRecord $attendanceRecord)
     {
-        $atttendanceRecord->load([
+        $attendanceRecord->load([
             'user',
             'breakRecords',
             'attendanceCorrectRequests',
@@ -79,11 +104,11 @@ class AttendanceRecordController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * 勤怠情報を更新する
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param UpdateAttendanceRecordRequest $request
+     * @param AttendanceRecord $attendanceRecord
+     * @return AttendanceRecordResource
      */
     public function update(UpdateAttendanceRecordRequest $request, AttendanceRecord $attendanceRecord)
     {
@@ -93,16 +118,21 @@ class AttendanceRecordController extends Controller
             $request->validated()
         );
 
+        $attendanceRecord->load([
+            'user',
+            'breakRecords',
+        ]);
+
         return new AttendanceRecordResource(
             $attendanceRecord
         );
     }
 
     /**
-     * Remove the specified resource from storage.
+     * 勤怠情報を削除する
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param AttendanceRecord $attendanceRecord
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function destroy(AttendanceRecord $attendanceRecord)
     {
