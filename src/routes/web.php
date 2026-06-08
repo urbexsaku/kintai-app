@@ -55,6 +55,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/attendance/report', [StaffAttendanceController::class, 'report']);
     Route::get('/attendance/detail/{attendance_id}', [StaffAttendanceController::class, 'show']);
     Route::post('/attendance/detail/{attendance_id}', [StaffAttendanceController::class, 'store']);
+    Route::get('/stamp_correction_request/detail/{attendance_correct_id}', [StaffRequestController::class, 'show']);
 });
 
 // 管理者ユーザーページ
