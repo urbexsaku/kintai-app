@@ -72,6 +72,11 @@
     text-align: center;
 }
 
+.detail__text--comment {
+    text-align: left;
+    padding-left: 30px;
+}
+
 .detail__comment {
     width: 280px;
 }

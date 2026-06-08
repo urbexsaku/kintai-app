@@ -21,6 +21,13 @@ class StaffRequestController extends Controller
 
         $attendanceCorrectRequests = $query->with('attendanceRecord.user')->get();
 
-        return view('staff.requests', compact('attendanceCorrectRequests', 'page'));
+        return view('staff.requests.index', compact('attendanceCorrectRequests', 'page'));
+    }
+
+    public function show($id)
+    {
+        $attendanceCorrectRequest = AttendanceCorrectRequest::findOrFail($id);
+
+        return view('staff.requests.detail', compact('attendanceCorrectRequest'));
     }
 }

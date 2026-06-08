@@ -189,7 +189,7 @@ class StaffAttendanceController extends Controller
             ]);
         }
 
-        return redirect('/attendance/list');
+        return redirect("/stamp_correction_request/detail/{$attendanceCorrectRequest->id}");
     }
 
     public function report()

@@ -52,10 +52,10 @@
             {{ $attendanceCorrectRequest->created_at->format('Y/m/d') }}
           </td>
           <td class="request__data">
-            @if($attendanceCorrectRequest->attendanceRecord)
+            @if($attendanceCorrectRequest->status === "approved")
             <a class="request__detail" href="/attendance/detail/{{ $attendanceCorrectRequest->attendanceRecord->id }}">詳細</a>
             @else
-            <p class="request__detail">詳細</p>
+            <a class="request__detail" href="/stamp_correction_request/detail/{{ $attendanceCorrectRequest->id }}">詳細</a>
             @endif
           </td>
         </tr>
