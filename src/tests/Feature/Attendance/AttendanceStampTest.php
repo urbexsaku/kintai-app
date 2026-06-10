@@ -198,7 +198,7 @@ class AttendanceStampTest extends TestCase
     {
         AttendanceRecord::create([
             'user_id' => $this->user->id,
-            'work_date' => today(),
+            'work_date' => '2026-06-07',
             'clock_in' => '2026-06-07 09:00:00',
         ]);
 
@@ -225,7 +225,7 @@ class AttendanceStampTest extends TestCase
     {
         AttendanceRecord::create([
             'user_id' => $this->user->id,
-            'work_date' => today(),
+            'work_date' => '2026-06-07',
             'clock_in' => '2026-06-07 09:00:00',
         ]);
 
@@ -271,7 +271,7 @@ class AttendanceStampTest extends TestCase
     {
         AttendanceRecord::create([
             'user_id' => $this->user->id,
-            'work_date' => today(),
+            'work_date' => '2026-06-07',
             'clock_in' => '2026-06-07 09:00:00',
         ]);
 

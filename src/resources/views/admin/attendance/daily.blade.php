@@ -21,7 +21,7 @@
         <p class="daily__text">{{ \Carbon\Carbon::parse($currentDate)->format('Y/m/d') }}</p>   
       </div>
       <a class="daily__link" href="/admin/attendance/list?date={{ $nextDate }}">
-        翌月
+        翌日
         <img class="daily__arrow daily__arrow--next" src="{{ asset('images/arrow.png') }}" alt="矢印">      
       </a>
     </div>
