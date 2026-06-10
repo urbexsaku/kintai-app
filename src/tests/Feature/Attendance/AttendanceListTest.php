@@ -5,6 +5,7 @@ namespace Tests\Feature\Attendance;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use App\Models\User;
+use App\Models\AttendanceRecord;
 use Carbon\Carbon;
 
 class AttendanceListTest extends TestCase
@@ -12,15 +13,22 @@ class AttendanceListTest extends TestCase
     use RefreshDatabase;
 
     protected User $user;
+    protected AttendanceRecord $attendance;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->seed(\Database\Seeders\UserTableSeeder::class);
-        $this->seed(\Database\Seeders\AttendanceRecordSeeder::class);
 
         $this->user = User::where('email', 'user1@example.com')->first();
+
+        $this->attendance = AttendanceRecord::create([
+            'user_id' => $this->user->id,
+            'work_date' => today(),
+            'clock_in' => today()->copy()->setTime(9, 0),
+            'clock_out' => today()->copy()->setTime(18, 0),
+        ]);
     }
 
     public function test_attendance_list_displays_all_attendances()
@@ -73,13 +81,12 @@ class AttendanceListTest extends TestCase
         Carbon::setTestNow();
     }
 
-    public function test_user_can_view_attendane_detail()
+    public function test_user_can_view_attendance_detail()
     {
-        $attendance = \App\Models\AttendanceRecord::first();
-
-        $response = $this->actingAs($this->user)->get("/attendance/detail/{$attendance->id}");
+        $response = $this->actingAs($this->user)->get("/attendance/detail/{$this->attendance->id}");
 
         $response->assertStatus(200);
-        $response->assertSee($attendance->work_date);
+        $response->assertSee($this->attendance->work_date->format('Y年'));
+        $response->assertSee($this->attendance->work_date->format('n月j日'));
     }
 }

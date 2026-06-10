@@ -3,7 +3,6 @@
 namespace Tests\Feature\Attendance;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\AttendanceRecord;
@@ -13,25 +12,32 @@ class AttendanceCorrectionTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected User $admin;
     protected User $user;
+    protected AttendanceRecord $attendance;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->seed(\Database\Seeders\UserTableSeeder::class);
-        $this->seed(\Database\Seeders\AttendanceRecordSeeder::class);
 
         $this->user = User::where('email', 'user1@example.com')->first();
+        $this->admin = User::where('email', 'user3@example.com')->first();
+        
+        $this->attendance = AttendanceRecord::create([
+            'user_id' => $this->user->id,
+            'work_date' => today(),
+            'clock_in' => today()->copy()->setTime(9, 0),
+            'clock_out' => today()->copy()->setTime(18, 0),
+        ]);
     }
 
     public function test_validation_message_is_displayed_when_clock_in_is_later_than_clock_out()
     {
-        $attendance = AttendanceRecord::first();
-
         $response = $this->actingAs($this->user)
-            ->from("/attendance/detail/{$attendance->id}")
-            ->post("/attendance/detail/{$attendance->id}", [
+            ->from("/attendance/detail/{$this->attendance->id}")
+            ->post("/attendance/detail/{$this->attendance->id}", [
         
             'clock_in' => '18:00',
             'clock_out' => '09:00',
@@ -49,11 +55,9 @@ class AttendanceCorrectionTest extends TestCase
 
     public function test_validation_message_is_displayed_when_break_start_is_later_than_clock_out()
     {
-        $attendance = AttendanceRecord::first();
-
         $response = $this->actingAs($this->user)
-            ->from("/attendance/detail/{$attendance->id}")
-            ->post("/attendance/detail/{$attendance->id}", [
+            ->from("/attendance/detail/{$this->attendance->id}")
+            ->post("/attendance/detail/{$this->attendance->id}", [
 
                 'clock_in' => '09:00',
                 'clock_out' => '18:00',
@@ -72,11 +76,9 @@ class AttendanceCorrectionTest extends TestCase
 
     public function test_validation_message_is_displayed_when_break_end_is_later_than_clock_out()
     {
-        $attendance = AttendanceRecord::first();
-
         $response = $this->actingAs($this->user)
-            ->from("/attendance/detail/{$attendance->id}")
-            ->post("/attendance/detail/{$attendance->id}", [
+            ->from("/attendance/detail/{$this->attendance->id}")
+            ->post("/attendance/detail/{$this->attendance->id}", [
 
                 'clock_in' => '09:00',
                 'clock_out' => '18:00',
@@ -96,11 +98,9 @@ class AttendanceCorrectionTest extends TestCase
 
     public function test_validation_message_is_displayed_when_comment_is_empty()
     {
-        $attendance = AttendanceRecord::first();
-
         $response = $this->actingAs($this->user)
-            ->from("/attendance/detail/{$attendance->id}")
-            ->post("/attendance/detail/{$attendance->id}", [
+            ->from("/attendance/detail/{$this->attendance->id}")
+            ->post("/attendance/detail/{$this->attendance->id}", [
 
                 'clock_in' => '10:00',
                 'clock_out' => '19:00',
@@ -118,20 +118,15 @@ class AttendanceCorrectionTest extends TestCase
 
     public function test_user_can_request_correction()
     {
-        $attendance = AttendanceRecord::first();
-        $admin = User::where('id', 3)->first();
-
-        $this->actingAs($this->user)->from("/attendance/detail/{$attendance->id}")
-            ->post("/attendance/detail/{$attendance->id}", [
+        $this->actingAs($this->user)->from("/attendance/detail/{$this->attendance->id}")
+            ->post("/attendance/detail/{$this->attendance->id}", [
 
                 'clock_in' => '10:00',
                 'clock_out' => '19:00',
                 'comment' => 'テストコメント',
             ]);
-
-        $this->app['auth']->logout();
-
-        $response = $this->actingAs($admin)
+            
+        $response = $this->actingAs($this->admin)
             ->get('/stamp_correction_request/list');
 
         // 管理画面に表示されているか確認
@@ -141,11 +136,9 @@ class AttendanceCorrectionTest extends TestCase
 
     public function test_pending_request_is_displayed_in_request_list()
     {
-        $attendance = AttendanceRecord::first();
-
         $this->actingAs($this->user);
-        $this->from("/attendance/detail/{$attendance->id}")
-            ->post("/attendance/detail/{$attendance->id}", [
+        $this->from("/attendance/detail/{$this->attendance->id}")
+            ->post("/attendance/detail/{$this->attendance->id}", [
 
                 'clock_in' => '10:00',
                 'clock_out' => '19:00',
@@ -160,20 +153,19 @@ class AttendanceCorrectionTest extends TestCase
 
     public function test_approved_request_is_displayed_in_request_list()
     {
-        $attendance = AttendanceRecord::first();
-        $admin = User::where('id', 3)->first();
-
         $this->actingAs($this->user)
-            ->from("/attendance/detail/{$attendance->id}")
-            ->post("/attendance/detail/{$attendance->id}", [
+            ->from("/attendance/detail/{$this->attendance->id}")
+            ->post("/attendance/detail/{$this->attendance->id}", [
 
                 'clock_in' => '10:00',
                 'clock_out' => '19:00',
                 'comment' => '承認済みテストコメント',
             ]);
 
-        $response = $this->actingAs($admin)
-            ->post("/stamp_correction_request/approve/{$attendance->id}");
+        $request = AttendanceCorrectRequest::latest()->first();
+
+        $response = $this->actingAs($this->admin)
+            ->post("/stamp_correction_request/approve/{$request->id}");
 
         $response = $this->actingAs($this->user)
             ->get('/stamp_correction_request/list?page=approved');
@@ -184,12 +176,9 @@ class AttendanceCorrectionTest extends TestCase
 
     public function test_user_can_view_correction_request_detail()
     {
-        $attendance = AttendanceRecord::first();
-
         $this->actingAs($this->user);
-        $this->from("/attendance/detail/{$attendance->id}")
-            ->post("/attendance/detail/{$attendance->id}", [
-
+        $this->from("/attendance/detail/{$this->attendance->id}")
+            ->post("/attendance/detail/{$this->attendance->id}", [
                 'clock_in' => '10:00',
                 'clock_out' => '19:00',
                 'comment' => '詳細テストコメント',
@@ -197,7 +186,7 @@ class AttendanceCorrectionTest extends TestCase
 
         $request = AttendanceCorrectRequest::latest()->first();
 
-        $response = $this->get("/stamp_correction_request/detail/($request->id}");
+        $response = $this->get("/stamp_correction_request/detail/{$request->id}");
         $response->assertStatus(200);
         $response->assertSee('詳細テストコメント');
     }
