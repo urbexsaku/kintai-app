@@ -2,17 +2,17 @@
 
 namespace Tests\Feature\Auth;
 
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use App\Models\User;
 
 class UserLoginTest extends TestCase
 {
-    use RefreshDatabase;
+use RefreshDatabase;
 
     public function test_validation_message_is_displayed_when_email_is_empty()
     {
-        // メールアドレス未入力でログインボタンを押す
+        // メールアドレス以外のユーザー情報を入力して、ログインの処理を行う
         $response = $this->post('/login', [
             'email' => '',
             'password' => 'password',
@@ -29,7 +29,7 @@ class UserLoginTest extends TestCase
 
     public function test_validation_message_is_displayed_when_password_is_empty()
     {
-        // パスワード未入力でログインボタンを押す
+        // パスワード以外のユーザー情報を入力して、ログインの処理を行う
         $response = $this->post('/login', [
             'email' => 'test@example.com',
             'password' => '',
@@ -46,14 +46,14 @@ class UserLoginTest extends TestCase
 
     public function test_validation_message_is_displayed_when_credentials_are_invalid()
     {
-        // ユーザー登録をする
+        // ユーザーを作成する
         User::create([
             'name' => 'テストユーザー',
             'email' => 'test@example.com',
             'password' => bcrypt('password'),
         ]);
 
-        // 誤ったメールアドレスのユーザー情報を入力する
+        // 誤ったメールアドレスのユーザー情報を入力して、ログインの処理を行う
         $response = $this->post('/login', [
             'email' => 'unknown@example.com',
             'password' => 'password',

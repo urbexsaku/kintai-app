@@ -2,17 +2,17 @@
 
 namespace Tests\Feature\Auth;
 
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use App\Models\User;
 
 class AdminLoginTest extends TestCase
 {
-    use RefreshDatabase;
+use RefreshDatabase;
 
     public function test_validation_message_is_displayed_when_email_is_empty()
     {
-        // メールアドレス未入力でログインボタンを押す
+        // メールアドレス以外のユーザー情報を入力して、ログインの処理を行う
         $response = $this->post('/admin/login', [
             'email' => '',
             'password' => 'password',
@@ -29,7 +29,7 @@ class AdminLoginTest extends TestCase
 
     public function test_validation_message_is_displayed_when_password_is_empty()
     {
-        // パスワード未入力でログインボタンを押す
+        // パスワード以外のユーザー情報を入力して、ログインの処理を行う
         $response = $this->post('/admin/login', [
             'email' => 'test@example.com',
             'password' => '',
@@ -46,14 +46,15 @@ class AdminLoginTest extends TestCase
 
     public function test_validation_message_is_displayed_when_credentials_are_invalid()
     {
-        // ユーザー登録をする
+        // 管理者ユーザーを作成する
         User::create([
-            'name' => 'テストユーザー',
+            'name' => '管理者ユーザー',
             'email' => 'test@example.com',
             'password' => bcrypt('password'),
+            'admin_status' => true,
         ]);
 
-        // 誤ったメールアドレスのユーザー情報を入力する
+        // 誤ったメールアドレスのユーザー情報を入力して、ログインの処理を行う
         $response = $this->post('/admin/login', [
             'email' => 'unknown@example.com',
             'password' => 'password',

@@ -56,7 +56,7 @@ class StoreAttendanceRecordRequest extends FormRequest
     public function messages()
     {
         return [
-            'date.required' => '勤怠日は必須です。',
+            'work_date.required' => '勤怠日は必須です。',
             'work_date.date' => '勤怠日はYYYY-MM-DD形式で入力してください。',
             'work_date.unique' => 'この日の勤怠は既に登録されています。',
             'clock_in.required' => '出勤時刻は必須です。',

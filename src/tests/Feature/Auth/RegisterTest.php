@@ -11,7 +11,7 @@ class UserRegistrationTest extends TestCase
 
     public function test_validation_message_is_displayed_when_name_is_empty()
     {
-        // 名前未入力で登録ボタンを押す
+        // 名前以外のユーザー情報を入力して、会員登録の処理を行う
         $response = $this->post('/register', [
             'name' => '',
             'email' => 'test@example.com',
@@ -30,7 +30,7 @@ class UserRegistrationTest extends TestCase
 
     public function test_validation_message_is_displayed_when_email_is_empty()
     {
-        // メールアドレス未入力で登録ボタンを押す
+        // メールアドレス以外のユーザー情報を入力して、会員登録の処理を行う
         $response = $this->post('/register', [
             'name' => 'テストユーザー',
             'email' => '',
@@ -47,28 +47,9 @@ class UserRegistrationTest extends TestCase
         );
     }
 
-    public function test_validation_message_is_displayed_when_password_is_empty()
-    {
-        // パスワード未入力で登録ボタンを押す
-        $response = $this->post('/register', [
-            'name' => 'テストユーザー',
-            'email' => 'test@example.com',
-            'password' => '',
-            'password_confirmation' => '',
-        ]);
-
-        $response->assertSessionHasErrors('password');
-
-        // バリデーションメッセージ表示確認
-        $this->assertEquals(
-            'パスワードを入力してください',
-            session('errors')->first('password')
-        );
-    }
-
     public function test_validation_message_is_displayed_when_password_is_less_than_8_characters()
     {
-        // パスワード7文字以下で登録ボタンを押す
+        // パスワードを8文字未満にし、ユーザー情報を入力して、会員登録の処理を行う
         $response = $this->post('/register', [
             'name' => 'テストユーザー',
             'email' => 'test@example.com',
@@ -87,7 +68,7 @@ class UserRegistrationTest extends TestCase
 
     public function test_validation_message_is_displayed_when_password_confirmation_does_not_match()
     {
-        // 2確認用パスワード不一致で登録ボタンを押す
+        // 確認用のパスワードとパスワードを一致させず、ユーザー情報を入力して、会員登録の処理を行う
         $response = $this->post('/register', [
             'name' => 'テストユーザー',
             'email' => 'test@example.com',
@@ -104,9 +85,28 @@ class UserRegistrationTest extends TestCase
         );
     }
 
+    public function test_validation_message_is_displayed_when_password_is_empty()
+    {
+        // パスワード以外のユーザー情報を入力して、会員登録の処理を行う
+        $response = $this->post('/register', [
+            'name' => 'テストユーザー',
+            'email' => 'test@example.com',
+            'password' => '',
+            'password_confirmation' => '',
+        ]);
+
+        $response->assertSessionHasErrors('password');
+
+        // バリデーションメッセージ表示確認
+        $this->assertEquals(
+            'パスワードを入力してください',
+            session('errors')->first('password')
+        );
+    }    
+
     public function test_user_is_registered()
     {
-        // 必須項目を入力して登録ボタンを押す
+        // ユーザー情報を入力して、会員登録の処理を行う
         $response = $this->post('/register', [
             'name' => 'テストユーザー',
             'email' => 'test@example.com',

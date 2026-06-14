@@ -2,16 +2,16 @@
 
 namespace Tests\Feature\Attendance;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
-use App\Models\User;
 use App\Models\AttendanceRecord;
 use App\Models\BreakRecord;
+use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class AttendanceStampTest extends TestCase
 {
-    use RefreshDatabase;
+use RefreshDatabase;
     
     protected User $user;
     
@@ -121,7 +121,7 @@ class AttendanceStampTest extends TestCase
 
     public function test_attendance_list_displays_clock_in_time()
     {
-        Carbon::setTestNow('2026-06-07 09:00:00');
+        Carbon::setTestNow('2026-01-01 09:00:00');
     
         // ステータスが勤務外のユーザーがログインし出勤の処理を行う
         $this->actingAs($this->user);
@@ -146,12 +146,15 @@ class AttendanceStampTest extends TestCase
         $this->actingAs($this->user);
         $response = $this->get(route('staff.attendance.stamp'));
 
+        // 「休憩入」ボタンが表示されていることを確認する
         $response->assertStatus(200);
         $response->assertSee('休憩入');
 
+        // 休憩の処理を行う
         $this->actingAs($this->user);
         $this->post('/attendance/break-start');
 
+        // 処理後にステータスが休憩中になる
         $response = $this->get(route('staff.attendance.stamp'));
         $response->assertSee('休憩中');
     }
@@ -182,14 +185,18 @@ class AttendanceStampTest extends TestCase
             'clock_in' => now()->subHours(2),
         ]);
 
+        // 休憩入の処理を行う
         $this->actingAs($this->user);
         $response = $this->post('/attendance/break-start');
 
+        // 休憩戻ボタンが表示されていることを確認する
         $response = $this->get(route('staff.attendance.stamp'));
         $response->assertSee('休憩戻');
 
+        // 休憩戻の処理を行う
         $this->post('/attendance/break-end');
 
+        // 処理後にステータスが出勤中になる
         $response = $this->get(route('staff.attendance.stamp'));
         $response->assertSee('出勤中');
     }
@@ -198,19 +205,22 @@ class AttendanceStampTest extends TestCase
     {
         AttendanceRecord::create([
             'user_id' => $this->user->id,
-            'work_date' => '2026-06-07',
-            'clock_in' => '2026-06-07 09:00:00',
+            'work_date' => '2026-01-01',
+            'clock_in' => '2026-01-01 09:00:00',
         ]);
 
         $this->actingAs($this->user);
 
-        Carbon::setTestNow('2026-06-07 12:00:00');
+        // 休憩入の処理を行う
+        Carbon::setTestNow('2026-01-01 12:00:00');
         $this->post('/attendance/break-start');
 
-        Carbon::setTestNow('2026-06-07 12:30:00');
+        // 休憩戻の処理を行う
+        Carbon::setTestNow('2026-01-01 12:30:00');
         $this->post('/attendance/break-end');
 
-        Carbon::setTestNow('2026-06-07 13:00:00');
+        // 休憩入の処理を行う
+        Carbon::setTestNow('2026-01-01 13:00:00');
         $this->post('/attendance/break-start');
 
         $response = $this->get(route('staff.attendance.stamp'));
@@ -225,29 +235,30 @@ class AttendanceStampTest extends TestCase
     {
         AttendanceRecord::create([
             'user_id' => $this->user->id,
-            'work_date' => '2026-06-07',
-            'clock_in' => '2026-06-07 09:00:00',
+            'work_date' => '2026-01-01',
+            'clock_in' => '2026-01-01 09:00:00',
         ]);
 
         $this->actingAs($this->user);
 
-        // 休憩開始
-        Carbon::setTestNow('2026-06-07 12:00:00');
+        // 休憩入の処理を行う
+        Carbon::setTestNow('2026-01-01 12:00:00');
         $this->post('/attendance/break-start');
 
-        // 休憩終了
-        Carbon::setTestNow('2026-06-07 13:00:00');
+        // 休憩戻の処理を行う
+        Carbon::setTestNow('2026-01-01 13:00:00');
         $this->post('/attendance/break-end');
 
         $response = $this->get('/attendance/list');
 
+        // 休憩時間（1時間）が正確に記録されている
         $response->assertStatus(200);
         $response->assertSee('01:00');
 
         Carbon::setTestNow();
     }
 
-    public function test_user_can_stamp_clocl_out()
+    public function test_user_can_stamp_clock_out()
     {
         AttendanceRecord::create([
             'user_id' => $this->user->id,
@@ -258,31 +269,32 @@ class AttendanceStampTest extends TestCase
         $this->actingAs($this->user);
         $response = $this->get(route('staff.attendance.stamp'));
 
+        // 退勤ボタンが表示されていることを確認する
         $response->assertStatus(200);
         $response->assertSee('退勤');
 
         $this->post('/attendance/clock-out');
 
+        // 処理後にステータスが退勤済になる
         $response = $this->get(route('staff.attendance.stamp'));
         $response->assertSee('退勤済');
     }
 
     public function test_attendance_list_displays_clock_out_time()
     {
-        AttendanceRecord::create([
-            'user_id' => $this->user->id,
-            'work_date' => '2026-06-07',
-            'clock_in' => '2026-06-07 09:00:00',
-        ]);
-
         $this->actingAs($this->user);
-    
-        Carbon::setTestNow('2026-06-07 18:00:00');
 
+        // 出勤の処理を行う
+        Carbon::setTestNow('2026-01-01 09:00:00');
+        $this->post('/attendance/clock-in');
+
+        // 退勤の処理を行う
+        Carbon::setTestNow('2026-01-01 18:00:00');
         $this->post('/attendance/clock-out');
 
         $response = $this->get('/attendance/list');
 
+        // 退勤時刻が正確に記録されている
         $response->assertStatus(200);
         $response->assertSee('18:00');
 

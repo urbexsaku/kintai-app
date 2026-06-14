@@ -2,14 +2,14 @@
 
 namespace Tests\Feature\Admin;
 
+use App\Models\AttendanceRecord;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use App\Models\User;
-use App\Models\AttendanceRecord;
 
 class AdminAttendanceDetailTest extends TestCase
 {
-    use RefreshDatabase;
+use RefreshDatabase;
 
     protected User $admin;
     protected User $user;
@@ -32,21 +32,24 @@ class AdminAttendanceDetailTest extends TestCase
         ]);
     }
 
-    public function test_selected_date_is_displayed()
+    public function test_selected_attendance_detail_is_displayed()
     {
         $response = $this->actingAs($this->admin)->get("/admin/attendance/{$this->attendance->id}");
 
         $response->assertStatus(200);
+        $response->assertSee($this->user->name);
         $response->assertSee($this->attendance->work_date->format('Y年'));
         $response->assertSee($this->attendance->work_date->format('n月j日'));
+        $response->assertSee('09:00');
+        $response->assertSee('18:00');
     }
 
     public function test_validation_message_is_displayed_when_clock_in_is_later_than_clock_out()
     {
+        // 出勤時間を退勤時間より後に設定して保存処理をする
         $response = $this->actingAs($this->admin)
             ->from("/admin/attendance/{$this->attendance->id}")
             ->post("/admin/attendance/{$this->attendance->id}", [
-
                 'clock_in' => '18:00',
                 'clock_out' => '09:00',
                 'comment' => 'テスト',
@@ -63,10 +66,10 @@ class AdminAttendanceDetailTest extends TestCase
 
     public function test_validation_message_is_displayed_when_break_start_is_later_than_clock_out()
     {
+        // 休憩開始時間を退勤時間より後に設定して保存処理をする
         $response = $this->actingAs($this->admin)
             ->from("/admin/attendance/{$this->attendance->id}")
             ->post("/admin/attendance/{$this->attendance->id}", [
-
                 'clock_in' => '09:00',
                 'clock_out' => '18:00',
                 'start_at' => ['19:00'],
@@ -84,6 +87,7 @@ class AdminAttendanceDetailTest extends TestCase
 
     public function test_validation_message_is_displayed_when_break_end_is_later_than_clock_out()
     {
+        // 休憩終了時間を退勤時間より後に設定て保存処理をする
         $response = $this->actingAs($this->admin)
             ->from("/admin/attendance/{$this->attendance->id}")
             ->post("/admin/attendance/{$this->attendance->id}", [
@@ -106,6 +110,7 @@ class AdminAttendanceDetailTest extends TestCase
 
     public function test_validation_message_is_displayed_when_comment_is_empty()
     {
+        // 備考を未入力のまま保存処理をする
         $response = $this->actingAs($this->admin)
             ->from("/admin/attendance/{$this->attendance->id}")
             ->post("/admin/attendance/{$this->attendance->id}", [
