@@ -2,15 +2,15 @@
 
 namespace Tests\Feature\Admin;
 
+use App\Models\AttendanceCorrectRequest;
+use App\Models\AttendanceRecord;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use App\Models\User;
-use App\Models\AttendanceRecord;
-use App\Models\AttendanceCorrectRequest;
 
 class CorrectionApprovalTest extends TestCase
 {
-    use RefreshDatabase;
+use RefreshDatabase;
 
     protected User $admin;
     protected User $user;
@@ -77,7 +77,10 @@ class CorrectionApprovalTest extends TestCase
 
         $response = $this->actingAs($this->admin)
             ->get("/stamp_correction_request/detail/{$request->id}");
+
         $response->assertStatus(200);
+        $response->assertSee('10:00');
+        $response->assertSee('19:00');
         $response->assertSee('詳細テストコメント');
     }
 

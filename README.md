@@ -42,7 +42,6 @@ make init
 | ユーザー3 | user3@example.com | password | 済み | 管理者（admin_status = true） |
 
 
-
 ## テスト実行方法
 
 ```bash

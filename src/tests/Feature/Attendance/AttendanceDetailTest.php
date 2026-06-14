@@ -2,15 +2,15 @@
 
 namespace Tests\Feature\Attendance;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
-use App\Models\User;
 use App\Models\AttendanceRecord;
 use App\Models\BreakRecord;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class AttendanceDetailTest extends TestCase
 {
-    use RefreshDatabase;
+use RefreshDatabase;
 
     protected User $user;
     protected AttendanceRecord $attendance;

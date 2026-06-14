@@ -24,9 +24,32 @@ class IndexAttendanceRecordRequest extends FormRequest
     public function rules()
     {
         return [
+            'user_id' => [
+                'nullable',
+                'integer',
+            ],
+
+            'date' => [
+                'nullable',
+                'date',
+            ],
+
             'month' => [
                 'nullable',
                 'date_format:Y-m',
+            ],
+
+            'page' => [
+                'nullable',
+                'integer',
+                'min:1',
+            ],
+
+            'per_page' => [
+                'nullable',
+                'integer',
+                'min:1',
+                'max:100',
             ],
         ];
     }

@@ -29,7 +29,7 @@ class UpdateAttendanceRecordRequest extends FormRequest
                 'required',
                 'date',
                 Rule::unique('attendance_records')
-                    ->ignore($this->route('attendance'))
+                    ->ignore($this->route('attendance_record'))
                     ->where('user_id', $this->user_id)
             ],
             'clock_in' => [
@@ -52,7 +52,7 @@ class UpdateAttendanceRecordRequest extends FormRequest
     public function messages()
     {
         return [
-            'date.required' => '勤怠日は必須です。',
+            'work_date.required' => '勤怠日は必須です。',
             'work_date.date' => '勤怠日はYYYY-MM-DD形式で入力してください。',
             'work_date.unique' => 'この日の勤怠は既に登録されています。',
             'clock_in.required' => '出勤時刻は必須です。',
@@ -61,5 +61,12 @@ class UpdateAttendanceRecordRequest extends FormRequest
             'clock_out.after' => '退勤時刻は出勤時刻より後で入力してください。',
             'comment.max' => '備考は255文字以内で入力してください。',
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'user_id' => $this->route('attendance_record')->user_id,
+        ]);
     }
 }

@@ -2,15 +2,15 @@
 
 namespace Tests\Feature\Admin;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 use App\Models\AttendanceRecord;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class AdminAttendanceListTest extends TestCase
 {
-    use RefreshDatabase;
+use RefreshDatabase;
 
     protected User $admin;
     protected User $user1;
@@ -26,7 +26,7 @@ class AdminAttendanceListTest extends TestCase
         $this->user2 = User::where('email', 'user2@example.com')->first();
         $this->admin = User::where('email', 'user3@example.com')->first();
     
-        Carbon::setTestNow('2026-06-07');
+        Carbon::setTestNow('2026-01-01');
     }
 
     protected function tearDown(): void
@@ -57,22 +57,22 @@ class AdminAttendanceListTest extends TestCase
         $response->assertStatus(200);
 
         $response->assertSeeInOrder([
-            'ユーザー1',
+            $this->user1->name,
             '09:00',
             '18:00',
-            'ユーザー2',
+            $this->user2->name,
             '10:00',
             '19:00',
         ]);
     }
 
-    public function test_selected_date_is_displayed()
+    public function test_current_date_is_displayed()
     {
         $response = $this->actingAs($this->admin)->get('/admin/attendance/list');
 
         $response->assertStatus(200);
 
-        $response->assertSee('2026/06/07');      
+        $response->assertSee('2026/01/01');      
     }
 
     public function test_attendance_data_of_previous_day_is_displayed()
@@ -91,7 +91,7 @@ class AdminAttendanceListTest extends TestCase
         $response->assertStatus(200);
 
         $response->assertSee($previousDate->format('Y/m/d'));
-        $response->assertSee('ユーザー1');
+        $response->assertSee($this->user1->name);
         $response->assertSee('09:00');
         $response->assertSee('18:00');
     }
@@ -112,7 +112,7 @@ class AdminAttendanceListTest extends TestCase
         $response->assertStatus(200);
 
         $response->assertSee($nextDate->format('Y/m/d'));
-        $response->assertSee('ユーザー1');
+        $response->assertSee($this->user1->name);
         $response->assertSee('09:00');
         $response->assertSee('18:00');
     }

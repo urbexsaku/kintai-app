@@ -2,22 +2,22 @@
 
 namespace Tests\Feature\Auth;
 
+use App\Models\User;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
-use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Support\Facades\URL;
 use Tests\TestCase;
-use App\Models\User;
 
 class EmailVerificationTest extends TestCase
 {
-    use RefreshDatabase;
+use RefreshDatabase;
 
     public function test_verify_email_is_sent_after_registration()
     {
         Notification::fake();
 
-        // 1. 会員登録をする
+        // 会員登録をする
         $this->post('/register', [
             'name' => 'テストユーザー',
             'email' => 'test@example.com',
@@ -39,7 +39,7 @@ class EmailVerificationTest extends TestCase
         // 未認証ユーザーの作成
         $user = User::factory()->unverified()->create();
 
-        // 1. メール認証を完了する
+        // メール認証を完了する
         $verificationUrl = URL::temporarySignedRoute(
             'verification.verify',
             now()->addMinutes(60),
@@ -51,7 +51,7 @@ class EmailVerificationTest extends TestCase
 
         $response = $this->actingAs($user)->get($verificationUrl);
 
-        // プロフィール設定画面への遷移確認
+        // 勤怠登録画面への遷移確認
         $response->assertRedirect(route('staff.attendance.stamp'));
 
         // ユーザーが認証済みであることを確認
