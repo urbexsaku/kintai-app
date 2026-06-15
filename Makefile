@@ -4,6 +4,7 @@ init:
 	docker compose exec php cp .env.example .env
 	docker compose exec php cp .env.testing.example .env.testing
 	docker compose exec php php artisan key:generate
+	docker compose exec php php artisan key:generate --env=testing
 
 fresh:
 	docker compose exec php php artisan migrate:fresh --seed
