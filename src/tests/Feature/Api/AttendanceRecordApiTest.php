@@ -12,11 +12,14 @@ use Tests\TestCase;
 
 class AttendanceRecordApiTest extends TestCase
 {
-use RefreshDatabase;
+    use RefreshDatabase;
 
     protected User $user;
+
     protected AttendanceRecord $attendance;
+
     protected BreakRecord $break;
+
     protected AttendanceCorrectRequest $application;
 
     protected function setUp(): void
@@ -53,7 +56,7 @@ use RefreshDatabase;
         AttendanceRecord::factory()
             ->count(100)
             ->create([
-                'user_id' => $this->user->id
+                'user_id' => $this->user->id,
             ]);
 
         $response = $this->getJson('/api/v1/attendance-records');
@@ -65,7 +68,7 @@ use RefreshDatabase;
                 '*' => [
                     'id',
                     'date',
-                ]
+                ],
             ],
             'meta' => [
                 'current_page',
@@ -186,13 +189,13 @@ use RefreshDatabase;
             'clock_out' => today()->copy()->setTime(18, 0),
         ]);
 
-        $response = $this->putJson("/api/v1/attendance-records/{$attendance->id}", 
-        [
-            'work_date' => '2026-01-02',
-            'clock_in' => '10:00:00',
-            'clock_out' => '19:00:00',
-            'comment' => '勤怠更新テスト',
-        ]);
+        $response = $this->putJson("/api/v1/attendance-records/{$attendance->id}",
+            [
+                'work_date' => '2026-01-02',
+                'clock_in' => '10:00:00',
+                'clock_out' => '19:00:00',
+                'comment' => '勤怠更新テスト',
+            ]);
 
         $response->assertStatus(200);
 
@@ -215,5 +218,4 @@ use RefreshDatabase;
             'id' => $this->attendance->id,
         ]);
     }
-
 }

@@ -8,7 +8,7 @@ use Tests\TestCase;
 
 class AdminLoginTest extends TestCase
 {
-use RefreshDatabase;
+    use RefreshDatabase;
 
     public function test_validation_message_is_displayed_when_email_is_empty()
     {

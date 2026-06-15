@@ -2,9 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Http\Resources\ApplicationResource;
-use App\Http\Resources\AttendanceBreakResource;
-use App\Http\Resources\UserResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class AttendanceRecordResource extends JsonResource
@@ -12,7 +9,7 @@ class AttendanceRecordResource extends JsonResource
     /**
      * APIレスポンス用に勤怠情報を成型する
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function toArray($request)
@@ -41,7 +38,6 @@ class AttendanceRecordResource extends JsonResource
                 'comment' => $this->comment,
             ];
         }
-
 
         // index用
         return [

@@ -10,10 +10,12 @@ use Tests\TestCase;
 
 class AdminAttendanceListTest extends TestCase
 {
-use RefreshDatabase;
+    use RefreshDatabase;
 
     protected User $admin;
+
     protected User $user1;
+
     protected User $user2;
 
     protected function setUp(): void
@@ -25,7 +27,7 @@ use RefreshDatabase;
         $this->user1 = User::where('email', 'user1@example.com')->first();
         $this->user2 = User::where('email', 'user2@example.com')->first();
         $this->admin = User::where('email', 'user3@example.com')->first();
-    
+
         Carbon::setTestNow('2026-01-01');
     }
 
@@ -72,7 +74,7 @@ use RefreshDatabase;
 
         $response->assertStatus(200);
 
-        $response->assertSee('2026/01/01');      
+        $response->assertSee('2026/01/01');
     }
 
     public function test_attendance_data_of_previous_day_is_displayed()
@@ -86,7 +88,7 @@ use RefreshDatabase;
             'clock_out' => $previousDate->copy()->setTime(18, 0),
         ]);
 
-        $response = $this->actingAs($this->admin)->get('/admin/attendance/list?date=' . $previousDate->format('Y-m-d'));
+        $response = $this->actingAs($this->admin)->get('/admin/attendance/list?date='.$previousDate->format('Y-m-d'));
 
         $response->assertStatus(200);
 
@@ -107,7 +109,7 @@ use RefreshDatabase;
             'clock_out' => $nextDate->copy()->setTime(18, 0),
         ]);
 
-        $response = $this->actingAs($this->admin)->get('/admin/attendance/list?date=' . $nextDate->format('Y-m-d'));
+        $response = $this->actingAs($this->admin)->get('/admin/attendance/list?date='.$nextDate->format('Y-m-d'));
 
         $response->assertStatus(200);
 

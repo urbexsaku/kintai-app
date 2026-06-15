@@ -43,16 +43,16 @@
             {{ $user->name }}
           </td>
           <td class="daily__data">
-            {{ $user->attendance?->clock_in?->format('H:i') ?? '' }}
+            {{ $user->attendance?->clock_in?->format('H:i') }}
           </td>
           <td class="daily__data">
-            {{ $user->attendance?->clock_out?->format('H:i') ?? '' }}
+            {{ $user->attendance?->clock_out?->format('H:i') }}
           </td>
           <td class="daily__data">
-            {{ $user->attendance?->total_break ?? '' }}
+            {{ $user->attendance?->total_break }}
           </td>
           <td class="daily__data">
-            {{ $user->attendance?->work_time ?? '' }}
+            {{ $user->attendance?->work_time }}
           </td>
           <td class="daily__data">
             @if($user->attendance)

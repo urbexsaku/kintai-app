@@ -10,10 +10,12 @@ use Tests\TestCase;
 
 class AttendanceCorrectionTest extends TestCase
 {
-use RefreshDatabase;
+    use RefreshDatabase;
 
     protected User $admin;
+
     protected User $user;
+
     protected AttendanceRecord $attendance;
 
     protected function setUp(): void
@@ -24,7 +26,7 @@ use RefreshDatabase;
 
         $this->user = User::where('email', 'user1@example.com')->first();
         $this->admin = User::where('email', 'user3@example.com')->first();
-        
+
         $this->attendance = AttendanceRecord::create([
             'user_id' => $this->user->id,
             'work_date' => today(),
@@ -140,10 +142,10 @@ use RefreshDatabase;
         $response->assertStatus(200);
         $response->assertSee('テストコメント');
 
-        // 申請一覧画面に表示されているか確認    
+        // 申請一覧画面に表示されているか確認
         $response = $this->actingAs($this->admin)
             ->get('/stamp_correction_request/list');
-        
+
         $response->assertStatus(200);
         $response->assertSee('テストコメント');
     }

@@ -60,11 +60,11 @@
       <tr class="detail__row">
         <th class="detail__label">備考</th>
         <td class="detail__text detail__text--comment">
-          {{ $attendanceCorrectRequest->comment }}        
+          {{ $attendanceCorrectRequest->comment }}
         </td>
       </tr>
     </table>
-    <p class=" detail__pending">*承認待ちのため修正はできません。</p>
+    <p class="detail__pending">*承認待ちのため修正はできません。</p>
   </div>
 </div>
 @endsection

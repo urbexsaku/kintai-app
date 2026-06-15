@@ -11,10 +11,10 @@ use Tests\TestCase;
 
 class AttendanceStampTest extends TestCase
 {
-use RefreshDatabase;
-    
+    use RefreshDatabase;
+
     protected User $user;
-    
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -40,7 +40,7 @@ use RefreshDatabase;
             'work_date' => today(),
             'clock_in' => now(),
         ]);
-    
+
         $response = $this->actingAs($this->user)
             ->get(route('staff.attendance.stamp'));
 
@@ -122,7 +122,7 @@ use RefreshDatabase;
     public function test_attendance_list_displays_clock_in_time()
     {
         Carbon::setTestNow('2026-01-01 09:00:00');
-    
+
         // ステータスが勤務外のユーザーがログインし出勤の処理を行う
         $this->actingAs($this->user);
         $this->post('/attendance/clock-in');

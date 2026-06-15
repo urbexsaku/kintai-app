@@ -10,11 +10,14 @@ use Tests\TestCase;
 
 class UserManagementTest extends TestCase
 {
-use RefreshDatabase;
+    use RefreshDatabase;
 
     protected User $admin;
+
     protected User $user1;
+
     protected User $user2;
+
     protected AttendanceRecord $attendance;
 
     protected function setUp(): void

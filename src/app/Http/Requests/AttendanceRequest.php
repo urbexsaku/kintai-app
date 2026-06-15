@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Validator;
 
 class AttendanceRequest extends FormRequest
 {
@@ -11,7 +12,7 @@ class AttendanceRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -21,7 +22,7 @@ class AttendanceRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'clock_in' => ['required'],
@@ -30,7 +31,7 @@ class AttendanceRequest extends FormRequest
         ];
     }
 
-    public function messages()
+    public function messages(): array
     {
         return [
             'clock_in.required' => '出勤時間を入力してください',
@@ -41,7 +42,7 @@ class AttendanceRequest extends FormRequest
 
     public function withValidator($validator)
     {
-        $validator->after(function ($validator) {
+        $validator->after(function (Validator $validator) {
 
             $clockIn = $this->clock_in;
             $clockOut = $this->clock_out;

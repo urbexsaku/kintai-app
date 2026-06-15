@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class BreakCorrectRequest extends Model
 {
@@ -20,7 +21,7 @@ class BreakCorrectRequest extends Model
         'requested_end_at' => 'datetime',
     ];
 
-    public function attendanceCorrectRequest()
+    public function attendanceCorrectRequest(): BelongsTo
     {
         return $this->belongsTo(AttendanceCorrectRequest::class);
     }

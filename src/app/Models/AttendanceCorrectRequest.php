@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class AttendanceCorrectRequest extends Model
 {
@@ -30,12 +32,12 @@ class AttendanceCorrectRequest extends Model
         };
     }
 
-    public function attendanceRecord()
+    public function attendanceRecord(): BelongsTo
     {
         return $this->belongsTo(AttendanceRecord::class);
     }
 
-    public function breakCorrectRequests()
+    public function breakCorrectRequests(): HasMany
     {
         return $this->hasMany(BreakCorrectRequest::class);
     }
