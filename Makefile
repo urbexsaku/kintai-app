@@ -5,6 +5,7 @@ init:
 	docker compose exec php cp .env.testing.example .env.testing
 	docker compose exec php php artisan key:generate
 	docker compose exec php php artisan key:generate --env=testing
+	docker-compose exec php chmod -R 777 storage bootstrap/cache
 
 fresh:
 	docker compose exec php php artisan migrate:fresh --seed
