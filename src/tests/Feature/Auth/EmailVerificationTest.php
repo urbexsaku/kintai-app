@@ -11,7 +11,7 @@ use Tests\TestCase;
 
 class EmailVerificationTest extends TestCase
 {
-use RefreshDatabase;
+    use RefreshDatabase;
 
     public function test_verify_email_is_sent_after_registration()
     {

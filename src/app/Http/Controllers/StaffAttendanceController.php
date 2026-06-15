@@ -275,7 +275,7 @@ class StaffAttendanceController extends Controller
         ));
     }
 
-    private function getTodayAttendance()
+    private function getTodayAttendance(): AttendanceRecord
     {
         return AttendanceRecord::where('user_id', Auth::id())
             ->where('work_date', today())

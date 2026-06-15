@@ -36,7 +36,7 @@ class AdminRequestController extends Controller
     {
 
         $attendanceCorrectRequest = AttendanceCorrectRequest::with([
-            'attendanceRecord',
+            'attendanceRecord.breakRecords',
             'breakCorrectRequests',
         ])->findOrFail($attendance_correct_request_id);
 

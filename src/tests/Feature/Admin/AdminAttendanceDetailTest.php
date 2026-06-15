@@ -9,10 +9,12 @@ use Tests\TestCase;
 
 class AdminAttendanceDetailTest extends TestCase
 {
-use RefreshDatabase;
+    use RefreshDatabase;
 
     protected User $admin;
+
     protected User $user;
+
     protected AttendanceRecord $attendance;
 
     protected function setUp(): void
@@ -127,5 +129,5 @@ use RefreshDatabase;
             '備考を記入してください',
             session('errors')->first('comment')
         );
-    }    
+    }
 }

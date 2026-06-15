@@ -10,10 +10,12 @@ use Tests\TestCase;
 
 class CorrectionApprovalTest extends TestCase
 {
-use RefreshDatabase;
+    use RefreshDatabase;
 
     protected User $admin;
+
     protected User $user;
+
     protected AttendanceRecord $attendance;
 
     protected function setUp(): void

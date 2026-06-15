@@ -10,9 +10,10 @@ use Tests\TestCase;
 
 class AttendanceReportTest extends TestCase
 {
-use DatabaseMigrations;
+    use DatabaseMigrations;
 
     protected User $user;
+
     protected AttendanceRecord $attendance;
 
     protected function setUp(): void

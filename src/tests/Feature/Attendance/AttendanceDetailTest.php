@@ -10,10 +10,12 @@ use Tests\TestCase;
 
 class AttendanceDetailTest extends TestCase
 {
-use RefreshDatabase;
+    use RefreshDatabase;
 
     protected User $user;
+
     protected AttendanceRecord $attendance;
+
     protected BreakRecord $break;
 
     protected function setUp(): void

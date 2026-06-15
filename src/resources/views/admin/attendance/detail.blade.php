@@ -32,9 +32,9 @@
           <th class="detail__label">出勤・退勤</th>
           <td class="detail__text">
             <div class="detail__inline">
-              <input type="time" name="clock_in" value="{{ $attendance->clock_in?->format('H:i') }}">
+              <input type="time" name="clock_in" value="{{ old('clock_in', $attendance->clock_in?->format('H:i')) }}">
               <span class="detail__separator">～</span>
-              <input type="time" name="clock_out" value="{{ $attendance->clock_out?->format('H:i') }}">
+              <input type="time" name="clock_out" value="{{ old('clock_out', $attendance->clock_out?->format('H:i')) }}">
             </div>
 
             <div class="detail__error">
@@ -52,18 +52,18 @@
           <th class="detail__label">休憩{{ $loop->iteration }}</th> <!-- 1からループ回数表示 -->
           <td class="detail__text">
             <div class="detail__inline">
-              <input type="time" name="start_at[]" value="{{ $breakRecord->start_at->format('H:i') }}">
+              <input type="time" name="start_at[]" value="{{ old('start_at.'.$loop->index, $breakRecord->start_at?->format('H:i')) }}">
               <span class="detail__separator">～</span>
-              <input type="time" name="end_at[]" value="{{ $breakRecord->end_at->format('H:i') }}">
+              <input type="time" name="end_at[]" value="{{ old('end_at.'.$loop->index, $breakRecord->end_at?->format('H:i')) }}">
             </div>
 
             <div class="detail__error">
               @error('start_at.'.$loop->index)
-              <p>{{ $message }}</P>
+              <p>{{ $message }}</p>
               @enderror
 
               @error('end_at.'.$loop->index)
-              <p>{{ $message }}</P>
+              <p>{{ $message }}</p>
               @enderror
             </div>
 
@@ -74,9 +74,9 @@
           <th class="detail__label">休憩{{ $attendance->breakRecords->count() +1 }}</th>
           <td class="detail__text">
             <div class="detail__inline">
-              <input type="time" name="start_at[]">
+              <input type="time" name="start_at[]" value="{{ old('start_at.'.$attendance->breakRecords->count()) }}">
               <span class="detail__separator">～</span>
-              <input type="time" name="end_at[]">
+              <input type="time" name="end_at[]" value="{{ old('end_at.'.$attendance->breakRecords->count()) }}">
             </div>
 
             <div class="detail__error">
@@ -95,7 +95,7 @@
           <th class="detail__label">備考</th>
           <td class="detail__text">
             <div class="detail__comment">
-              <textarea class="detail__textarea" name="comment">{{ $attendance->comment }}</textarea>
+              <textarea class="detail__textarea" name="comment">{{ old('comment', $attendance->comment) }}</textarea>
             </div>
 
             <div class="detail__error">
@@ -108,10 +108,10 @@
         </tr>
       </table>
       @if ($isPending)
-      <p class="detail__pending">*承認待ちのため修正はできません。</p>
+        <p class="detail__pending">*承認待ちのため修正はできません。</p>
       @else
-      @if (session('message'))
-      <p class="detail__notice">{{ session('message') }}</p>
+        @if (session('message'))
+        <p class="detail__notice">{{ session('message') }}</p>
       @endif
 
       <div class="detail__button">

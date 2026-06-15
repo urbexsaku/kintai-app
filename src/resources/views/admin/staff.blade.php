@@ -9,7 +9,7 @@
 @section('content')
 <div class="staff__content">
   <div class="staff__inner">
-    <h1 class="staff__title">勤怠詳細</h1>
+    <h1 class="staff__title">スタッフ一覧</h1>
     <div class="staff__wrapper">
       <table class="staff__table">
         <tr class="staff__row">
@@ -18,7 +18,7 @@
           <th class="staff__head">月次勤怠</th>
         </tr>
 
-        @foreach ($users as $user) 
+        @foreach ($users as $user)
         <tr class="staff__row">
           <td class="staff__data">
             {{ $user->name }}

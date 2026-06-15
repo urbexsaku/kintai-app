@@ -49,7 +49,7 @@
       </tr>
       @endforeach
       <tr class="approve__row">
-        <th class="approve__label">休憩{{ $attendanceCorrectRequest->breakCorrectRequets?->count() +1 }}</th>
+        <th class="approve__label">休憩{{ $attendanceCorrectRequest->breakCorrectRequests?->count() + 1 }}</th>
         <td class="approve__text">
           <div class="approve__inline">
             <span></span>
@@ -81,8 +81,9 @@
       <div class="approve__button">
         <button class="approve__button-submit">承認</button>
       </div>
-      @endif
     </form>
+    @endif
+
   </div>
 </div>
 @endsection

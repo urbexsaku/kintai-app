@@ -102,7 +102,7 @@ class UserRegistrationTest extends TestCase
             'パスワードを入力してください',
             session('errors')->first('password')
         );
-    }    
+    }
 
     public function test_user_is_registered()
     {

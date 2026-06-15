@@ -54,7 +54,7 @@
     </div>
     
     <!-- 一般ログイン画面のみリンク表示 -->
-    @if(request()->routeIs('login'))
+    @if (request()->routeIs('login'))
     <a class="auth-form__link" href="/register">会員登録はこちら</a>
     @endif
   </form>

@@ -14,7 +14,6 @@ class AttendanceRecordController extends Controller
     /**
      * 勤怠一覧を取得する
      *
-     * @param IndexAttendanceRecordRequest $request
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index(IndexAttendanceRecordRequest $request)
@@ -29,7 +28,7 @@ class AttendanceRecordController extends Controller
             ->with(['user', 'breakRecords'])
             ->when(
                 $request->user_id,
-                fn($q) => $q->where(
+                fn ($q) => $q->where(
                     'user_id',
                     $request->user_id
                 )
@@ -52,7 +51,7 @@ class AttendanceRecordController extends Controller
             )
             ->latest('work_date')
             ->paginate($perPage);
-        
+
         return AttendanceRecordResource::collection(
             $records
         );
@@ -61,7 +60,6 @@ class AttendanceRecordController extends Controller
     /**
      * 勤怠を登録する
      *
-     * @param StoreAttendanceRecordRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(StoreAttendanceRecordRequest $request)
@@ -80,14 +78,13 @@ class AttendanceRecordController extends Controller
         return (new AttendanceRecordResource(
             $attendanceRecord
         ))
-        ->response()
-        ->setStatusCode(201);
+            ->response()
+            ->setStatusCode(201);
     }
 
     /**
      * 勤怠詳細を取得する
      *
-     * @param AttendanceRecord $attendanceRecord
      * @return AttendanceRecordResource
      */
     public function show(AttendanceRecord $attendanceRecord)
@@ -106,8 +103,6 @@ class AttendanceRecordController extends Controller
     /**
      * 勤怠情報を更新する
      *
-     * @param UpdateAttendanceRecordRequest $request
-     * @param AttendanceRecord $attendanceRecord
      * @return AttendanceRecordResource
      */
     public function update(UpdateAttendanceRecordRequest $request, AttendanceRecord $attendanceRecord)
@@ -131,7 +126,6 @@ class AttendanceRecordController extends Controller
     /**
      * 勤怠情報を削除する
      *
-     * @param AttendanceRecord $attendanceRecord
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function destroy(AttendanceRecord $attendanceRecord)

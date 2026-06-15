@@ -137,7 +137,7 @@ class AdminAttendanceController extends Controller
             ->get();
 
         // 出勤データを日付キーで指定
-        $attendanceMap = $attendances->KeyBy(function ($attendance) {
+        $attendanceMap = $attendances->keyBy(function ($attendance) {
             return $attendance->work_date->format('Y-m-d');
         });
 
@@ -157,7 +157,10 @@ class AdminAttendanceController extends Controller
         $startOfMonth = Carbon::parse($currentMonth)->startOfMonth();
         $endOfMonth = Carbon::parse($currentMonth)->endOfMonth();
 
-        $attendances = AttendanceRecord::with('breakRecords')
+        $attendances = AttendanceRecord::with([
+            'user',
+            'breakRecords',
+        ])
             ->where('user_id', $user_id)
             ->whereBetween('work_date', [$startOfMonth, $endOfMonth])
             ->get();

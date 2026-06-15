@@ -16,7 +16,7 @@ class AttendanceRecordFactory extends Factory
 
         $clockIn = Carbon::instance($workDate)->setTime(9, 0);
         $clockOut = Carbon::instance($workDate)->setTime(18, 0);
-    
+
         return [
             'work_date' => Carbon::instance($workDate)->format('Y-m-d'),
             'clock_in' => $clockIn,

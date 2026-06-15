@@ -59,7 +59,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 // 管理者ユーザーページ
-Route::name('admin.')->middleware(['auth', 'admin'])->group(function () {
+Route::name('admin.')->middleware(['auth', 'verified', 'admin'])->group(function () {
     Route::get('/admin/attendance/list', [AdminAttendanceController::class, 'index'])->name('attendance.index');
     Route::get('/admin/attendance/staff/{user_id}', [AdminAttendanceController::class, 'history']);
     Route::get('/admin/attendance/staff/{user_id}/export', [AdminAttendanceController::class, 'export']);
@@ -68,10 +68,9 @@ Route::name('admin.')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/staff/list', [AdminStaffController::class, 'index']);
     Route::get('/stamp_correction_request/approve/{attendance_correct_request_id}', [AdminRequestController::class, 'show']);
     Route::post('/stamp_correction_request/approve/{attendance_correct_request_id}', [AdminRequestController::class, 'update']);
-    Route::post('/admin/attendance/export', [AdminAttendanceController::class, 'export']);
 });
 
-Route::middleware(['auth'])->get('/stamp_correction_request/list', function (Request $request) {
+Route::middleware(['auth', 'verified'])->get('/stamp_correction_request/list', function (Request $request) {
     return auth()->user()->admin_status
         ? app(AdminRequestController::class)->index($request)
         : app(StaffRequestController::class)->index($request);

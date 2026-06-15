@@ -12,7 +12,7 @@ class UpdateAttendanceRecordRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -22,7 +22,7 @@ class UpdateAttendanceRecordRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'work_date' => [
@@ -30,26 +30,26 @@ class UpdateAttendanceRecordRequest extends FormRequest
                 'date',
                 Rule::unique('attendance_records')
                     ->ignore($this->route('attendance_record'))
-                    ->where('user_id', $this->user_id)
+                    ->where('user_id', $this->user_id),
             ],
             'clock_in' => [
                 'required',
-                'date_format:H:i:s'
+                'date_format:H:i:s',
             ],
             'clock_out' => [
                 'nullable',
                 'date_format:H:i:s',
-                'after:clock_in'
+                'after:clock_in',
             ],
             'comment' => [
                 'nullable',
                 'string',
-                'max:255'
+                'max:255',
             ],
         ];
     }
 
-    public function messages()
+    public function messages(): array
     {
         return [
             'work_date.required' => '勤怠日は必須です。',
@@ -63,7 +63,7 @@ class UpdateAttendanceRecordRequest extends FormRequest
         ];
     }
 
-    protected function prepareForValidation()
+    protected function prepareForValidation(): void
     {
         $this->merge([
             'user_id' => $this->route('attendance_record')->user_id,
