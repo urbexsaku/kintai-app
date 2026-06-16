@@ -22,6 +22,7 @@ make init
 - Composerパッケージのインストール
 - 環境変数ファイルの作成
 - アプリケーションキーの生成
+- storageおよびbootstrap/cacheの権限設定
 
 4. make init 実行後、以下を実行してください。
 
