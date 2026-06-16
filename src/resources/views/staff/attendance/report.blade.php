@@ -10,7 +10,7 @@
 <div class="report__content">
   <div class="report__inner">
     <h1 class="report__title">マイ勤怠レポート</h1>
-    <p class="report__description">過去6ヶ月の勤怠データから集計しています</p>
+    <p class="report__description">過去6ヶ月の勤怠データから集計しています。</p>
 
     <h2 class="report__header">基本サマリー</h2>
     <div class="report__wrapper">

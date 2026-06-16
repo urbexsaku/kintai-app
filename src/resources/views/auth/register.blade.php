@@ -13,7 +13,7 @@
     @csrf
     <div class="auth-form__group">
       <div class="auth-form__group-title">
-        <span class="auth-form__label">ユーザー名</span>
+        <span class="auth-form__label">名前</span>
       </div>
       <div class="auth-form__group-content">
         <div class="auth-form__input">
@@ -61,7 +61,7 @@
 
     <div class="auth-form__group">
       <div class="auth-form__group-title">
-        <span class="auth-form__label">確認用パスワード</span>
+        <span class="auth-form__label">パスワード確認</span>
       </div>
       <div class="auth-form__group-content">
         <div class="auth-form__input">
