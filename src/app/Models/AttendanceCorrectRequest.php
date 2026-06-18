@@ -24,7 +24,7 @@ class AttendanceCorrectRequest extends Model
         'requested_clock_out' => 'datetime',
     ];
 
-    public function getStatusLabelAttribute()
+    public function getStatusLabelAttribute(): string
     {
         return match ($this->status) {
             'pending' => '承認待ち',

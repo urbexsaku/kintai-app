@@ -14,6 +14,11 @@ use Illuminate\Support\Facades\Auth;
 
 class StaffAttendanceController extends Controller
 {
+    /**
+     * 勤怠登録画面を表示する
+     *
+     * @return \Illuminate\View\View
+     */
     public function index()
     {
         // 今日の出勤データを取得
@@ -24,7 +29,7 @@ class StaffAttendanceController extends Controller
             ->where('work_date', today())
             ->first();
 
-        $break = $attendance?->breakRecords->first();
+        $break = null;
 
         // 今日の出勤データが存在する場合、その勤怠に紐づく最新の休憩データを取得
         if ($attendance) {
@@ -53,7 +58,11 @@ class StaffAttendanceController extends Controller
         ));
     }
 
-    // 出勤登録
+    /**
+     * 出勤時刻を登録する
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function clockIn()
     {
         $attendance = AttendanceRecord::where('user_id', Auth::id())->where('work_date', today())->first();
@@ -71,7 +80,11 @@ class StaffAttendanceController extends Controller
         return redirect()->route('staff.attendance.stamp');
     }
 
-    // 休憩入登録
+    /**
+     * 休憩開始時刻を登録する
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function breakStart()
     {
         $attendance = $this->getTodayAttendance();
@@ -84,7 +97,11 @@ class StaffAttendanceController extends Controller
         return redirect()->route('staff.attendance.stamp');
     }
 
-    // 休憩戻登録
+    /**
+     * 休憩終了時刻を登録する
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function breakEnd()
     {
         $attendance = $this->getTodayAttendance();
@@ -98,7 +115,11 @@ class StaffAttendanceController extends Controller
         return redirect()->route('staff.attendance.stamp');
     }
 
-    // 退勤登録
+    /**
+     * 退勤時刻を登録する
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function clockOut()
     {
         $attendance = $this->getTodayAttendance();
@@ -110,6 +131,12 @@ class StaffAttendanceController extends Controller
         return redirect()->route('staff.attendance.stamp');
     }
 
+    /**
+     * 指定月の勤怠一覧を表示する
+     *
+     * @param Request $request
+     * @return \Illuminate\View\View
+     */
     public function history(Request $request)
     {
 
@@ -134,7 +161,7 @@ class StaffAttendanceController extends Controller
             ->get();
 
         // 出勤データを日付キーで指定
-        $attendanceMap = $attendances->KeyBy(function ($attendance) {
+        $attendanceMap = $attendances->keyBy(function ($attendance) {
             return $attendance->work_date->format('Y-m-d');
         });
 
@@ -147,6 +174,12 @@ class StaffAttendanceController extends Controller
         ));
     }
 
+    /**
+     * 勤怠詳細画面を表示する
+     *
+     * @param int $attendance_id
+     * @return \Illuminate\View\View
+     */
     public function show($attendance_id)
     {
         $attendance = AttendanceRecord::findOrFail($attendance_id);
@@ -156,6 +189,13 @@ class StaffAttendanceController extends Controller
         return view('staff.attendance.detail', compact('attendance', 'isPending'));
     }
 
+    /**
+     * 勤怠修正申請を行う
+     *
+     * @param AttendanceRequest $request
+     * @param int $attendance_id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(AttendanceRequest $request, $attendance_id)
     {
         $attendanceCorrectRequest = AttendanceCorrectRequest::create([
@@ -192,6 +232,11 @@ class StaffAttendanceController extends Controller
         return redirect("/stamp_correction_request/detail/{$attendanceCorrectRequest->id}");
     }
 
+    /**
+     * マイ勤怠レポート画面を表示する
+     *
+     * @return \Illuminate\View\View
+     */
     public function report()
     {
         $user = auth()->id();

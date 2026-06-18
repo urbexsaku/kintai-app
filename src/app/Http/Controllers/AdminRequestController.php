@@ -8,6 +8,12 @@ use Illuminate\Http\Request;
 
 class AdminRequestController extends Controller
 {
+    /**
+     * 勤怠修正申請一覧を表示する
+     *
+     * @param Request $request
+     * @return \Illuminate\View\View
+     */
     public function index(Request $request)
     {
         $page = $request->query('page', 'pending');
@@ -16,22 +22,35 @@ class AdminRequestController extends Controller
             'attendanceRecord.user',
         ]);
 
-        if ($page) {
-            $query->where('status', $page);
-        }
+        $query->where('status', $page);
 
         $attendanceCorrectRequests = $query->get();
 
         return view('admin.requests.index', compact('attendanceCorrectRequests', 'page'));
     }
 
+    /**
+     * 勤怠修正申請承認画面を表示する
+     *
+     * @param int $attendance_correct_request_id
+     * @return \Illuminate\View\View
+     */
     public function show($attendance_correct_request_id)
     {
-        $attendanceCorrectRequest = AttendanceCorrectRequest::with('breakCorrectRequests', 'attendanceRecord.user')->findOrFail($attendance_correct_request_id);
+        $attendanceCorrectRequest = AttendanceCorrectRequest::with(
+            'breakCorrectRequests',
+            'attendanceRecord.user'
+        )->findOrFail($attendance_correct_request_id);
 
         return view('admin.requests.approve', compact('attendanceCorrectRequest'));
     }
 
+    /**
+     * 勤怠修正申請を承認する
+     *
+     * @param int $attendance_correct_request_id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function update($attendance_correct_request_id)
     {
 

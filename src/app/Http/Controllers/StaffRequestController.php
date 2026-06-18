@@ -7,6 +7,12 @@ use Illuminate\Http\Request;
 
 class StaffRequestController extends Controller
 {
+    /**
+     * 勤怠修正申請一覧を表示する
+     *
+     * @param Request $request
+     * @return \Illuminate\View\View
+     */
     public function index(Request $request)
     {
         $page = $request->query('page', 'pending');
@@ -24,9 +30,15 @@ class StaffRequestController extends Controller
         return view('staff.requests.index', compact('attendanceCorrectRequests', 'page'));
     }
 
-    public function show($id)
+    /**
+     * 勤怠修正申請詳細画面を表示する
+     *
+     * @param int $attendance_correct_request_id
+     * @return \Illuminate\View\View
+     */
+    public function show($attendance_correct_request_id)
     {
-        $attendanceCorrectRequest = AttendanceCorrectRequest::findOrFail($id);
+        $attendanceCorrectRequest = AttendanceCorrectRequest::findOrFail($attendance_correct_request_id);
 
         return view('staff.requests.detail', compact('attendanceCorrectRequest'));
     }

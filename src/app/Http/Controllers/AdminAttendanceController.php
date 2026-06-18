@@ -12,6 +12,12 @@ use Illuminate\Http\Request;
 
 class AdminAttendanceController extends Controller
 {
+    /**
+     * 指定日の勤怠一覧を表示する
+     *
+     * @param Request $request
+     * @return \Illuminate\View\View
+     */
     public function index(Request $request)
     {
         $date = $request->query('date', Carbon::today()->toDateString());
@@ -45,6 +51,12 @@ class AdminAttendanceController extends Controller
         ));
     }
 
+    /**
+     * 勤怠詳細画面を表示する
+     *
+     * @param int $attendance_id
+     * @return \Illuminate\View\View
+     */
     public function show($attendance_id)
     {
         $attendance = AttendanceRecord::with('breakRecords', 'user')
@@ -55,6 +67,13 @@ class AdminAttendanceController extends Controller
         return view('admin.attendance.detail', compact('attendance', 'isPending'));
     }
 
+    /**
+     * 勤怠情報を更新する
+     *
+     * @param AttendanceRequest $request
+     * @param int $attendance_id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function update(AttendanceRequest $request, $attendance_id)
     {
         $attendance = AttendanceRecord::with('breakRecords')
@@ -112,6 +131,13 @@ class AdminAttendanceController extends Controller
             ->with('message', '勤怠データを更新しました');
     }
 
+    /**
+     * ユーザーの月次勤怠一覧を表示する
+     *
+     * @param Request $request
+     * @param int $user_id
+     * @return \Illuminate\View\View
+     */
     public function history(Request $request, $user_id)
     {
         $user = User::findOrFail($user_id);
@@ -151,6 +177,13 @@ class AdminAttendanceController extends Controller
         ));
     }
 
+    /**
+     * 月次勤怠データをCSV出力する
+     *
+     * @param Request $request
+     * @param int $user_id
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function export(Request $request, $user_id)
     {
         $currentMonth = $request->input('month', now()->format('Y-m'));

@@ -7,7 +7,7 @@
 @endsection
 
 @section('content')
-<div class="monthly__content">
+<div class="page">
   <div class="monthly__inner">
     <h1 class="monthly__title">勤怠一覧</h1>
 

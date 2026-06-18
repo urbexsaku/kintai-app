@@ -8,15 +8,19 @@ use App\Http\Requests\Api\V1\StoreAttendanceRecordRequest;
 use App\Http\Requests\Api\V1\UpdateAttendanceRecordRequest;
 use App\Http\Resources\AttendanceRecordResource;
 use App\Models\AttendanceRecord;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class AttendanceRecordController extends Controller
 {
     /**
      * 勤怠一覧を取得する
      *
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @param IndexAttendanceRecordRequest $request
+     * @return AnonymousResourceCollection
      */
-    public function index(IndexAttendanceRecordRequest $request)
+    public function index(IndexAttendanceRecordRequest $request): AnonymousResourceCollection
     {
         // ページネーション　デフォルト 20、最大 100
         $perPage = min(
@@ -60,9 +64,10 @@ class AttendanceRecordController extends Controller
     /**
      * 勤怠を登録する
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @param StoreAttendanceRecordRequest $request
+     * @return JsonResponse
      */
-    public function store(StoreAttendanceRecordRequest $request)
+    public function store(StoreAttendanceRecordRequest $request): JsonResponse
     {
         $attendanceRecord = $request->user()
             ->attendanceRecords()
@@ -85,9 +90,10 @@ class AttendanceRecordController extends Controller
     /**
      * 勤怠詳細を取得する
      *
+     * @param AttendanceRecord $attendanceRecord
      * @return AttendanceRecordResource
      */
-    public function show(AttendanceRecord $attendanceRecord)
+    public function show(AttendanceRecord $attendanceRecord): AttendanceRecordResource
     {
         $attendanceRecord->load([
             'user',
@@ -103,10 +109,14 @@ class AttendanceRecordController extends Controller
     /**
      * 勤怠情報を更新する
      *
+     * @param UpdateAttendanceRecordRequest $request
+     * @param AttendanceRecord $attendanceRecord
      * @return AttendanceRecordResource
      */
-    public function update(UpdateAttendanceRecordRequest $request, AttendanceRecord $attendanceRecord)
-    {
+    public function update(
+        UpdateAttendanceRecordRequest $request,
+        AttendanceRecord $attendanceRecord
+    ): AttendanceRecordResource {
         $this->authorize('update', $attendanceRecord);
 
         $attendanceRecord->update(
@@ -126,9 +136,10 @@ class AttendanceRecordController extends Controller
     /**
      * 勤怠情報を削除する
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @param AttendanceRecord $attendanceRecord
+     * @return Response
      */
-    public function destroy(AttendanceRecord $attendanceRecord)
+    public function destroy(AttendanceRecord $attendanceRecord): Response
     {
         $this->authorize('delete', $attendanceRecord);
 

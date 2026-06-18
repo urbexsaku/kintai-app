@@ -41,7 +41,7 @@ class AttendanceRecord extends Model
         return $this->hasMany(AttendanceCorrectRequest::class);
     }
 
-    public function getTotalBreakAttribute()
+    public function getTotalBreakAttribute(): string
     {
         $totalBreak = $this->calculateTotalBreakSeconds();
 
@@ -52,7 +52,7 @@ class AttendanceRecord extends Model
         return sprintf('%02d:%02d', $hours, $minutes);
     }
 
-    public function getWorkTimeAttribute()
+    public function getWorkTimeAttribute(): ?string
     {
         // 出勤中であればnullを返す
         if (! $this->clock_out) {
@@ -69,7 +69,7 @@ class AttendanceRecord extends Model
         return sprintf('%02d:%02d', $hours, $minutes);
     }
 
-    public function getWorkMinutesAttribute()
+    public function getWorkMinutesAttribute(): ?int
     {
         if (! $this->clock_out) {
             return null;
@@ -82,7 +82,7 @@ class AttendanceRecord extends Model
         return floor($workSeconds / 60);
     }
 
-    private function calculateTotalBreakSeconds()
+    private function calculateTotalBreakSeconds(): int
     {
         // 日毎の休憩データを秒に換算し、休憩総時間を累計算出
         $totalBreak = 0;

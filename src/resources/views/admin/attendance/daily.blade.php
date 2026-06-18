@@ -7,7 +7,7 @@
 @endsection
 
 @section('content')
-<div class="daily__content">
+<div class="page">
   <div class="daily__inner">
     <h1 class="daily__title">{{ \Carbon\Carbon::parse($currentDate)->format('Y年n月j日') }}の勤怠</h1>
 

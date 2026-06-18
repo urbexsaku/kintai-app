@@ -7,7 +7,7 @@
 @endsection
 
 @section('content')
-<div class="approve__content">
+<div class="page">
   <div class="approve__inner">
     <h1 class="approve__title">勤怠詳細</h1>
 

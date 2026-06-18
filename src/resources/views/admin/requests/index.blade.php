@@ -7,7 +7,7 @@
 @endsection
 
 @section('content')
-<div class="request__content">
+<div class="page">
   <div class="request__inner">
     <h1 class="request__title">申請一覧</h1>
 
