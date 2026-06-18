@@ -42,3 +42,10 @@ header {
     font-weight: bold;
     cursor: pointer;
 }
+
+.page {
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: 50px 0;
+    background-color: #F0EFF2;
+}
