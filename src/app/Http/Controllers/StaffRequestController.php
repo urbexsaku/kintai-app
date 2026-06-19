@@ -10,7 +10,6 @@ class StaffRequestController extends Controller
     /**
      * 勤怠修正申請一覧を表示する
      *
-     * @param Request $request
      * @return \Illuminate\View\View
      */
     public function index(Request $request)
@@ -33,7 +32,7 @@ class StaffRequestController extends Controller
     /**
      * 勤怠修正申請詳細画面を表示する
      *
-     * @param int $attendance_correct_request_id
+     * @param  int  $attendance_correct_request_id
      * @return \Illuminate\View\View
      */
     public function show($attendance_correct_request_id)

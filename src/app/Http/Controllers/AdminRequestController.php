@@ -11,7 +11,6 @@ class AdminRequestController extends Controller
     /**
      * 勤怠修正申請一覧を表示する
      *
-     * @param Request $request
      * @return \Illuminate\View\View
      */
     public function index(Request $request)
@@ -32,7 +31,7 @@ class AdminRequestController extends Controller
     /**
      * 勤怠修正申請承認画面を表示する
      *
-     * @param int $attendance_correct_request_id
+     * @param  int  $attendance_correct_request_id
      * @return \Illuminate\View\View
      */
     public function show($attendance_correct_request_id)
@@ -48,7 +47,7 @@ class AdminRequestController extends Controller
     /**
      * 勤怠修正申請を承認する
      *
-     * @param int $attendance_correct_request_id
+     * @param  int  $attendance_correct_request_id
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update($attendance_correct_request_id)

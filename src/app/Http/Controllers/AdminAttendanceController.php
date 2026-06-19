@@ -15,7 +15,6 @@ class AdminAttendanceController extends Controller
     /**
      * 指定日の勤怠一覧を表示する
      *
-     * @param Request $request
      * @return \Illuminate\View\View
      */
     public function index(Request $request)
@@ -54,7 +53,7 @@ class AdminAttendanceController extends Controller
     /**
      * 勤怠詳細画面を表示する
      *
-     * @param int $attendance_id
+     * @param  int  $attendance_id
      * @return \Illuminate\View\View
      */
     public function show($attendance_id)
@@ -70,8 +69,7 @@ class AdminAttendanceController extends Controller
     /**
      * 勤怠情報を更新する
      *
-     * @param AttendanceRequest $request
-     * @param int $attendance_id
+     * @param  int  $attendance_id
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(AttendanceRequest $request, $attendance_id)
@@ -134,8 +132,7 @@ class AdminAttendanceController extends Controller
     /**
      * ユーザーの月次勤怠一覧を表示する
      *
-     * @param Request $request
-     * @param int $user_id
+     * @param  int  $user_id
      * @return \Illuminate\View\View
      */
     public function history(Request $request, $user_id)
@@ -180,8 +177,7 @@ class AdminAttendanceController extends Controller
     /**
      * 月次勤怠データをCSV出力する
      *
-     * @param Request $request
-     * @param int $user_id
+     * @param  int  $user_id
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function export(Request $request, $user_id)

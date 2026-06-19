@@ -134,7 +134,6 @@ class StaffAttendanceController extends Controller
     /**
      * 指定月の勤怠一覧を表示する
      *
-     * @param Request $request
      * @return \Illuminate\View\View
      */
     public function history(Request $request)
@@ -177,7 +176,7 @@ class StaffAttendanceController extends Controller
     /**
      * 勤怠詳細画面を表示する
      *
-     * @param int $attendance_id
+     * @param  int  $attendance_id
      * @return \Illuminate\View\View
      */
     public function show($attendance_id)
@@ -192,8 +191,7 @@ class StaffAttendanceController extends Controller
     /**
      * 勤怠修正申請を行う
      *
-     * @param AttendanceRequest $request
-     * @param int $attendance_id
+     * @param  int  $attendance_id
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(AttendanceRequest $request, $attendance_id)
