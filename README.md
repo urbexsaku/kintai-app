@@ -47,7 +47,7 @@ make fresh
 
 - 一般ユーザー用ログインページ：http://localhost/login
 - 管理者用ログインページ：http://localhost/admin/login
-- phpMyAdmin：http://localhost:8080/
+- phpMyAdmin：http://localhost:8080
 
 ## テスト用アカウント
 
