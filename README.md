@@ -45,8 +45,9 @@ make fresh
 
 ## URL
 
-- 開発環境：http://localhost/
-- phpMyAdmin：http://localhost:8080/
+- 一般ユーザー用ログインページ：http://localhost/login
+- 管理者用ログインページ：http://localhost/admin/login
+- phpMyAdmin：http://localhost:8080
 
 ## テスト用アカウント
 
@@ -55,9 +56,6 @@ make fresh
 | ユーザー1 | user1@example.com | password | 済み | 一般ユーザー |
 | ユーザー2 | user2@example.com | password | 済み | 一般ユーザー |
 | ユーザー3 | user3@example.com | password | 済み | 管理者 |
-
-- 一般ユーザー用ログインページ http://localhost/login
-- 管理者用ログインページ http://localhost/admin/login
 
 ## テスト実行方法
 
