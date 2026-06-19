@@ -20,7 +20,6 @@ class AdminAuthController extends Controller
     /**
      * ログイン処理を行う
      *
-     * @param LoginRequest $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(LoginRequest $request)
