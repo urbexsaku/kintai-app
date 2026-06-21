@@ -114,7 +114,7 @@
         <p class="detail__notice">{{ session('message') }}</p>
       @endif
 
-      <div class="detail__button">
+      <div class="detail__button" type="submit">
         <button class="detail__button-submit">修正</button>
       </div>
       @endif

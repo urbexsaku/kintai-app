@@ -30,19 +30,23 @@
 
     <h2 class="report__header">月次推移（過去6ヶ月）</h2>
      <table class="report__table">
-      <tr class="report__row">
-        <th class="report__head">月</th>
-        <th class="report__head">労働時間</th>
-        <th class="report__head">残業時間</th>
-      </tr>
-
-      @foreach ($monthlyReports as $report)
-      <tr class="report__row">
-        <td class="report__data">{{ $report['month'] }}</td>
-        <td class="report__data">{{ $report['work_time'] }}</td>
-        <td class="report__data">{{ $report['overtime_time'] }}</td>
-      </tr>
-      @endforeach
+      <thead>
+        <tr class="report__row">
+          <th class="report__head">月</th>
+          <th class="report__head">労働時間</th>
+          <th class="report__head">残業時間</th>
+        </tr>
+      </thead>
+    
+      <tbody>
+        @foreach ($monthlyReports as $report)
+        <tr class="report__row">
+          <td class="report__data">{{ $report['month'] }}</td>
+          <td class="report__data">{{ $report['work_time'] }}</td>
+          <td class="report__data">{{ $report['overtime_time'] }}</td>
+        </tr>
+        @endforeach
+      </tbody>     
     </table>
 
     <h2 class="report__header">今月の異常検知</h2>

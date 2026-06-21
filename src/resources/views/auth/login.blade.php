@@ -17,11 +17,11 @@
     @csrf
     <div class="auth-form__group">
       <div class="auth-form__group-title">
-        <span class="auth-form__label">メールアドレス</span>
+        <label class="auth-form__label" for="email">メールアドレス</label>
       </div>
       <div class="auth-form__group-content">
         <div class="auth-form__input">
-          <input type="email" name="email" value="{{ old('email') }}">
+          <input id="email" type="email" name="email" value="{{ old('email') }}">
         </div>
         <div class="auth-form__error">
           @error('email')
@@ -33,11 +33,11 @@
 
     <div class="auth-form__group">
       <div class="auth-form__group-title">
-        <span class="auth-form__label">パスワード</span>
+        <label class="auth-form__label" for="password">パスワード</label>
       </div>
       <div class="auth-form__group-content">
         <div class="auth-form__input">
-          <input type="password" name="password">
+          <input id="password" type="password" name="password">
         </div>
         <div class="auth-form__error">
           @error('password')
