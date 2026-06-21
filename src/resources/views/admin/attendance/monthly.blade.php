@@ -28,55 +28,59 @@
 
     <div class="monthly__wrapper">
       <table class="monthly__table">
-        <tr class="monthly__row">
-          <th class="monthly__head">日付</th>
-          <th class="monthly__head">出勤</th>
-          <th class="monthly__head">退勤</th>
-          <th class="monthly__head">休憩</th>
-          <th class="monthly__head">合計</th>
-          <th class="monthly__head">詳細</th>
-        </tr>
+        <thead>
+          <tr class="monthly__row">
+            <th class="monthly__head">日付</th>
+            <th class="monthly__head">出勤</th>
+            <th class="monthly__head">退勤</th>
+            <th class="monthly__head">休憩</th>
+            <th class="monthly__head">合計</th>
+            <th class="monthly__head">詳細</th>
+          </tr>
+        </thead>
 
-        @foreach ($dates as $date)
+        <tbody>
+          @foreach ($dates as $date)
 
-        <!-- 勤怠がない日はnull取得 -->
-        @php
-        $attendance = $attendanceMap[$date->format('Y-m-d')] ?? null;
-        @endphp
+          <!-- 勤怠がない日はnull取得 -->
+          @php
+          $attendance = $attendanceMap[$date->format('Y-m-d')] ?? null;
+          @endphp
 
-        <tr class="monthly__row">
-          <td class="monthly__data">
-            {{ $date->format('m/d') }}
-            ({{ ['日', '月', '火', '水', '木', '金', '土'][$date->dayOfWeek] }})
-          </td>
-          <td class="monthly__data">
-            {{ $attendance?->clock_in?->format('H:i') }}
-          </td>
-          <td class="monthly__data">
-            {{ $attendance?->clock_out?->format('H:i') }}
-          </td>
-          <td class="monthly__data">
-            {{ $attendance?->total_break }}
-          </td>
-          <td class="monthly__data">
-            {{ $attendance?->work_time }}
-          </td>
-          <td class="monthly__data">
-            @if($date->isToday() || $date->isFuture())
-            @elseif($attendance)
-            <a class="monthly__detail" href="/admin/attendance/{{ $attendance->id }}">詳細</a>
-            @else
-            <p class="monthly__detail">詳細</p>
-            @endif
-          </td>
-        </tr>
-        @endforeach
+          <tr class="monthly__row">
+            <td class="monthly__data">
+              {{ $date->format('m/d') }}
+              ({{ ['日', '月', '火', '水', '木', '金', '土'][$date->dayOfWeek] }})
+            </td>
+            <td class="monthly__data">
+              {{ $attendance?->clock_in?->format('H:i') }}
+            </td>
+            <td class="monthly__data">
+              {{ $attendance?->clock_out?->format('H:i') }}
+            </td>
+            <td class="monthly__data">
+              {{ $attendance?->total_break }}
+            </td>
+            <td class="monthly__data">
+              {{ $attendance?->work_time }}
+            </td>
+            <td class="monthly__data">
+              @if($date->isToday() || $date->isFuture())
+              @elseif($attendance)
+              <a class="monthly__detail" href="/admin/attendance/{{ $attendance->id }}">詳細</a>
+              @else
+              <p class="monthly__detail">詳細</p>
+              @endif
+            </td>
+          </tr>
+          @endforeach
+        </tbody>
       </table>
     </div>
     <form action="/admin/attendance/staff/{{ $user->id }}/export" method="get">
       <input type="hidden" name="month" value="{{ $currentMonth }}">
       <div class="monthly__button">
-        <button class="monthly__button-submit">CSV出力</button>
+        <button class="monthly__button-submit" type="submit">CSV出力</button>
       </div>
     </form>
   </div>

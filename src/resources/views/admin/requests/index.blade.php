@@ -24,37 +24,41 @@
 
     <div class="request__wrapper">
       <table class="request__table">
-        <tr class="request__row">
-          <th class="request__head">状態</th>
-          <th class="request__head">名前</th>
-          <th class="request__head">対象日時</th>
-          <th class="request__head">申請理由</th>
-          <th class="request__head">申請日時</th>
-          <th class="request__head">詳細</th>
-        </tr>
+        <thead>
+          <tr class="request__row">
+            <th class="request__head">状態</th>
+            <th class="request__head">名前</th>
+            <th class="request__head">対象日時</th>
+            <th class="request__head">申請理由</th>
+            <th class="request__head">申請日時</th>
+            <th class="request__head">詳細</th>
+          </tr>
+        </thead>
 
-        @foreach ($attendanceCorrectRequests as $attendanceCorrectRequest)
-        <tr class="request__row">
-          <td class="request__data">
-            {{ $attendanceCorrectRequest->status_label }}
-          </td>
-          <td class="request__data">
-            {{ $attendanceCorrectRequest->attendanceRecord?->user?->name }}
-          </td>
-          <td class="request__data">
-            {{ $attendanceCorrectRequest->attendanceRecord->work_date->format('Y/m/d') }}
-          </td>
-          <td class="request__data">
-            {{ $attendanceCorrectRequest->comment }}
-          </td>
-          <td class="request__data">
-            {{ $attendanceCorrectRequest->created_at->format('Y/m/d') }}
-          </td>
-          <td class="request__data">
-            <a class="request__detail" href="/stamp_correction_request/approve/{{ $attendanceCorrectRequest->id }}">詳細</a>
-          </td>
-        </tr>
-        @endforeach
+        <tbody>
+          @foreach ($attendanceCorrectRequests as $attendanceCorrectRequest)
+          <tr class="request__row">
+            <td class="request__data">
+              {{ $attendanceCorrectRequest->status_label }}
+            </td>
+            <td class="request__data">
+              {{ $attendanceCorrectRequest->attendanceRecord?->user?->name }}
+            </td>
+            <td class="request__data">
+              {{ $attendanceCorrectRequest->attendanceRecord->work_date->format('Y/m/d') }}
+            </td>
+            <td class="request__data">
+              {{ $attendanceCorrectRequest->comment }}
+            </td>
+            <td class="request__data">
+              {{ $attendanceCorrectRequest->created_at->format('Y/m/d') }}
+            </td>
+            <td class="request__data">
+              <a class="request__detail" href="/stamp_correction_request/approve/{{ $attendanceCorrectRequest->id }}">詳細</a>
+            </td>
+          </tr>
+          @endforeach
+        </tbody>
       </table>
     </div>
   </div>

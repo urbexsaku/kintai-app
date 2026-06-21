@@ -111,7 +111,7 @@
       <p class="detail__pending">*承認待ちのため修正はできません。</p>
       @else
       <div class="detail__button">
-        <button class="detail__button-submit">修正</button>
+        <button class="detail__button-submit" type="submit">修正</button>
       </div>
       @endif
     </form>
