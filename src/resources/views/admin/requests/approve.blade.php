@@ -7,9 +7,9 @@
 @endsection
 
 @section('content')
-<div class="page">
+<div class="page__container">
   <div class="approve__inner">
-    <h1 class="approve__title">勤怠詳細</h1>
+    <h1 class="page__title">勤怠詳細</h1>
 
     <table class="approve__table">
       <tr class="approve__row">
@@ -73,13 +73,13 @@
 
     @if ($attendanceCorrectRequest->status === 'approved')
     <div class="approve__button">
-      <button type="button" class="approve__button-submit approve__button-submit--approved">承認済み</button>
+      <button type="button" class="page__button-submit approve__button-submit--approved">承認済み</button>
     </div>
     @else
     <form action="/stamp_correction_request/approve/{{ $attendanceCorrectRequest->id }}" method="post">
       @csrf
-      <div class="approve__button">
-        <button class="approve__button-submit">承認</button>
+      <div class="page__button">
+        <button class="page__button-submit">承認</button>
       </div>
     </form>
     @endif

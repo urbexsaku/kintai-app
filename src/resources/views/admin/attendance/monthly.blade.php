@@ -7,11 +7,11 @@
 @endsection
 
 @section('content')
-<div class="page">
-  <div class="monthly__inner">
-    <h1 class="monthly__title">{{ $user->name }}さんの勤怠</h1>
+<div class="page__container">
+  <div class="page__inner">
+    <h1 class="page__title">{{ $user->name }}さんの勤怠</h1>
 
-    <div class="monthly__header">
+    <div class="page__header">
       <a class="monthly__link" href="/admin/attendance/staff/{{ $user->id }}?month={{ $previousMonth }}">
         <img class="monthly__arrow" src="{{ asset('images/arrow.png') }}" alt="矢印">
         前月
@@ -26,8 +26,8 @@
       </a>
     </div>
 
-    <div class="monthly__wrapper">
-      <table class="monthly__table">
+    <div class="page__wrapper">
+      <table class="page__table">
         <thead>
           <tr class="monthly__row">
             <th class="monthly__head">日付</th>
@@ -79,8 +79,8 @@
     </div>
     <form action="/admin/attendance/staff/{{ $user->id }}/export" method="get">
       <input type="hidden" name="month" value="{{ $currentMonth }}">
-      <div class="monthly__button">
-        <button class="monthly__button-submit" type="submit">CSV出力</button>
+      <div class="page__button">
+        <button class="page__button-submit" type="submit">CSV出力</button>
       </div>
     </form>
   </div>

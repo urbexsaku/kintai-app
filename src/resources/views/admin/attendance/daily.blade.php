@@ -7,11 +7,11 @@
 @endsection
 
 @section('content')
-<div class="page">
-  <div class="daily__inner">
-    <h1 class="daily__title">{{ \Carbon\Carbon::parse($currentDate)->format('Y年n月j日') }}の勤怠</h1>
+<div class="page__container">
+  <div class="page__inner">
+    <h1 class="page__title">{{ \Carbon\Carbon::parse($currentDate)->format('Y年n月j日') }}の勤怠</h1>
 
-    <nav class="daily__header">
+    <nav class="page__header">
       <a class="daily__link" href="/admin/attendance/list?date={{ $previousDate }}">
         <img class="daily__arrow" src="{{ asset('images/arrow.png') }}" alt="矢印">
         前日
@@ -26,8 +26,8 @@
       </a>
     </nav>
 
-    <div class="daily__wrapper">
-      <table class="daily__table">
+    <div class="page__wrapper">
+      <table class="page__table">
         <thead>
           <tr class="daily__row">
             <th class="daily__head">名前</th>

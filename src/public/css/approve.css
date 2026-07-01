@@ -6,22 +6,17 @@
     flex-direction: column;
 }
 
-.approve__title {
-    padding-left: 20px;
-    border-left: 8px solid #000;
-    font-size: 24px;
-}
-
 .approve__table {
     width: 100%;
     table-layout: fixed;
     background-color: white;
     border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
 }
 
 .approve__label,
 .approve__text {
-    border-bottom: 2px solid #E1E1E1;
+    border-bottom: 2px solid #e1e1e1;
     font-weight: bold;
     text-align: center;
     vertical-align: middle;
@@ -63,24 +58,8 @@
 .approve__notice {
     margin-top: 30px;
     text-align: right;
-    color: #FF000080;
+    color: #ff000080;
     font-weight: bold;
-}
-
-.approve__button {
-    margin-top: 30px;
-    display: flex;
-    justify-content: flex-end;
-}
-
-.approve__button-submit {
-    width: 90px;
-    height: 40px;
-    background-color: black;
-    color: white;
-    border-radius: 5px;
-    font-weight: bold;
-    cursor: pointer;
 }
 
 .approve__button-submit--approved {

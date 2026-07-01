@@ -7,9 +7,9 @@
 @endsection
 
 @section('content')
-<div class="page">
-  <div class="detail__inner">
-    <h1 class="detail__title">勤怠詳細</h1>
+<div class="page__container">
+  <div class="page__inner">
+    <h1 class="page__title">勤怠詳細</h1>
 
     <form class="detail__form" action="/admin/attendance/{{ $attendance->id }}" method="post">
       @csrf
@@ -114,8 +114,8 @@
         <p class="detail__notice">{{ session('message') }}</p>
       @endif
 
-      <div class="detail__button" type="submit">
-        <button class="detail__button-submit">修正</button>
+      <div class="page__button" type="submit">
+        <button class="page__button-submit">修正</button>
       </div>
       @endif
     </form>

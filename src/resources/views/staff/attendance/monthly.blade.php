@@ -7,11 +7,11 @@
 @endsection
 
 @section('content')
-<div class="page">
-  <div class="monthly__inner">
-    <h1 class="monthly__title">勤怠一覧</h1>
+<div class="page__container">
+  <div class="page__inner">
+    <h1 class="page__title">勤怠一覧</h1>
 
-    <div class="monthly__header">
+    <div class="page__header">
       <a class="monthly__link" href="/attendance/list?month={{ $previousMonth }}">
         <img class="monthly__arrow" src="{{ asset('images/arrow.png') }}" alt="矢印">
         前月
@@ -26,8 +26,8 @@
       </a>
     </div>
 
-    <div class="monthly__wrapper">
-      <table class="monthly__table">
+    <div class="page__wrapper">
+      <table class="page__table">
         <tr class="monthly__row">
           <th class="monthly__head">日付</th>
           <th class="monthly__head">出勤</th>

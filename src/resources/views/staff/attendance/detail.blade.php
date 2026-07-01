@@ -7,9 +7,9 @@
 @endsection
 
 @section('content')
-<div class="page">
+<div class="page__container">
   <div class="detail__inner">
-    <h1 class="detail__title">勤怠詳細</h1>
+    <h1 class="page__title">勤怠詳細</h1>
 
     <form class="detail__form" action="/attendance/detail/{{ $attendance->id }}" method="post">
       @csrf
@@ -110,8 +110,8 @@
       @if ($isPending)
       <p class="detail__pending">*承認待ちのため修正はできません。</p>
       @else
-      <div class="detail__button">
-        <button class="detail__button-submit" type="submit">修正</button>
+      <div class="page__button">
+        <button class="page__button-submit" type="submit">修正</button>
       </div>
       @endif
     </form>
