@@ -7,10 +7,9 @@
 @endsection
 
 @section('content')
-<div class="page">
+<div class="page__container">
   <div class="request__inner">
-    <h1 class="request__title">申請一覧</h1>
-
+    <h1 class="page__title">申請一覧</h1>
 
     <nav class="request__tab">
       <ul>
@@ -23,8 +22,8 @@
       </ul>
     </nav>
 
-    <div class="request__wrapper">
-      <table class="request__table">
+    <div class="page__wrapper">
+      <table class="page__table">
         <thead>
           <tr class="request__row">
             <th class="request__head">状態</th>

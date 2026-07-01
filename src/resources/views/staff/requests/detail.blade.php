@@ -7,9 +7,9 @@
 @endsection
 
 @section('content')
-<div class="page">
+<div class="page__container">
   <div class="detail__inner">
-    <h1 class="detail__title">勤怠詳細</h1>
+    <h1 class="page__title">勤怠詳細</h1>
     <table class="detail__table">
       <tr class="detail__row">
         <th class="detail__label">名前</th>

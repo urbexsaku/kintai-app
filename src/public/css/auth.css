@@ -1,6 +1,6 @@
 .header {
     width: 100%;
-    background-color: black;
+    border-bottom: 1px solid #8B7E74;
 }
 
 .header__inner {
@@ -9,23 +9,35 @@
 }
 
 .header__logo {
-    width: 250px;
-    height: auto;
+    color: #8B7E74;
+    font-size: 24px;
 }
 
 .auth-form__content {
-    max-width: 1230px;
     margin: 0 auto;
-    padding: 30px 15px;
+    background-color: #F5EFE6;
+    padding: 20px;
+    min-height: 100vh;
 }
 
 .auth-form__heading {
     text-align: center;
+    margin-bottom: 40px;
+    color: #8B7E74;
     font-size: 20px;
 }
 
+.auth-form__box {
+    background-color: white;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
 .auth-form {
-    width: 50%;
+    width: 80%;
     margin: 0 auto;
     text-align: center;
 }
@@ -63,17 +75,18 @@ input::placeholder {
 
 .auth-form__button {
     margin: 50px 0 20px;
+    text-align: center;
 }
 
 .auth-form__button-submit {
-    width: 100%;
+    width: 40%;
     height: 40px;
-    background-color: black;
-    border-radius: 3px;
+    background-color: #7B6F66;
     color: white;
     border: none;
     cursor: pointer;
-    font-weight: bold;
+    border-radius: 8px;
+    margin-bottom: 20px;
 }
 
 .auth-form__link {

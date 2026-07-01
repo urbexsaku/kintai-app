@@ -7,11 +7,11 @@
 @endsection
 
 @section('content')
-<div class="page">
-  <div class="staff__inner">
-    <h1 class="staff__title">スタッフ一覧</h1>
-    <div class="staff__wrapper">
-      <table class="staff__table">
+<div class="page__container">
+  <div class="page__inner">
+    <h1 class="page__title">スタッフ一覧</h1>
+    <div class="page__wrapper">
+      <table class="page__table">
         <tr class="staff__row">
           <th class="staff__head">名前</th>
           <th class="staff__head">メールアドレス</th>

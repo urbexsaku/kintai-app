@@ -4,7 +4,7 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    background-color: #F0EFF2;
+    background-color: #f5efe6;
 }
 
 .attendance__content {
@@ -48,8 +48,9 @@
     margin-top: 30px;
     width: 120px;
     height: 40px;
-    background-color: black;
+    background-color: #7B6F66;
     color: white;
+    border: none;
     border-radius: 8px;
     font-size: 14px;
     font-weight: bold;

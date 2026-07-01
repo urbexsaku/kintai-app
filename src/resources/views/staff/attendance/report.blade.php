@@ -7,9 +7,9 @@
 @endsection
 
 @section('content')
-<div class="report__content">
-  <div class="report__inner">
-    <h1 class="report__title">マイ勤怠レポート</h1>
+<div class="page__container">
+  <div class="page__inner">
+    <h1 class="page__title">マイ勤怠レポート</h1>
     <p class="report__description">過去6ヶ月の勤怠データから集計しています。</p>
 
     <h2 class="report__header">基本サマリー</h2>

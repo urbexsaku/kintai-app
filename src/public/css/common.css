@@ -1,20 +1,23 @@
-header {
-    align-items: center;
-    background-color: #000;
-    color: #fff;
-    display: flex;
-    font-size: 16px;
-    justify-content: space-between;
-    height: 60px;
+.header {
+    height: 72px;
     padding: 0 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 16px;
+    font-weight: bold;
     position: sticky;
     z-index: var(--mer-z-index-navigation-top);
     top: 0px;
 }
 
 .header__logo {
-    width: 250px;
-    height: auto;
+    font-size: 28px;
+    font-weight: 700;
+    color: #2563eb;
+    letter-spacing: 0.05em;
 }
 
 .header__nav ul {
@@ -28,7 +31,7 @@ header {
 
 .header__link {
     text-decoration: none;
-    color: white;
+    color: #8b7e74;
     font-size: 16px;
     font-weight: bold;
 }
@@ -37,15 +40,65 @@ header {
     border: none;
     outline: none;
     background: transparent;
-    color: white;
+    color: #8b7e74;
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
 }
 
-.page {
+.page__container {
     min-height: 100vh;
     margin: 0 auto;
     padding: 50px 0;
-    background-color: #F0EFF2;
+    background-color: #f5efe6;
+}
+
+.page__inner {
+    width: 900px;
+    margin: 0 auto 40px;
+}
+
+.page__title {
+    padding-left: 20px;
+    border-left: 8px solid #000;
+    font-size: 24px;
+}
+
+.page__header {
+    margin: 0 auto 40px;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.page__wrapper {
+    margin: 0px auto 40px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.page__table {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.page__button {
+    margin-top: 30px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.page__button-submit {
+    width: 120px;
+    height: 40px;
+    background-color: #7B6F66;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
 }

@@ -13,8 +13,8 @@
 
 <body>
   <header class="header">
-    <div>
-      <img class="header__logo" src="{{ asset('images/header-logo.png') }}" alt="ロゴ">
+    <div class="header_logo">
+      Worklog
     </div>
     <nav class="header__nav">
       <ul>

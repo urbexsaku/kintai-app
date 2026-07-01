@@ -4,25 +4,19 @@
     /* padding 50px X 2をマイナス */
     margin: 0 auto 40px;
     display: flex;
-    flex-direction: column;  /* フォームを画面の上下中央配置 */
-}
-
-.request__title {
-    padding-left: 20px;
-    border-left: 8px solid #000;
-    font-size: 24px;
+    flex-direction: column; /* フォームを画面の上下中央配置 */
 }
 
 .request__tab {
-    border-bottom: 2px solid #5F5F5F;
+    border-bottom: 2px solid #5f5f5f;
     margin-top: 30px;
     margin-bottom: 50px;
 }
 
 .request__tab ul {
-  display: flex;
-  gap: 80px;
-  padding: 0px 70px;
+    display: flex;
+    gap: 80px;
+    padding: 0px 70px;
 }
 
 .request__tab-item a {
@@ -34,17 +28,6 @@
     font-weight: bold;
 }
 
-.request__wrapper {
-    margin: 0 auto 40px;
-    background-color: white;
-    border-radius: 10px;
-}
-
-.request__table {
-    width: 100%;
-    table-layout: fixed;
-}
-
 .request__head,
 .request__data {
     padding: 16px;
@@ -54,11 +37,11 @@
 }
 
 .request__head {
-    border-bottom: 3px solid #E1E1E1;
+    border-bottom: 3px solid #e1e1e1;
 }
 
 .request__data {
-    border-bottom: 1px solid #E1E1E1;
+    border-bottom: 1px solid #e1e1e1;
 }
 
 .request__detail {
