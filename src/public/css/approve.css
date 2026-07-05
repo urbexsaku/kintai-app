@@ -9,21 +9,21 @@
 .approve__table {
     width: 100%;
     table-layout: fixed;
-    background-color: white;
+    background-color: var(--color-surface);
     border-radius: 10px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    box-shadow: var(--shadow-card);
 }
 
 .approve__label,
 .approve__text {
-    border-bottom: 2px solid #e1e1e1;
+    border-bottom: 2px solid var(--color-border);
     font-weight: bold;
     text-align: center;
     vertical-align: middle;
 }
 
 .approve__label {
-    color: #737373;
+    color: var(--color-muted);
     width: 350px;
     padding: 20px 50px;
     text-align: left;
@@ -58,12 +58,13 @@
 .approve__notice {
     margin-top: 30px;
     text-align: right;
-    color: #ff000080;
+    color: var(--color-muted);
     font-weight: bold;
 }
 
 .approve__button-submit--approved {
-    background-color: #696969;
-    color: white;
+    background-color: var(--color-success);
+    color: var(--color-surface);
     border: none;
+    cursor: default;
 }

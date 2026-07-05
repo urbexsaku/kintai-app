@@ -3,7 +3,8 @@
 }
 
 .report__header {
-    font-size: 18px;
+    font-size: var(--font-size-title);
+    font-weight: bold;
 }
 
 .report__wrapper {
@@ -13,8 +14,8 @@
 }
 
 .report__group {
-    background-color: white;
-    border: 3px solid #737373;
+    background-color: var(--color-surface);
+    border: 3px solid var(--color-border);
     border-radius: 8px;
     width: 300px;
     padding: 10px;
@@ -23,11 +24,11 @@
 }
 
 .report__label {
-    font-size: 12px;
+    font-size: var(--font-size-label);
 }
 
 .report__value {
-    font-size: 25px;
+    font-size: var(--font-size-title);
     font-weight: bold;
 }
 
@@ -42,7 +43,7 @@
 }
 
 .report__row {
-    border-bottom: 1px solid #F0EFF2;
+    border-bottom: 1px solid var(--color-border);
 }
 
 .report__head:nth-child(3),

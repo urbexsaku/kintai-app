@@ -4,7 +4,7 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    background-color: #f5efe6;
+    background-color: var(--color-bg);
 }
 
 .attendance__content {
@@ -15,25 +15,25 @@
 }
 
 .attendance__status {
-    background-color: #C8C8C8;
-    color: #696969;
+    background-color: var(--color-badge-bg);
+    color: var(--color-badge-text);
     border-radius: 30px;
     width: 90px;
     height: 40px;
     padding: 2px 20px;
-    font-size: 14px;
+    font-size: var(--font-size-label);
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .attendance__date {
-    font-size: 20px;
+    font-size: var(--font-size-title);
     margin: 0;
 }
 
 .attendance__time {
-    font-size: 60px;
+    font-size: var(--font-size-clock);
     font-weight: bold;
     margin: 0;
 }
@@ -48,11 +48,10 @@
     margin-top: 30px;
     width: 120px;
     height: 40px;
-    background-color: #7B6F66;
-    color: white;
+    background-color: var(--color-primary);
+    color: var(--color-surface);
     border: none;
     border-radius: 8px;
-    font-size: 14px;
     font-weight: bold;
     display: flex;
     align-items: center;
@@ -61,12 +60,12 @@
 }
 
 .attendance__button--break {
-    background-color: white;
-    color: black;
+    background-color: var(--color-surface);
+    color: var(--color-text);
     border: none;
 }
 
 .attendance__message {
-    font-size: 18px;
+    font-size: var(--font-size-heading);
     font-weight: bold;
 }

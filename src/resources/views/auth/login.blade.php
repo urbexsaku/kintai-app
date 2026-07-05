@@ -7,7 +7,7 @@
 @endsection
 
 @section('content')
-<div class="auth-form__content">
+<div class="page__container">
   <h1 class="auth-form__heading">
     {{ request()->routeIs('admin.login') ? 'Admin Login' : 'Login' }}
   </h1>
@@ -48,7 +48,7 @@
       </div>
 
     <div class="auth-form__button">
-      <button type="submit" class="auth-form__button-submit">
+      <button type="submit" class="page__button-submit">
         {{ request()->routeIs('admin.login') ? '管理者ログインする' : 'ログインする' }}
       </button>
     </div>

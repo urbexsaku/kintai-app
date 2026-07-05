@@ -7,7 +7,7 @@
 @endsection
 
 @section('content')
-<div class="auth-form__content">
+<div class="page__container">
   <h1 class="auth-form__heading">Register</h1>
   <div class="auth-form__box">
     <form class="auth-form" action="{{ route('register') }}" method="post">
@@ -77,7 +77,7 @@
       </div>
 
       <div class="auth-form__button">
-        <button type="submit" class="auth-form__button-submit">登録する</button>
+        <button type="submit" class="page__button-submit">登録する</button>
       </div>
 
       <a class="auth-form__link" href="/login">ログインはこちら</a>

@@ -13,7 +13,7 @@
 
 <body>
   <header class="header">
-    <div class="header_logo">
+    <div class="header__logo">
       Worklog
     </div>
     <nav class="header__nav">
