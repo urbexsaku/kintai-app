@@ -53,9 +53,13 @@
       </button>
     </div>
 
-    <!-- 一般ログイン画面のみリンク表示 -->
     @if (request()->routeIs('login'))
-    <a class="auth-form__link" href="/register">会員登録はこちら</a>
+    <div class="auth-form__links">
+      <a class="auth-form__link" href="/register">会員登録はこちら</a>
+      <a class="auth-form__link" href="/admin/login">管理者ログインはこちら</a>
+    </div>    
+    @else
+    <a class="auth-form__link" href="/login">一般ユーザーログインはこちら</a>
     @endif
   </div>
  </form>

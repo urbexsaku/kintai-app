@@ -69,9 +69,18 @@ input::placeholder {
     text-align: center;
 }
 
+.auth-form__links {
+    margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
 .auth-form__link {
     text-decoration: none;
     color: var(--color-primary);
+    font-size: var(--font-size-label);
 }
 
 .auth-form__link:hover {
