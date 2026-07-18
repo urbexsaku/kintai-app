@@ -25,21 +25,20 @@ class AttendanceRecordController extends Controller
             100
         );
 
+        // 管理者ならuser_id使用、一般ユーザーなら自分のidのみ
+        $userId = auth()->user()->admin_status
+            ? $request->user_id
+            : auth()->id();
+
         $records = AttendanceRecord::query()
             ->with(['user', 'breakRecords'])
             ->when(
-                $request->user_id,
-                fn ($q) => $q->where(
-                    'user_id',
-                    $request->user_id
-                )
+                $userId,
+                fn ($q) => $q->where('user_id', $userId)
             )
             ->when(
                 $request->date,
-                fn ($q) => $q->where(
-                    'work_date',
-                    $request->date
-                )
+                fn ($q) => $q->where('work_date', $request->date)
             )
             ->when(
                 $request->month,
@@ -86,6 +85,8 @@ class AttendanceRecordController extends Controller
      */
     public function show(AttendanceRecord $attendanceRecord): AttendanceRecordResource
     {
+        $this->authorize('view', $attendanceRecord);
+
         $attendanceRecord->load([
             'user',
             'breakRecords',

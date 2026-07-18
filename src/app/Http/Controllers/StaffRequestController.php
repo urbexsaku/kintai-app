@@ -37,7 +37,12 @@ class StaffRequestController extends Controller
      */
     public function show($attendance_correct_request_id)
     {
-        $attendanceCorrectRequest = AttendanceCorrectRequest::findOrFail($attendance_correct_request_id);
+        $attendanceCorrectRequest = AttendanceCorrectRequest::whereHas(
+            'attendanceRecord',
+            function ($q) {
+                $q->where('user_id', auth()->id());
+            }
+        )->findOrFail($attendance_correct_request_id);
 
         return view('staff.requests.detail', compact('attendanceCorrectRequest'));
     }

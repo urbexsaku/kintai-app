@@ -138,7 +138,6 @@ class StaffAttendanceController extends Controller
      */
     public function history(Request $request)
     {
-
         // クエリパラメータでmonthの指定がなければ当月
         $currentMonth = $request->month ?? now()->format('Y-m');
 
@@ -182,6 +181,8 @@ class StaffAttendanceController extends Controller
     public function show($attendance_id)
     {
         $attendance = AttendanceRecord::findOrFail($attendance_id);
+                
+        $this->authorize('view', $attendance);
 
         $isPending = $attendance->attendanceCorrectRequests()->where('status', 'pending')->exists();
 
@@ -196,8 +197,11 @@ class StaffAttendanceController extends Controller
      */
     public function store(AttendanceRequest $request, $attendance_id)
     {
+        $attendance = AttendanceRecord::where('user_id', auth()->id())
+            ->findOrFail($attendance_id);    
+    
         $attendanceCorrectRequest = AttendanceCorrectRequest::create([
-            'attendance_record_id' => $attendance_id,
+            'attendance_record_id' => $attendance->id,
             'requested_clock_in' => $request->clock_in,
             'requested_clock_out' => $request->clock_out,
             'comment' => $request->comment,

@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -48,12 +49,15 @@ class Handler extends ExceptionHandler
         });
 
         // APIアクセス時の403エラーレスポンス
-        $this->renderable(function (AccessDeniedHttpException $e, $request) {
+        $this->renderable(function (AuthorizationException $e, $request) {
             if ($request->is('api/*')) {
                 return response()->json([
                     'error' => 'この操作を実行する権限がありません。',
                 ], 403);
             }
+
+            //ブラウザ用：
+            return response()->view('errors.403', [], 403);
         });
     }
 }

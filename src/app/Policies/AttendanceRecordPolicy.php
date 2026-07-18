@@ -23,6 +23,16 @@ class AttendanceRecordPolicy
     }
 
     /**
+     * 勤怠情報を閲覧できるか判定する
+     */
+    public function view(
+        User $user,
+        AttendanceRecord $attendanceRecord
+    ): bool {
+        return $user->id === $attendanceRecord->user_id;
+    }
+
+    /**
      * 勤怠情報を更新できるか判定する
      */
     public function update(
