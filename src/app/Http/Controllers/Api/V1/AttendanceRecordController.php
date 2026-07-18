@@ -37,8 +37,8 @@ class AttendanceRecordController extends Controller
                 fn ($q) => $q->where('user_id', $userId)
             )
             ->when(
-                $request->date,
-                fn ($q) => $q->where('work_date', $request->date)
+                $request->work_date,
+                fn ($q) => $q->where('work_date', $request->work_date)
             )
             ->when(
                 $request->month,

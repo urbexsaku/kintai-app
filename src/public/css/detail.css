@@ -88,7 +88,6 @@ input[type="time"]::-webkit-datetime-edit {
     font-family: inherit;
 }
 
-.detail__pending,
 .detail__notice {
     margin-top: 30px;
     text-align: right;

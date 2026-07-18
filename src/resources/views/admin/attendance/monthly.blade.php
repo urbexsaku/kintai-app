@@ -65,7 +65,7 @@
               {{ $attendance?->work_time }}
             </td>
             <td class="monthly__data">
-              @if($date->isToday() || $date->isFuture())
+              @if($date->isFuture())
               @elseif($attendance)
               <a class="monthly__detail" href="/admin/attendance/{{ $attendance->id }}">詳細</a>
               @else

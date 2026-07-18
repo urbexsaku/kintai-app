@@ -62,8 +62,9 @@ class AdminAttendanceController extends Controller
             ->findOrFail($attendance_id);
 
         $isPending = $attendance->attendanceCorrectRequests()->where('status', 'pending')->exists();
+        $isWorking = is_null($attendance->clock_out)
 
-        return view('admin.attendance.detail', compact('attendance', 'isPending'));
+        return view('admin.attendance.detail', compact('attendance', 'isPending', 'isWorking'));
     }
 
     /**

@@ -23,7 +23,7 @@ class AttendanceRecordResource extends JsonResource
                     $this->whenLoaded('user')
                 ),
 
-                'date' => optional($this->work_date)->format('Y-m-d'),
+                'work_date' => optional($this->work_date)->format('Y-m-d'),
                 'clock_in' => optional($this->clock_in)->format('H:i:s'),
                 'clock_out' => optional($this->clock_out)->format('H:i:s'),
 
@@ -44,7 +44,7 @@ class AttendanceRecordResource extends JsonResource
             'id' => $this->id,
             'user_id' => $this->user_id,
             'user_name' => optional($this->user)->name,
-            'date' => optional($this->work_date)->format('Y-m-d'),
+            'work_date' => optional($this->work_date)->format('Y-m-d'),
             'clock_in' => optional($this->clock_in)->format('H:i:s'),
             'clock_out' => optional($this->clock_out)->format('H:i:s'),
             'total_time' => $this->workTime,

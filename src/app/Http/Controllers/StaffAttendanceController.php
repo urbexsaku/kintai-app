@@ -185,8 +185,9 @@ class StaffAttendanceController extends Controller
         $this->authorize('view', $attendance);
 
         $isPending = $attendance->attendanceCorrectRequests()->where('status', 'pending')->exists();
+        $isWorking = is_null($attendance->clock_out);
 
-        return view('staff.attendance.detail', compact('attendance', 'isPending'));
+        return view('staff.attendance.detail', compact('attendance', 'isPending', 'isWorking'));
     }
 
     /**

@@ -108,7 +108,9 @@
         </tr>
       </table>
       @if ($isPending)
-      <p class="detail__pending">*承認待ちのため修正はできません。</p>
+        <p class="detail__notice">*承認待ちのため修正はできません。</p>
+      @elseif ($isWorking)
+        <p class="detail__notice">*当日の勤怠は勤務終了後に修正申請できます。</p>
       @else
       <div class="page__button">
         <button class="page__button-submit" type="submit">修正</button>

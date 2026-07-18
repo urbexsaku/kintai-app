@@ -53,6 +53,8 @@ class AttendanceRecordApiTest extends TestCase
 
     public function test_attendance_list_can_be_retrieved()
     {
+        Sanctum::actingAs($this->user, ['*']);
+    
         AttendanceRecord::factory()
             ->count(100)
             ->create([
@@ -85,6 +87,8 @@ class AttendanceRecordApiTest extends TestCase
 
     public function test_attendance_detail_can_be_retrieved()
     {
+        Sanctum::actingAs($this->user, ['*']);
+        
         $response = $this->getJson("/api/v1/attendance-records/{$this->attendance->id}");
 
         $response->assertStatus(200);
@@ -124,7 +128,7 @@ class AttendanceRecordApiTest extends TestCase
 
     public function test_404_error_is_displayed_for_unregistered_id()
     {
-        $response = $this->getJson('/api/v1/attendance-records/99999');
+        $response = $this->actingAs($user, 'sanctum')->getJson('/api/v1/attendance-records/99999');
 
         $response->assertStatus(404)
             ->assertJson([
